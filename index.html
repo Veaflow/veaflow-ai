@@ -224,6 +224,71 @@ videoFile.addEventListener('change',()=>{
  videoUrl=URL.createObjectURL(file);
  videoPreview.src=videoUrl;videoPreview.style.display='block';
 });
+ 
+const trimStart = document.getElementById('trimStart');
+const trimEnd = document.getElementById('trimEnd');
+const previewTrim = document.getElementById('previewTrim');
+const trimMessage = document.getElementById('trimMessage');
+
+let trimStopHandler = null;
+
+previewTrim.addEventListener('click', () => {
+  if (!videoUrl || !videoPreview.src) {
+    trimMessage.textContent = 'Please upload a video first.';
+    return;
+  }
+
+  const start = Number(trimStart.value);
+  const end = Number(trimEnd.value);
+
+  if (
+    !Number.isFinite(start) ||
+    !Number.isFinite(end) ||
+    start < 0 ||
+    end <= start
+  ) {
+    trimMessage.textContent = 'Enter a valid start and end time.';
+    return;
+  }
+
+  if (!Number.isFinite(videoPreview.duration)) {
+    trimMessage.textContent = 'Please wait for the video to load.';
+    return;
+  }
+
+  if (start >= videoPreview.duration || end > videoPreview.duration) {
+    trimMessage.textContent =
+      'The times must fit within your video (' +
+      videoPreview.duration.toFixed(1) + ' seconds).';
+    return;
+  }
+
+  if (trimStopHandler) {
+    videoPreview.removeEventListener('timeupdate', trimStopHandler);
+  }
+
+  videoPreview.pause();
+  videoPreview.currentTime = start;
+
+  trimMessage.textContent =
+    'Previewing ' + start + 's to ' + end + 's.';
+
+  trimStopHandler = () => {
+    if (videoPreview.currentTime >= end) {
+      videoPreview.pause();
+      videoPreview.removeEventListener('timeupdate', trimStopHandler);
+      trimStopHandler = null;
+      trimMessage.textContent = 'Preview finished. Adjust the times to try again.';
+    }
+  };
+
+  videoPreview.addEventListener('timeupdate', trimStopHandler);
+
+  videoPreview.play().catch(() => {
+    trimMessage.textContent = 'Tap Play on the video to start the preview.';
+  });
+});
+
 document.getElementById('clearVideo').addEventListener('click',()=>{
  videoPreview.pause();videoPreview.removeAttribute('src');videoPreview.load();
  videoPreview.style.display='none';videoFile.value='';
