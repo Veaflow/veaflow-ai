@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d1b">
+<title>VEAFLOW AI — Creator Workspace</title>
+<style>
+:root{--bg:#090b16;--panel:#14182c;--line:#2b3152;--blue:#6878ff;--purple:#a36bff;--text:#f4f5ff;--muted:#a5abc7}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top right,#25234b,transparent 50%),var(--bg);color:var(--text);font-family:Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+aside{width:220px;padding:24px 14px;background:#0d1020;border-right:1px solid var(--line);flex-shrink:0}
+.logo{font-size:23px;font-weight:bold;margin:8px}.logo span{color:#a98aff}
+.tag,.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.tag{margin:8px}
+.navlabel{color:#737b9b;font-size:11px;letter-spacing:2px;margin:30px 10px 12px}
+.nav{width:100%;padding:13px;border:1px solid transparent;background:none;color:#c9cde3;text-align:left;border-radius:10px;margin:4px 0}
+.nav.active,.nav:hover{background:#272748;border-color:#464878;color:white}
+main{flex:1;min-width:0;padding:24px clamp(14px,4vw,46px) 45px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.status,.pill{border:1px solid #383e64;background:#191d35;padding:8px 11px;border-radius:25px;font-size:11px}
+.hero{padding:32px 0 24px}
+h1{font-size:clamp(30px,5vw,46px);letter-spacing:-1.5px;margin:8px 0}
+.gradient{background:linear-gradient(90deg,#8294ff,#c69aff);color:transparent;background-clip:text}
+h2{font-size:24px;margin:10px 0}
+h3{font-size:17px;margin:0 0 8px}
+.section{display:none}.section.active{display:block}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+.card{min-width:0;background:linear-gradient(145deg,#171b31,#101324);border:1px solid var(--line);border-radius:16px;padding:19px}
+.workspace{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr);gap:16px;margin-top:16px}
+.sub{color:var(--muted);font-size:13px;line-height:1.7}
+.upload{border:1px dashed #565e91;border-radius:12px;padding:22px 12px;text-align:center;background:#101428;margin:15px 0}
+.upload-icon{font-size:30px;margin-bottom:10px}
+input[type=file]{max-width:100%;font-size:12px;color:var(--muted)}
+.preview{display:none;width:100%;max-height:400px;object-fit:contain;background:#080a12;border-radius:10px;margin-top:12px}
+.controls{display:grid;gap:16px;margin-top:18px}
+.controlhead{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}
+.controlhead span{color:#b8bdff}
+input[type=range]{width:100%;accent-color:#9b83ff}
+.btn{padding:12px 14px;border:0;border-radius:10px;background:linear-gradient(110deg,#596fff,#9865f5);color:white;font-weight:bold}
+.btn.secondary{background:#202540;border:1px solid #3b4269}
+.btn:disabled{opacity:.5}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+textarea,select{width:100%;background:#0b0e1c;border:1px solid #343b5d;border-radius:10px;padding:12px;color:white;margin:8px 0 15px}
+textarea{min-height:135px;resize:vertical;line-height:1.6}
+label{font-size:13px}
+.notice,.sidebox{background:#171b31;border:1px solid #383e61;border-radius:11px;padding:13px;font-size:12px;line-height:1.7;color:#c1c7e4;margin-top:15px}
+.steps{display:grid;gap:14px;margin-top:18px;font-size:13px;color:#d4d8ee}
+.dot{color:#79ddb0;margin-right:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
+.stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:#13172a}
+.stat strong{display:block;font-size:21px;margin-bottom:6px}.stat span{font-size:11px;color:var(--muted)}
+footer{text-align:center;color:#777e9c;font-size:12px;margin-top:30px}
+.mobile{display:none}
+@media(max-width:700px){.app{display:block}aside{display:none}main{padding:17px 13px 90px}.hero{padding:20px 0}.workspace{grid-template-columns:1fr}.mobile{display:flex;position:fixed;z-index:5;bottom:0;left:0;right:0;justify-content:space-around;background:#0d1020;border-top:1px solid var(--line);padding:8px 3px calc(8px + env(safe-area-inset-bottom))}.mobile button{background:none;border:0;color:#c9cde3;font-size:11px;padding:8px 4px}.mobile button.active{color:#b8a3ff}.stats{gap:6px}.stat{padding:10px}.stat strong{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+<div class="logo">✦ veaflow <span>AI</span></div>
+<p class="tag">The future flows through us.</p>
+<div class="navlabel">WORKSPACE</div>
+<button class="nav active" data-page="photo">▧ Photo Studio</button>
+<button class="nav" data-page="video">▷ Video Studio</button>
+<button class="nav" data-page="creator">✧ AI Creator</button>
+<div class="sidebox">CREATOR WORKSPACE<br><br>One place for your photos, videos and creative ideas.</div>
+</aside>
+<main>
+<div class="top"><span>VEAFLOW AI / <span id="crumb">Photo Studio</span></span><span class="status">✦ MVP · Local demo</span></div>
+<header class="hero">
+<h1>Create Beyond <span class="gradient">Imagination.</span></h1>
+<p class="muted">Your creative workspace for photo editing, video projects and AI-powered storytelling. Start with an idea and build something extraordinary.</p>
+<div class="pills"><span class="pill">✧ Photo editing</span><span class="pill">▷ Video workspace</span><span class="pill">✦ AI creativity</span></div>
+</header>
+
+<section class="section active" id="photo">
+<h2>Photo Studio</h2><p class="muted">Upload a photo, adjust its look and download your edited image.</p>
+<div class="workspace">
+<div class="card">
+<h3>Photo editor</h3><p class="sub">Choose a photo from your device.</p>
+<div class="upload"><div class="upload-icon">▧</div><p>Upload your photo</p><input id="photoFile" type="file" accept="image/*"></div>
+<img id="photoPreview" class="preview" alt="Photo preview">
+<div class="controls">
+<div><div class="controlhead"><label for="brightness">Brightness</label><span id="brightnessValue">100%</span></div><input id="brightness" type="range" min="0" max="200" value="100"></div>
+<div><div class="controlhead"><label for="contrast">Contrast</label><span id="contrastValue">100%</span></div><input id="contrast" type="range" min="0" max="200" value="100"></div>
+<div><div class="controlhead"><label for="saturation">Saturation</label><span id="saturationValue">100%</span></div><input id="saturation" type="range" min="0" max="200" value="100"></div>
+<div><div class="controlhead"><label for="blur">Blur</label><span id="blurValue">0px</span></div><input id="blur" type="range" min="0" max="10" value="0"></div>
+</div>
+<div class="actions"><button class="btn" id="downloadPhoto" disabled>Download edited photo</button><button class="btn secondary" id="resetPhoto">Reset filters</button></div>
+</div>
+<div class="card"><h3>How it works</h3><p class="sub">Three simple steps to improve your image.</p><div class="steps"><div><span class="dot">●</span>Upload a photo</div><div><span class="dot">●</span>Adjust the filters</div><div><span class="dot">●</span>Download your result</div></div><div class="notice">Your original image remains unchanged. Editing happens in your browser.</div></div>
+</div>
+</section>
+
+<section class="section" id="video">
+<h2>Video Studio</h2><p class="muted">Import and preview clips for your next video or short drama.</p>
+<div class="workspace">
+<div class="card"><h3>Video preview</h3><p class="sub">Select a video stored on your phone.</p>
+<div class="upload"><div class="upload-icon">▷</div><p>Choose your video</p><input id="videoFile" type="file" accept="video/*"></div>
+<video id="videoPreview" class="preview" controls playsinline></video>
+<div class="actions"><button class="btn secondary" id="clearVideo">Remove video</button></div>
+<div class="notice">This version previews local video. Timeline editing, transitions and export tools can be added later.</div>
+</div>
+<div class="card"><h3>Your video workflow</h3><div class="steps"><div><span class="dot">●</span>Import a clip</div><div><span class="dot">●</span>Preview your footage</div><div>○ Timeline editing — coming later</div><div>○ Export tools — coming later</div></div></div>
+</div>
+</section>
+
+<section class="section" id="creator">
+<h2>AI Creator</h2><p class="muted">Turn your ideas into detailed prompts for AI images and videos.</p>
+<div class="workspace">
+<div class="card"><h3>Creative prompt studio</h3><p class="sub">Describe your scene, characters, mood and camera movement.</p>
+<label for="creationType">What do you want to create?</label>
+<select id="creationType"><option>AI video</option><option>AI image</option><option>Short drama scene</option><option>Consistent character reference</option></select>
+<label for="style">Visual style</label>
+<select id="style"><option>Cinematic realism</option><option>Romantic drama</option><option>Action thriller</option><option>Comedy</option><option>Luxury lifestyle</option><option>Animation</option></select>
+<label for="idea">Describe your idea</label>
+<textarea id="idea" placeholder="Example: A mysterious wealthy man steps out of a black luxury car into a rainy city street at night. Dramatic lighting, emotional tension, realistic faces..."></textarea>
+<div class="actions"><button class="btn" id="buildPrompt">Build my prompt</button><button class="btn secondary" id="clearPrompt">Clear</button></div>
+</div>
+<div class="card"><h3>Your prompt</h3><p class="sub">Review and copy your prompt into your chosen AI tool.</p><textarea id="outputPrompt" placeholder="Your refined prompt will appear here..."></textarea><div class="actions"><button class="btn" id="copyPrompt">Copy prompt</button></div><div class="notice">Actual AI image and video generation is not connected yet. That requires an AI service and secure backend.</div></div>
+</div>
+</section>
+<div class="stats"><div class="stat"><strong>03</strong><span>Creative studios</span></div><div class="stat"><strong>01</strong><span>Workspace</span></div><div class="stat"><strong>∞</strong><span>Ideas to explore</span></div></div>
+<footer>VEAFLOW AI · Built for imagination.</footer>
+</main>
+</div>
+<nav class="mobile">
+<button class="active" data-page="photo">▧ Photo</button>
+<button data-page="video">▷ Video</button>
+<button data-page="creator">✧ AI Creator</button>
+</nav>
+<script>
+const buttons=document.querySelectorAll('[data-page]');
+const pages=document.querySelectorAll('.section');
+const pageNames={photo:'Photo Studio',video:'Video Studio',creator:'AI Creator'};
+buttons.forEach(button=>button.addEventListener('click',()=>{
+ pages.forEach(page=>page.classList.toggle('active',page.id===button.dataset.page));
+ buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===button.dataset.page));
+ document.getElementById('crumb').textContent=pageNames[button.dataset.page];
+ window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+const photoFile=document.getElementById('photoFile');
+const photoPreview=document.getElementById('photoPreview');
+const filterIds=['brightness','contrast','saturation','blur'];
+let photoUrl='';
+function updateFilters(){
+ const b=document.getElementById('brightness').value;
+ const c=document.getElementById('contrast').value;
+ const s=document.getElementById('saturation').value;
+ const bl=document.getElementById('blur').value;
+ photoPreview.style.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)`;
+ document.getElementById('brightnessValue').textContent=b+'%';
+ document.getElementById('contrastValue').textContent=c+'%';
+ document.getElementById('saturationValue').textContent=s+'%';
+ document.getElementById('blurValue').textContent=bl+'px';
+}
+filterIds.forEach(id=>document.getElementById(id).addEventListener('input',updateFilters));
+photoFile.addEventListener('change',()=>{
+ const file=photoFile.files[0];
+ if(!file)return;
+ if(photoUrl)URL.revokeObjectURL(photoUrl);
+ photoUrl=URL.createObjectURL(file);
+ photoPreview.src=photoUrl;
+ photoPreview.style.display='block';
+ document.getElementById('downloadPhoto').disabled=false;
+ updateFilters();
+});
+document.getElementById('resetPhoto').addEventListener('click',()=>{
+ document.getElementById('brightness').value=100;
+ document.getElementById('contrast').value=100;
+ document.getElementById('saturation').value=100;
+ document.getElementById('blur').value=0;
+ updateFilters();
+});
+document.getElementById('downloadPhoto').addEventListener('click',()=>{
+ if(!photoPreview.src)return;
+ const img=new Image();
+ img.onload=()=>{
+  const canvas=document.createElement('canvas');
+  canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+  const ctx=canvas.getContext('2d');
+  ctx.filter=`brightness(${brightness.value}%) contrast(${contrast.value}%) saturate(${saturation.value}%) blur(${blur.value}px)`;
+  ctx.drawImage(img,0,0);
+  const link=document.createElement('a');
+  link.download='veaflow-edited-photo.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+ };
+ img.src=photoPreview.src;
+});
+
+const videoFile=document.getElementById('videoFile');
+const videoPreview=document.getElementById('videoPreview');
+let videoUrl='';
+videoFile.addEventListener('change',()=>{
+ const file=videoFile.files[0];if(!file)return;
+ if(videoUrl)URL.revokeObjectURL(videoUrl);
+ videoUrl=URL.createObjectURL(file);
+ videoPreview.src=videoUrl;videoPreview.style.display='block';
+});
+document.getElementById('clearVideo').addEventListener('click',()=>{
+ videoPreview.pause();videoPreview.removeAttribute('src');videoPreview.load();
+ videoPreview.style.display='none';videoFile.value='';
+ if(videoUrl)URL.revokeObjectURL(videoUrl);videoUrl='';
+});
+
+document.getElementById('buildPrompt').addEventListener('click',()=>{
+ const idea=document.getElementById('idea').value.trim();
+ if(!idea){alert('Please describe your idea first.');return;}
+ const type=document.getElementById('creationType').value;
+ const style=document.getElementById('style').value;
+ document.getElementById('outputPrompt').value=
+ `${type}. Visual style: ${style}. Scene description: ${idea}. Use clear composition, expressive characters, consistent visual details, professional lighting, high-quality production, and purposeful camera movement.`;
+});
+document.getElementById('clearPrompt').addEventListener('click',()=>{
+ document.getElementById('idea').value='';
+ document.getElementById('outputPrompt').value='';
+});
+document.getElementById('copyPrompt').addEventListener('click',async()=>{
+ const output=document.getElementById('outputPrompt');
+ if(!output.value.trim()){alert('Build a prompt first.');return;}
+ try{await navigator.clipboard.writeText(output.value);alert('Prompt copied!');}
+ catch(e){output.select();alert('Select the prompt and choose Copy.');}
+});
+</script>
+</body>
+</html>
