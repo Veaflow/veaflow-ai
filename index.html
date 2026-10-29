@@ -103,6 +103,26 @@ footer{text-align:center;color:#777e9c;font-size:12px;margin-top:30px}
 <div class="card"><h3>Video preview</h3><p class="sub">Select a video stored on your phone.</p>
 <div class="upload"><div class="upload-icon">▷</div><p>Choose your video</p><input id="videoFile" type="file" accept="video/*"></div>
 <video id="videoPreview" class="preview" controls playsinline></video>
+ 
+<div class="card" id="trimControls" style="margin-top:16px">
+  <h3>✂️ Video Trimmer</h3>
+  <p class="sub">Choose where your clip starts and ends.</p>
+
+  <label for="trimStart">Start time (seconds)</label>
+  <input id="trimStart" type="number" min="0" value="0" step="0.5">
+
+  <label for="trimEnd">End time (seconds)</label>
+  <input id="trimEnd" type="number" min="0" value="10" step="0.5">
+
+  <div class="actions">
+    <button class="btn" id="previewTrim">Preview Selected Clip</button>
+  </div>
+
+  <p class="muted" id="trimMessage">
+    Upload a video to begin trimming.
+  </p>
+</div>
+
 <div class="actions"><button class="btn secondary" id="clearVideo">Remove video</button></div>
 <div class="notice">This version previews local video. Timeline editing, transitions and export tools can be added later.</div>
 </div>
