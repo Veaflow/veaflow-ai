@@ -315,6 +315,20 @@ document.getElementById('copyPrompt').addEventListener('click',async()=>{
 });
 </script>
 	<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+	<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const result = document.createElement('p');
+  result.style.cssText =
+    'background:#222;color:white;padding:12px;margin:12px;';
+
+  result.textContent =
+    typeof FFmpeg !== 'undefined'
+      ? 'FFmpeg API is available.'
+      : 'FFmpeg API is missing.';
+
+  document.body.appendChild(result);
+});
+	</script>
 <script>
 async function testFFmpeg() {
   const status = document.createElement('p');
