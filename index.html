@@ -305,7 +305,7 @@ document.getElementById('buildPrompt').addEventListener('click',()=>{
 });
 document.getElementById('clearPrompt').addEventListener('click',()=>{
  document.getElementById('idea').value='';
- document.getElementById('outputPrompt').value='';
+ documen<t.getElementById('outputPrompt').value='';
 });
 document.getElementById('copyPrompt').addEventListener('click',async()=>{
  const output=document.getElementById('outputPrompt');
@@ -315,29 +315,40 @@ document.getElementById('copyPrompt').addEventListener('click',async()=>{
 });
 </script>
 	<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-	<script>
+<script>
 async function testFFmpeg() {
   const status = document.createElement('p');
   status.style.color = 'white';
   status.style.padding = '12px';
   status.style.background = '#222';
-  status.textContent = 'Testing FFmpeg engine...';
+  status.textContent = 'Loading video engine...';
   document.body.appendChild(status);
 
   try {
-    const { FFmpeg } = window;
-    const ffmpeg = new FFmpeg();
-    await ffmpeg.load({
-      coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.js',
-      wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.wasm'
-    });
-    status.textContent = '✅ FFmpeg engine initialized!';
+    const ffmpeg = new FFmpegWASM.FFmpeg();
+    const baseURL =
+      'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
+
+    const coreURL = URL.createObjectURL(
+      new Blob([await (await fetch(baseURL + '/ffmpeg-core.js')).text()],
+      { type: 'text/javascript' })
+    );
+
+    const wasmURL = URL.createObjectURL(
+      new Blob([await (await fetch(baseURL + '/ffmpeg-core.wasm')).arrayBuffer()],
+      { type: 'application/wasm' })
+    );
+
+    await ffmpeg.load({ coreURL, wasmURL });
+
+    status.textContent = '✅ FFmpeg engine initialized successfully!';
   } catch (error) {
-    status.textContent = '❌ Engine test failed: ' + error.message;
+    status.textContent = '❌ Loading failed: ' + error.message;
   }
 }
+
 window.addEventListener('load', testFFmpeg);
-	</script>
+</script>
     
 </body>
 </html>
