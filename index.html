@@ -314,7 +314,29 @@ document.getElementById('copyPrompt').addEventListener('click',async()=>{
  catch(e){output.select();alert('Select the prompt and choose Copy.');}
 });
 </script>
-	<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script><script>
+async function testFFmpeg() {
+  const status = document.createElement('p');
+  status.style.color = 'white';
+  status.style.padding = '12px';
+  status.style.background = '#222';
+  status.textContent = 'Testing FFmpeg engine...';
+  document.body.appendChild(status);
+
+  try {
+    const { FFmpeg } = window;
+    const ffmpeg = new FFmpeg();
+    await ffmpeg.load({
+      coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+      wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+    });
+    status.textContent = '✅ FFmpeg engine initialized!';
+  } catch (error) {
+    status.textContent = '❌ Engine test failed: ' + error.message;
+  }
+}
+window.addEventListener('load', testFFmpeg);
+	</script>
     
 </body>
 </html>
