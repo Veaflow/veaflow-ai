@@ -315,6 +315,21 @@ document.getElementById('copyPrompt').addEventListener('click',async()=>{
 });
 </script>
 	<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <script>
+window.addEventListener('load', function () {
+  const result = document.createElement('p');
+
+  result.textContent = typeof FFmpeg !== 'undefined'
+    ? '✅ FFmpeg library loaded successfully!'
+    : '❌ FFmpeg library did not load.';
+
+  result.style.color = '#ffffff';
+  result.style.padding = '12px';
+  result.style.background = '#222222';
+
+  document.body.appendChild(result);
+});
+    </script>
 </body>
 </html>
 
