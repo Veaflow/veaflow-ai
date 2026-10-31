@@ -143,6 +143,30 @@ footer{text-align:center;color:#777e9c;font-size:12px;margin-top:30px}
 <div class="actions"><button class="btn" id="buildPrompt">Build my prompt</button><button class="btn secondary" id="clearPrompt">Clear</button></div>
 </div>
 <div class="card"><h3>Your prompt</h3><p class="sub">Review and copy your prompt into your chosen AI tool.</p><textarea id="outputPrompt" placeholder="Your refined prompt will appear here..."></textarea><div class="actions"><button class="btn" id="copyPrompt">Copy prompt</button></div><div class="notice">Actual AI image and video generation is not connected yet. That requires an AI service and secure backend.</div></div>
+	
+<div class="card">
+  <h3>VEAFLOW AI Image Generator</h3>
+  <p class="sub">Create cinematic images from your ideas.</p>
+
+  <label for="veaflowAccess">Private access password</label>
+  <input type="password" id="veaflowAccess"
+    placeholder="Enter your private access password">
+
+  <label for="veaflowImagePrompt">Describe your image</label>
+  <textarea id="veaflowImagePrompt"
+    placeholder="Describe the image you want to create..."></textarea>
+
+  <button class="btn" id="veaflowGenerateImage">
+    Generate Image
+  </button>
+
+  <p id="veaflowImageStatus" class="notice">
+    Your generated image will appear here.
+  </p>
+
+  <div id="veaflowImageResult"></div>
+</div>
+
 </div>
 </section>
 <div class="stats"><div class="stat"><strong>03</strong><span>Creative studios</span></div><div class="stat"><strong>01</strong><span>Workspace</span></div><div class="stat"><strong>∞</strong><span>Ideas to explore</span></div></div>
