@@ -389,5 +389,65 @@ window.addEventListener('load', testFFmpeg);
 </script>
     
 </body>
+	
+<script>
+document.getElementById("veaflowGenerateImage").addEventListener("click", async () => {
+  const button = document.getElementById("veaflowGenerateImage");
+  const token = document.getElementById("veaflowAccess").value.trim();
+  const prompt = document.getElementById("veaflowImagePrompt").value.trim();
+  const status = document.getElementById("veaflowImageStatus");
+  const result = document.getElementById("veaflowImageResult");
+
+  if (!token || !prompt) {
+    status.textContent = "Enter your access password and image description.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "Connecting to VEAFLOW AI...";
+  result.innerHTML = "";
+
+  try {
+    const response = await fetch(
+      "https://veaflow-ai-api.ovarcon.workers.dev/generate-image",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ prompt })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Image generation failed.");
+    }
+
+    const imageUrl = data.data?.[0]?.url;
+
+    if (!imageUrl) {
+      throw new Error("No image URL was returned.");
+    }
+
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = "VEAFLOW AI generated image";
+    image.style.width = "100%";
+    image.style.borderRadius = "12px";
+    image.style.marginTop = "12px";
+
+    result.appendChild(image);
+    status.textContent = "Your image is ready!";
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+
 </html>
 
