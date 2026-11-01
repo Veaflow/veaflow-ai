@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEAFLOW AI — Create Without Limits</title>
+<style>
+:root {
+  --bg:#071225;
+  --panel:#101f38;
+  --panel2:#142642;
+  --blue:#267cff;
+  --purple:#a477ff;
+  --red:#f04455;
+  --text:#f4f7ff;
+  --muted:#91a3bd;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 5%;border-bottom:1px solid #20324c;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--blue)}
+nav a{color:var(--muted);text-decoration:none;margin-left:20px;font-size:14px}
+main{max-width:1250px;margin:auto;padding:35px 20px}
+.hero{margin-bottom:30px}
+.hero small{color:var(--purple);letter-spacing:3px}
+h1{font-size:clamp(30px,5vw,48px);margin:12px 0}
+h1 span{color:var(--purple)}
+.sub{color:var(--muted);line-height:1.6}
+.workspace{
+ display:grid;grid-template-columns:1.1fr .9fr;gap:22px;
+}
+.card{
+ background:var(--panel);border:1px solid #263a58;
+ border-radius:17px;padding:23px;margin-bottom:20px;
+}
+h2{font-size:19px;margin-top:0}
+label{display:block;margin:17px 0 8px;font-size:13px;color:#c4d2e6}
+select,textarea,input{
+ width:100%;padding:13px;border-radius:9px;
+ border:1px solid #304663;background:#09172c;
+ color:white;font-size:14px;
+}
+textarea{min-height:130px;resize:vertical;line-height:1.5}
+button{
+ border:0;border-radius:9px;padding:13px 18px;
+ color:white;font-weight:bold;cursor:pointer;
+ background:linear-gradient(100deg,var(--blue),#7056dc);
+}
+button.secondary{background:#263a58}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.preview{
+ min-height:260px;border-radius:13px;
+ background:linear-gradient(145deg,#142d50,#241d48,#10182c);
+ display:flex;align-items:center;justify-content:center;
+ text-align:center;padding:25px;
+}
+.preview strong{display:block;font-size:20px;margin-bottom:10px}
+.upload{
+ border:1px dashed #506a91;border-radius:12px;
+ padding:22px;text-align:center;color:var(--muted);
+}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{
+ height:105px;border-radius:10px;
+ background:linear-gradient(135deg,#254c83,#49336f,#172b49);
+ display:flex;align-items:end;padding:10px;font-size:12px;
+}
+footer{text-align:center;color:var(--muted);padding:30px}
+@media(max-width:800px){
+ .workspace{grid-template-columns:1fr}
+ nav{display:none}
+ main{padding:25px 14px}
+ .card{padding:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">VEA<span>FLOW</span> AI</div>
+ <nav>
+  <a href="#">Dashboard</a>
+  <a href="#creator">AI Creator</a>
+  <a href="#gallery">My Creations</a>
+ </nav>
+ <button class="secondary">My Account</button>
+</header>
+
+<main>
+<section class="hero">
+ <small>YOUR CREATIVE WORLD</small>
+ <h1>Create Beyond <span>Limits.</span></h1>
+ <p class="sub">Turn your imagination into cinematic images and videos with VEAFLOW AI.</p>
+</section>
+
+<div class="workspace" id="creator">
+<section>
+ <div class="card">
+  <h2>✦ AI Creator Studio</h2>
+
+  <label>Creation type</label>
+  <select id="creationType">
+   <option value="video">AI Video</option>
+   <option value="image">AI Image</option>
+  </select>
+
+  <label>AI Video Model</label>
+  <select id="videoModel">
+   <option value="auto">Auto — VEAFLOW chooses</option>
+   <option value="seedance">Seedance</option>
+   <option value="kling">Kling</option>
+   <option value="veo">Veo</option>
+   <option value="wan">Wan</option>
+  </select>
+
+  <label>Video duration</label>
+  <select id="videoDuration">
+   <option value="5">5 seconds</option>
+   <option value="10">10 seconds</option>
+   <option value="15">15 seconds</option>
+  </select>
+
+  <label>Video format</label>
+  <select id="videoFormat">
+   <option value="9:16">Portrait (9:16)</option>
+   <option value="16:9">Landscape (16:9)</option>
+   <option value="1:1">Square (1:1)</option>
+  </select>
+
+  <label>Visual style</label>
+  <select id="style">
+   <option>Cinematic realism</option>
+   <option>Romantic drama</option>
+   <option>Action thriller</option>
+   <option>Comedy</option>
+   <option>Luxury lifestyle</option>
+   <option>Animation</option>
+  </select>
+
+  <label>Character reference</label>
+  <div class="upload">
+   Upload a character image to guide your creation.
+   <input type="file" accept="image/*" id="referenceImage">
+  </div>
+
+  <label>Describe your idea</label>
+  <textarea id="idea" placeholder="Describe the scene, characters, action and camera movement..."></textarea>
+
+  <div class="actions">
+   <button id="buildPrompt">Build my prompt</button>
+   <button class="secondary" id="clearPrompt">Clear</button>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>Your refined prompt</h2>
+  <textarea id="outputPrompt" placeholder="Your prompt will appear here..."></textarea>
+  <div class="actions">
+   <button id="copyPrompt">Copy prompt</button>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="card">
+  <h2>Your Creation</h2>
+  <div class="preview">
+   <div>
+    <strong>✦ Your next masterpiece</strong>
+    <p class="sub">Your generated image or video will appear here.</p>
+   </div>
+  </div>
+  <div class="actions">
+   <button>Generate</button>
+   <button class="secondary">Save</button>
+  </div>
+ </div>
+
+ <div class="card" id="gallery">
+  <h2>My Creations</h2>
+  <p class="sub">Your creative collection, all in one place.</p>
+  <div class="gallery">
+   <div class="tile">AI Videos</div>
+   <div class="tile">AI Images</div>
+   <div class="tile">Projects</div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>VEAFLOW AI</h2>
+  <p class="sub">The Future Flows Through Us.</p>
+  <p class="sub">One creative workspace. Endless possibilities.</p>
+ </div>
+</section>
+</div>
+</main>
+
+<footer>© 2026 VEAFLOW AI. All rights reserved.</footer>
+
+<script>
+document.getElementById("buildPrompt").onclick = function(){
+ const idea=document.getElementById("idea").value.trim();
+ if(!idea){alert("Please describe your idea first.");return;}
+ const model=document.getElementById("videoModel").value;
+ const duration=document.getElementById("videoDuration").value;
+ const format=document.getElementById("videoFormat").value;
+ const style=document.getElementById("style").value;
+ document.getElementById("outputPrompt").value =
+ `${idea}\n\nVisual style: ${style}.\nModel preference: ${model}.\nDuration: ${duration} seconds.\nAspect ratio: ${format}.\nHigh-quality cinematic composition, detailed visuals and consistent characters.`;
+};
+document.getElementById("clearPrompt").onclick=function(){
+ document.getElementById("idea").value="";
+ document.getElementById("outputPrompt").value="";
+};
+document.getElementById("copyPrompt").onclick=function(){
+ const output=document.getElementById("outputPrompt");
+ output.select();
+ if(output.value) navigator.clipboard.writeText(output.value);
+};
+</script>
+</body>
+</html>
