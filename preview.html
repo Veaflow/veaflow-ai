@@ -128,7 +128,18 @@ h2 span{color:var(--purple)}
 <main class="main">
 <header class="topbar">
   <strong>VEAFLOW AI Workspace</strong>
-  <span class="status">● Preview mode</span>
+
+  <div style="position:relative">
+    <button onclick="toggleQuickMenu()" style="background:#172443;padding:10px 14px">
+      ⋮
+    </button>
+
+    <div id="quickMenu" style="display:none;position:absolute;right:0;top:48px;width:210px;background:#172443;border:1px solid #394b70;border-radius:12px;padding:8px;z-index:100">
+      <button onclick="openQuickPage('settings')">⚙ Settings</button>
+      <button onclick="openQuickPage('plans')">◇ Payments & Plans</button>
+      <button onclick="openQuickPage('help')">? Help & Support</button>
+    </div>
+  </div>
 </header>
 
 <section id="dashboard" class="page active">
@@ -279,6 +290,15 @@ h2 span{color:var(--purple)}
 
 <script>
 function showPage(id,button){
+  function toggleQuickMenu(){
+  const menu=document.getElementById('quickMenu');
+  menu.style.display=menu.style.display==='block'?'none':'block';
+}
+
+function openQuickPage(id){
+  showPage(id);
+  document.getElementById('quickMenu').style.display='none';
+}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const page=document.getElementById(id);
   if(page)page.classList.add('active');
