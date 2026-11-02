@@ -749,7 +749,11 @@ async function testFFmpeg() {
       { type: 'application/wasm' })
     );
 
-    await ffmpeg.load({ coreURL, wasmURL });
+    await ffmpeg.load({
+  coreURL,
+  wasmURL,
+  classWorkerURL: new URL("./814.ffmpeg.js", window.location.href).href
+});
 
     status.textContent = '✅ FFmpeg engine initialized successfully!';
   } catch (error) {
