@@ -519,16 +519,7 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 <button data-page="video-ai">▷ Video</button>
 <button data-page="voice">♫ Voice</button>
 <button data-page="creations">▤ Creations</button>
- buttons.forEach(button=>{
-    button.classList.toggle('active',button.dataset.page===id);
-  });
-
-  document.getElementById('crumb').textContent=pageNames[id];
-  document.getElementById('quickMenu').style.display='none';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-const photoFile=document.getElementById('photoFile');
-const </nav>
+  </nav>
 <script>
 const buttons=document.querySelectorAll('[data-page]');
 const pages=document.querySelectorAll('.section');
