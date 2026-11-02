@@ -717,7 +717,8 @@ document.addEventListener('DOMContentLoaded', function () {
     'background:#222;color:white;padding:12px;margin:12px;';
 
   result.textContent =
-    typeof FFmpeg !== 'undefined'
+    typeof FFmpegWASM !== 'undefined' &&
+    typeof FFmpegWASM.FFmpeg !== 'undefined'
       ? 'FFmpeg API is available.'
       : 'FFmpeg API is missing.';
 
