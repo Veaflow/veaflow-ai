@@ -181,9 +181,16 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 <div class="logo">✦ veaflow <span>AI</span></div>
 <p class="tag">The future flows through us.</p>
 <div class="navlabel">WORKSPACE</div>
-<button class="nav active" data-page="photo">▧ Photo Studio</button>
-<button class="nav" data-page="video">▷ Video Studio</button>
-<button class="nav" data-page="creator">✧ AI Creator</button>
+<button class="nav active" data-page="dashboard">⌂ AI Dashboard</button>
+<button class="nav" data-page="image">▧ AI Image Studio</button>
+<button class="nav" data-page="video-ai">▷ AI Video Studio</button>
+<button class="nav" data-page="character">♙ Character Studio</button>
+<button class="nav" data-page="voice">♫ AI Voice Studio</button>
+<button class="nav" data-page="creations">▤ My Creations</button>
+	<div class="navlabel">ACCOUNT</div>
+<button class="nav" data-page="settings">⚙ Settings</button>
+<button class="nav" data-page="plans">◇ Payments & Plans</button>
+<button class="nav" data-page="help">? Help & Support</button>
 <div class="sidebox">CREATOR WORKSPACE<br><br>One place for your photos, videos and creative ideas.</div>
 </aside>
 <main>
@@ -209,7 +216,160 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 <div class="pills"><span class="pill">✧ Photo editing</span><span class="pill">▷ Video workspace</span><span class="pill">✦ AI creativity</span></div>
 </header>
 
-<section class="section active" id="photo">
+<section class="section active" id="dashboard">
+  <header class="hero">
+    <h1>Create Beyond <span class="gradient">Imagination.</span></h1>
+    <p class="muted">Welcome to VEAFLOW AI. Your creative world starts here.</p>
+  </header>
+
+  <h2>Your AI Workspace</h2>
+  <p class="muted">Choose a studio and bring your ideas to life.</p>
+
+  <div class="workspace">
+    <button class="card" onclick="openQuickPage('image')">
+      <h3>▧ AI Image Studio</h3>
+      <p class="sub">Create beautiful images from your ideas.</p>
+    </button>
+
+    <button class="card" onclick="openQuickPage('video-ai')">
+      <h3>▷ AI Video Studio</h3>
+      <p class="sub">Turn your imagination into videos and stories.</p>
+    </button>
+
+    <button class="card" onclick="openQuickPage('character')">
+      <h3>♙ Character Studio</h3>
+      <p class="sub">Build characters for consistent storytelling.</p>
+    </button>
+
+    <button class="card" onclick="openQuickPage('voice')">
+      <h3>♫ AI Voice Studio</h3>
+      <p class="sub">Create narration, dialogue and voiceovers.</p>
+    </button>
+
+    <button class="card" onclick="openQuickPage('creations')">
+      <h3>▤ My Creations</h3>
+      <p class="sub">Organize and revisit your creative projects.</p>
+    </button>
+  </div>
+
+  <div class="notice">
+    ✦ Your ideas. Your creativity. Your VEAFLOW AI workspace.
+  </div>
+</section>
+	<section class="section" id="image">
+  <h2>AI Image Studio</h2>
+  <p class="muted">Turn your imagination into stunning images.</p>
+
+  <div class="card">
+    <h3>Create an AI Image</h3>
+    <p class="sub">Describe the image you want to create.</p>
+
+    <textarea id="newImagePrompt" placeholder="Describe your image..."></textarea>
+
+    <button class="btn" onclick="openQuickPage('creator')">
+      Open Image Generator
+    </button>
+
+    <div class="notice">
+      Your existing image-generation connection is preserved. We'll connect this new studio to it in a later step.
+    </div>
+  </div>
+</section>
+	</section>
+
+<section class="section" id="video-ai">
+  <h2>AI Video Studio</h2>
+  <p class="muted">Transform your ideas into cinematic videos and stories.</p>
+
+  <div class="card">
+    <h3>Create an AI Video</h3>
+    <p class="sub">Describe the scene you want to bring to life.</p>
+
+    <textarea id="newVideoPrompt" placeholder="Describe your video scene..."></textarea>
+
+    <button class="btn" onclick="openQuickPage('creator')">
+      Open AI Creator
+    </button>
+
+    <div class="notice">
+      AI video generation will be connected here in a later step.
+    </div>
+  </div>
+</section>
+	<section class="section" id="character">
+  <h2>Character Studio</h2>
+  <p class="muted">Create characters and keep their appearance consistent across your stories.</p>
+
+  <div class="card">
+    <h3>Create a Character</h3>
+    <p class="sub">Describe the character you want to develop.</p>
+
+    <textarea id="characterPrompt" placeholder="Describe your character's face, age, clothing, personality and appearance..."></textarea>
+
+    <button class="btn" onclick="openQuickPage('creator')">
+      Open Character Creator
+    </button>
+
+    <div class="notice">
+      Character references and consistency tools will be connected here later.
+    </div>
+  </div>
+</section>
+	<section class="section" id="voice">
+  <h2>AI Voice Studio</h2>
+  <p class="muted">Create narration, voiceovers and character dialogue for your stories.</p>
+
+  <div class="card">
+    <h3>Create a Voiceover</h3>
+    <p class="sub">Write the words you want your AI voice to speak.</p>
+
+    <textarea id="voiceScript" placeholder="Write your narration or dialogue here..."></textarea>
+
+    <label for="voiceStyle">Voice style</label>
+    <select id="voiceStyle">
+      <option>Natural narrator</option>
+      <option>Deep cinematic voice</option>
+      <option>Warm storyteller</option>
+      <option>Energetic voice</option>
+      <option>Character dialogue</option>
+    </select>
+
+    <button class="btn" onclick="alert('AI Voice generation will be connected in a later step.')">
+      Generate Voice
+    </button>
+
+    <div class="notice">
+      Voice generation is not connected yet. We'll integrate a voice service later.
+    </div>
+  </div>
+</section>
+	<section class="section" id="creations">
+  <h2>My Creations</h2>
+  <p class="muted">Your creative projects, images, videos and voiceovers in one place.</p>
+
+  <div class="workspace">
+    <div class="card">
+      <h3>▧ My Images</h3>
+      <p class="sub">Your generated and saved AI images.</p>
+      <div class="notice">Your saved images will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h3>▷ My Videos</h3>
+      <p class="sub">Your AI videos and creative projects.</p>
+      <div class="notice">Your saved videos will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h3>♫ My Voiceovers</h3>
+      <p class="sub">Your narration and generated audio.</p>
+      <div class="notice">Your saved voiceovers will appear here.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="photo">
+	<section class="section" id="photo">
 <h2>Photo Studio</h2><p class="muted">Upload a photo, adjust its look and download your edited image.</p>
 <div class="workspace">
 <div class="card">
@@ -354,14 +514,31 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 </main>
 </div>
 <nav class="mobile">
-<button class="active" data-page="photo">▧ Photo</button>
-<button data-page="video">▷ Video</button>
-<button data-page="creator">✧ AI Creator</button>
-</nav>
+<button class="active" data-page="dashboard">⌂ Home</button>
+<button data-page="image">▧ Image</button>
+<button data-page="video-ai">▷ Video</button>
+<button data-page="voice">♫ Voice</button>
+<button data-page="creations">▤ Creations</button>
+ buttons.forEach(button=>{
+    button.classList.toggle('active',button.dataset.page===id);
+  });
+
+  document.getElementById('crumb').textContent=pageNames[id];
+  document.getElementById('quickMenu').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+const photoFile=document.getElementById('photoFile');
+const </nav>
 <script>
 const buttons=document.querySelectorAll('[data-page]');
 const pages=document.querySelectorAll('.section');
 const pageNames={
+  dashboard:'AI Dashboard',
+  image:'AI Image Studio',
+  'video-ai':'AI Video Studio',
+  character:'Character Studio',
+  voice:'AI Voice Studio',
+  creations:'My Creations',
   photo:'Photo Studio',
   video:'Video Studio',
   creator:'AI Creator',
@@ -369,6 +546,7 @@ const pageNames={
   plans:'Payments & Plans',
   help:'Help & Support'
 };
+	openQuickPage('dashboard');
 buttons.forEach(button=>button.addEventListener('click',()=>{
  pages.forEach(page=>page.classList.toggle('active',page.id===button.dataset.page));
  buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===button.dataset.page));
@@ -598,8 +776,8 @@ window.addEventListener('load', testFFmpeg);
 document.getElementById("veaflowGenerateImage").addEventListener("click", async () => {
   const button = document.getElementById("veaflowGenerateImage");
   const token = document.getElementById("veaflowAccess").value.trim();
-  const prompt = document.getElementById("veaflowImagePrompt").value.trim();
-  const status = document.getElementById("veaflowImageStatus");
+const prompt = document.getElementById("veaflowImagePrompt").value.trim();
+    const status = document.getElementById("veaflowImageStatus");
   const result = document.getElementById("veaflowImageResult");
 
   if (!token || !prompt) {
