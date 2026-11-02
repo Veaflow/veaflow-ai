@@ -757,7 +757,8 @@ async function testFFmpeg() {
 
     status.textContent = '✅ FFmpeg engine initialized successfully!';
   } catch (error) {
-    status.textContent = '❌ Loading failed: ' + error.message;
+    console.error("Full FFmpeg error:", error);
+status.textContent = '❌ Loading failed: ' + String(error);
   }
 }
 
