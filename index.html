@@ -290,9 +290,24 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
       Open AI Creator
     </button>
 
-    <div class="notice">
-      AI video generation will be connected here in a later step.
-    </div>
+    <div class="card" id="videoEditor">
+  <h3>Video Editor</h3>
+  <p class="sub">Upload and preview your video before editing.</p>
+
+  <label for="videoFile">Choose a video</label>
+  <input type="file" id="videoFile" accept="video/*">
+
+  <video
+    id="videoPreview"
+    controls
+    playsinline
+    style="width:100%;margin-top:15px;border-radius:12px;display:none;">
+  </video>
+
+  <div id="videoMessage" class="notice">
+    Select a video to begin.
+  </div>
+</div>
   </div>
 </section>
 	<section class="section" id="character">
