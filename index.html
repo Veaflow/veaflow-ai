@@ -304,36 +304,29 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
   <input type="file" id="videoFile" accept="video/*">
 
   <video
-    id="videoPreview"
-    controls
-    playsinline
-    style="width:100%;max-width:650px;max-height:350px;object-fit:contain;background:#000;margin:15px auto;display:none;border-radius:12px;"
-  </video>
+  id="videoPreview"
+  controls
+  playsinline
+  style="display:none;width:240px;height:135px;max-width:100%;object-fit:contain;background:#000;margin:15px auto;border-radius:10px;">
+</video>
 
-  <div style="margin-top:15px;">
-    <label for="trimStart">Trim start (seconds)</label>
-    <input
-      type="number"
-      id="trimStart"
-      value="0"
-      min="0"
-      step="0.5">
+<div style="margin-top:15px;">
+  <label for="trimStart">Trim start (seconds)</label>
+  <input type="number" id="trimStart" value="0" min="0" step="0.5">
 
-    <label for="trimEnd">Trim end (seconds)</label>
-    <input
-      type="number"
-      id="trimEnd"
-      value="10"
-      min="0"
-      step="0.5">
+  <label for="trimEnd">Trim end (seconds)</label>
+  <input type="number" id="trimEnd" value="10" min="0" step="0.5">
 
-    <button id="previewTrim" type="button">
-      Preview Selected Clip
-    </button>
+  <button id="previewTrim" type="button">
+    Preview Selected Clip
+  </button>
 
-    <button id="clearVideo" type="button">
-      Remove Video
-    </button>
+  <button id="clearVideo" type="button">
+    Remove Video
+  </button>
+
+  <p id="trimMessage">Upload a video to begin trimming.</p>
+</div>
 
     <p id="trimMessage">
       Upload a video to begin trimming.
