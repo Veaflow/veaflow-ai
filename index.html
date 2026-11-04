@@ -749,6 +749,8 @@ function updateTimeline() {
     ' seconds. Selected: ' + timelineStart.value +
     's – ' + timelineEnd.value + 's.';
 }
+	const trimStart = document.getElementById('trimStart');
+const trimEnd = document.getElementById('trimEnd');
 
 videoPreview.addEventListener('loadedmetadata', () => {
   const duration = videoPreview.duration;
