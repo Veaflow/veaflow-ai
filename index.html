@@ -426,6 +426,11 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 </select>
 
     <textarea id="characterPrompt" placeholder="Describe your character's face, age, clothing, personality and appearance..."></textarea>
+	  <label for="characterImage">Character reference photo</label>
+<input id="characterImage" type="file" accept="image/*">
+
+<img id="characterPreview" class="preview"
+  alt="Character reference preview">
 
     <button class="btn" onclick="openQuickPage('creator')">
       Open Character Creator
