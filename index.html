@@ -368,7 +368,17 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
   <input type="number" id="trimStart" value="0" min="0" step="0.5">
 
   <label for="trimEnd">Trim end (seconds)</label>
-  <input type="number" id="trimEnd" value="10" min="0" step="0.5">
+  <input type="number" id="trimEnd" value="10" min="0" step="0.5"><div id="videoTimeline" style="margin:18px 0;">
+  <label>Video Timeline</label>
+
+  <input type="range" id="timelineStart"
+    min="0" max="100" value="0" step="0.1">
+
+  <input type="range" id="timelineEnd"
+    min="0" max="100" value="100" step="0.1">
+
+  <p id="timelineMessage">Upload a video to use the timeline.</p>
+</div>
 
   <button id="previewTrim" type="button">
     Preview Selected Clip
@@ -390,9 +400,6 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
   <p id="trimMessage">Upload a video to begin trimming.</p>
 </div>
 
-    <p id="trimMessage">
-      Upload a video to begin trimming.
-    </p>
   </div>
 </div>
 
