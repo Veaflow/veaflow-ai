@@ -889,6 +889,24 @@ document.getElementById('copyPrompt').addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(output.value);alert('Prompt copied!');}
  catch(e){output.select();alert('Select the prompt and choose Copy.');}
 });
+	const characterImage = document.getElementById('characterImage');
+const characterPreview = document.getElementById('characterPreview');
+
+let characterImageUrl = '';
+
+characterImage.addEventListener('change', () => {
+  const file = characterImage.files[0];
+
+  if (!file) return;
+
+  if (characterImageUrl) {
+    URL.revokeObjectURL(characterImageUrl);
+  }
+
+  characterImageUrl = URL.createObjectURL(file);
+  characterPreview.src = characterImageUrl;
+  characterPreview.style.display = 'block';
+});
 </script>
 	<script src="./ffmpeg.js"></script>
 	<script>
