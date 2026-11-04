@@ -910,6 +910,47 @@ characterImage.addEventListener('change', () => {
   characterPreview.src = characterImageUrl;
   characterPreview.style.display = 'block';
 });
+	document.getElementById('saveCharacter').addEventListener('click', () => {
+  const name = document.getElementById('characterName').value.trim();
+  const role = document.getElementById('characterRole').value;
+  const description = document.getElementById('characterPrompt').value.trim();
+  const image = document.getElementById('characterImage').files[0];
+
+  if (!name || !description) {
+    alert('Please enter the character name and description.');
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const characters = JSON.parse(localStorage.getItem('veaflowCharacters') || '[]');
+
+    characters.push({
+      name,
+      role,
+      description,
+      image: reader.result
+    });
+
+    localStorage.setItem('veaflowCharacters', JSON.stringify(characters));
+    alert('Character saved successfully!');
+  };
+
+  if (image) {
+    reader.readAsDataURL(image);
+  } else {
+    reader.onload = () => {
+      const characters = JSON.parse(localStorage.getItem('veaflowCharacters') || '[]');
+
+      characters.push({ name, role, description, image: '' });
+
+      localStorage.setItem('veaflowCharacters', JSON.stringify(characters));
+      alert('Character saved successfully!');
+    };
+    reader.readAsText(new Blob(['']));
+  }
+});
 </script>
 	<script src="./ffmpeg.js"></script>
 	<script>
