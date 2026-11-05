@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEAFLOW Voice Engine Test</title>
+<style>
+body {
+  background:#090b16;
+  color:white;
+  font-family:Arial,sans-serif;
+  padding:25px;
+  max-width:700px;
+  margin:auto;
+}
+.card {
+  background:#14182c;
+  border:1px solid #303858;
+  border-radius:16px;
+  padding:22px;
+}
+h1 {color:#8795ff;}
+textarea,select {
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  margin:10px 0 18px;
+  border-radius:8px;
+  background:#090b16;
+  color:white;
+  border:1px solid #39446b;
+}
+button {
+  padding:13px 18px;
+  margin:5px;
+  border:0;
+  border-radius:8px;
+  background:#6878ff;
+  color:white;
+  cursor:pointer;
+}
+#status {color:#aab5ff;margin-top:18px;}
+audio {width:100%;margin-top:15px;}
+</style>
+</head>
+<body>
+<h1>✦ VEAFLOW Voice Engine</h1>
+<p>Our experimental local AI voice generator.</p>
+
+<div class="card">
+  <h2>Create a Voiceover</h2>
+
+  <textarea id="script" rows="5"
+  placeholder="Write your narration here...">Welcome to VEAFLOW. The future flows through us.</textarea>
+
+  <label>Voice</label>
+  <select id="voice">
+    <option value="af_heart">Heart — Female</option>
+    <option value="af_bella">Bella — Female</option>
+    <option value="am_adam">Adam — Male</option>
+    <option value="am_michael">Michael — Male</option>
+  </select>
+
+  <button id="load">Load Voice Engine</button>
+  <button id="generate" disabled>Generate Voice</button>
+
+  <p id="status">Voice engine not loaded.</p>
+  <audio id="player" controls></audio>
+  <p><a id="download" hidden download="veaflow-voice.wav" style="color:#aab5ff">Download WAV</a></p>
+</div>
+
+<script type="module">
+import { pipeline } from
+'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
+
+let synthesizer = null;
+let audioURL = null;
+
+const status = document.getElementById('status');
+const loadButton = document.getElementById('load');
+const generateButton = document.getElementById('generate');
+
+loadButton.addEventListener('click', async () => {
+  try {
+    loadButton.disabled = true;
+    status.textContent = 'Loading AI voice model. First download may take several minutes...';
+
+    synthesizer = await pipeline(
+      'text-to-speech',
+      'onnx-community/Kokoro-82M-v1.0-ONNX'
+    );
+
+    status.textContent = 'VEAFLOW Voice Engine is ready!';
+    generateButton.disabled = false;
+  } catch (error) {
+    console.error(error);
+    status.textContent = 'Engine loading failed: ' + error.message;
+    loadButton.disabled = false;
+  }
+});
+
+generateButton.addEventListener('click', async () => {
+  try {
+    const text = document.getElementById('script').value.trim();
+    if (!text) {
+      status.textContent = 'Please enter your narration.';
+      return;
+    }
+
+    generateButton.disabled = true;
+    status.textContent = 'Generating your voice...';
+
+    const output = await synthesizer(text, {
+      voice: document.getElementById('voice').value
+    });
+
+    const wav = await output.toBlob();
+    if (audioURL) URL.revokeObjectURL(audioURL);
+    audioURL = URL.createObjectURL(wav);
+
+    document.getElementById('player').src = audioURL;
+
+    const download = document.getElementById('download');
+    download.href = audioURL;
+    download.hidden = false;
+
+    status.textContent = 'Voice generated successfully!';
+  } catch (error) {
+    console.error(error);
+    status.textContent = 'Generation failed: ' + error.message;
+  } finally {
+    generateButton.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
