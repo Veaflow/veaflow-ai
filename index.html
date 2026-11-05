@@ -1203,6 +1203,124 @@ const prompt = document.getElementById("veaflowImagePrompt").value.trim();
   }
 });
 </script>
+	
+<script type="module">
+import { KokoroTTS } from "https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js";
+
+let synthesizer = null;
+let voiceAudioUrl = null;
+
+const status = document.getElementById("voiceStatus");
+const audioPlayer = document.getElementById("voiceAudio");
+const downloadLink = document.getElementById("downloadVoice");
+
+function getSelectedVoice() {
+  const gender = document.getElementById("voiceGender").value;
+  const style = document.getElementById("voiceStyle").value;
+
+  if (gender === "female") {
+    return style === "Warm storyteller" ||
+           style === "Energetic voice"
+      ? "af_bella"
+      : "af_heart";
+  }
+
+  return style === "Deep cinematic voice"
+    ? "am_adam"
+    : "am_michael";
+}
+
+async function loadVoiceEngine() {
+  if (synthesizer) return;
+
+  status.textContent = "Loading Kokoro voice engine. Please wait...";
+
+  synthesizer = await KokoroTTS.from_pretrained(
+    "onnx-community/Kokoro-82M-v1.0-ONNX",
+    {
+      dtype: "q8",
+      device: "wasm"
+    }
+  );
+
+  status.textContent = "Kokoro Voice Engine is ready!";
+}
+
+async function generateVoice(playAfterGeneration) {
+  const script = document.getElementById("voiceScript").value.trim();
+
+  if (!script) {
+    status.textContent = "Please enter your voiceover script first.";
+    return;
+  }
+
+  const generateButton = document.getElementById("generateVoice");
+  const previewButton = document.getElementById("previewVoice");
+
+  generateButton.disabled = true;
+  previewButton.disabled = true;
+
+  try {
+    await loadVoiceEngine();
+
+    status.textContent = "Generating your voiceover...";
+
+    const voice = getSelectedVoice();
+
+    const output = await synthesizer.generate(script, {
+      voice: voice
+    });
+
+    const blob = output.toBlob();
+
+    if (voiceAudioUrl) {
+      URL.revokeObjectURL(voiceAudioUrl);
+    }
+
+    voiceAudioUrl = URL.createObjectURL(blob);
+
+    audioPlayer.src = voiceAudioUrl;
+    audioPlayer.style.display = "block";
+
+    downloadLink.href = voiceAudioUrl;
+    downloadLink.style.display = "inline-block";
+
+    const speed = document.getElementById("voiceSpeed").value;
+
+    audioPlayer.playbackRate =
+      speed === "slow" ? 0.85 :
+      speed === "fast" ? 1.15 : 1;
+
+    status.textContent = "Your voiceover is ready!";
+
+    if (playAfterGeneration) {
+      await audioPlayer.play();
+    }
+
+  } catch (error) {
+    console.error("Kokoro voice error:", error);
+    status.textContent = "Voice generation failed: " + error.message;
+  } finally {
+    generateButton.disabled = false;
+    previewButton.disabled = false;
+  }
+}
+
+document.getElementById("generateVoice").addEventListener("click", () => {
+  generateVoice(false);
+});
+
+document.getElementById("previewVoice").addEventListener("click", () => {
+  generateVoice(true);
+});
+
+document.getElementById("stopVoice").addEventListener("click", () => {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  status.textContent = "Voice playback stopped.";
+});
+</script>
+
 	</body>
 
 </html>
