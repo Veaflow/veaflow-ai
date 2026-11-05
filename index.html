@@ -1204,6 +1204,7 @@ const prompt = document.getElementById("veaflowImagePrompt").value.trim();
 });
 </script>
 	
+
 <script type="module">
 import { KokoroTTS } from "https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js";
 
@@ -1213,6 +1214,8 @@ let voiceAudioUrl = null;
 const status = document.getElementById("voiceStatus");
 const audioPlayer = document.getElementById("voiceAudio");
 const downloadLink = document.getElementById("downloadVoice");
+const generateButton = document.getElementById("generateVoice");
+const previewButton = document.getElementById("previewVoice");
 
 function getSelectedVoice() {
   const gender = document.getElementById("voiceGender").value;
@@ -1221,19 +1224,42 @@ function getSelectedVoice() {
   if (gender === "female") {
     return style === "Warm storyteller" ||
            style === "Energetic voice"
-      ? "af_bella"
-      : "af_heart";
+      ? "af_bella" : "af_heart";
   }
 
   return style === "Deep cinematic voice"
-    ? "am_adam"
-    : "am_michael";
+    ? "am_adam" : "am_michael";
+}
+
+function splitNarration(text, maxLength = 140) {
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+  const chunks = [];
+
+  for (const sentence of sentences) {
+    const words = sentence.trim().split(/\s+/);
+    let current = "";
+
+    for (const word of words) {
+      const candidate = current ? current + " " + word : word;
+
+      if (candidate.length > maxLength && current) {
+        chunks.push(current);
+        current = word;
+      } else {
+        current = candidate;
+      }
+    }
+
+    if (current) chunks.push(current);
+  }
+
+  return chunks;
 }
 
 async function loadVoiceEngine() {
   if (synthesizer) return;
 
-  status.textContent = "Loading Kokoro voice engine. Please wait...";
+  status.textContent = "Loading Kokoro voice engine...";
 
   synthesizer = await KokoroTTS.from_pretrained(
     "onnx-community/Kokoro-82M-v1.0-ONNX",
@@ -1242,77 +1268,179 @@ async function loadVoiceEngine() {
       device: "wasm"
     }
   );
+}
 
-  status.textContent = "Kokoro Voice Engine is ready!";
+function combineAudio(buffers, context) {
+  const channels = Math.max(
+    ...buffers.map(buffer => buffer.numberOfChannels)
+  );
+
+  const sampleRate = buffers[0].sampleRate;
+  const totalLength = buffers.reduce(
+    (sum, buffer) => sum + buffer.length, 0
+  );
+
+  const combined = context.createBuffer(
+    channels, totalLength, sampleRate
+  );
+
+  let position = 0;
+
+  for (const buffer of buffers) {
+    for (let channel = 0; channel < channels; channel++) {
+      const source = buffer.getChannelData(
+        Math.min(channel, buffer.numberOfChannels - 1)
+      );
+
+      combined.getChannelData(channel).set(source, position);
+    }
+
+    position += buffer.length;
+  }
+
+  return combined;
+}
+
+function encodeWav(buffer) {
+  const channels = buffer.numberOfChannels;
+  const sampleRate = buffer.sampleRate;
+  const frames = buffer.length;
+  const bytesPerSample = 2;
+
+  const wav = new ArrayBuffer(
+    44 + frames * channels * bytesPerSample
+  );
+
+  const view = new DataView(wav);
+
+  function writeText(offset, text) {
+    for (let i = 0; i < text.length; i++) {
+      view.setUint8(offset + i, text.charCodeAt(i));
+    }
+  }
+
+  writeText(0, "RIFF");
+  view.setUint32(4, 36 + frames * channels * 2, true);
+  writeText(8, "WAVE");
+  writeText(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * channels * 2, true);
+  view.setUint16(32, channels * 2, true);
+  view.setUint16(34, 16, true);
+  writeText(36, "data");
+  view.setUint32(40, frames * channels * 2, true);
+
+  let offset = 44;
+
+  for (let i = 0; i < frames; i++) {
+    for (let channel = 0; channel < channels; channel++) {
+      let sample = buffer.getChannelData(channel)[i];
+      sample = Math.max(-1, Math.min(1, sample));
+
+      view.setInt16(
+        offset,
+        sample < 0 ? sample * 32768 : sample * 32767,
+        true
+      );
+
+      offset += 2;
+    }
+  }
+
+  return new Blob([wav], { type: "audio/wav" });
 }
 
 async function generateVoice(playAfterGeneration) {
   const script = document.getElementById("voiceScript").value.trim();
 
   if (!script) {
-    status.textContent = "Please enter your voiceover script first.";
+    status.textContent = "Please enter your narration first.";
     return;
   }
-
-  const generateButton = document.getElementById("generateVoice");
-  const previewButton = document.getElementById("previewVoice");
 
   generateButton.disabled = true;
   previewButton.disabled = true;
 
+  let context;
+
   try {
     await loadVoiceEngine();
 
-    status.textContent = "Generating your voiceover...";
+    const chunks = splitNarration(script);
 
     const voice = getSelectedVoice();
+    const speedSetting = document.getElementById("voiceSpeed").value;
 
-    const output = await synthesizer.generate(script, {
-      voice: voice
-    });
+    const speed =
+      speedSetting === "slow" ? 0.85 :
+      speedSetting === "fast" ? 1.15 : 1;
 
-    const blob = output.toBlob();
+    context = new (window.AudioContext ||
+                   window.webkitAudioContext)();
+
+    const audioParts = [];
+
+    for (let i = 0; i < chunks.length; i++) {
+      status.textContent =
+        "Generating voice section " + (i + 1) +
+        " of " + chunks.length + "...";
+
+      const output = await synthesizer.generate(chunks[i], {
+        voice,
+        speed
+      });
+
+      const audioBlob = output.toBlob();
+      const audioBuffer = await context.decodeAudioData(
+        await audioBlob.arrayBuffer()
+      );
+
+      audioParts.push(audioBuffer);
+    }
+
+    status.textContent = "Combining your complete voiceover...";
+
+    const combinedAudio = combineAudio(audioParts, context);
+    const finalBlob = encodeWav(combinedAudio);
 
     if (voiceAudioUrl) {
       URL.revokeObjectURL(voiceAudioUrl);
     }
 
-    voiceAudioUrl = URL.createObjectURL(blob);
+    voiceAudioUrl = URL.createObjectURL(finalBlob);
 
     audioPlayer.src = voiceAudioUrl;
+    audioPlayer.playbackRate = 1;
     audioPlayer.style.display = "block";
 
     downloadLink.href = voiceAudioUrl;
     downloadLink.style.display = "inline-block";
 
-    const speed = document.getElementById("voiceSpeed").value;
-
-    audioPlayer.playbackRate =
-      speed === "slow" ? 0.85 :
-      speed === "fast" ? 1.15 : 1;
-
-    status.textContent = "Your voiceover is ready!";
+    status.textContent =
+      "Complete voiceover ready! " +
+      chunks.length + " sections generated.";
 
     if (playAfterGeneration) {
       await audioPlayer.play();
     }
 
   } catch (error) {
-    console.error("Kokoro voice error:", error);
-    status.textContent = "Voice generation failed: " + error.message;
+    console.error("Kokoro error:", error);
+    status.textContent = "Generation failed: " + error.message;
+
   } finally {
+    if (context) await context.close();
+
     generateButton.disabled = false;
     previewButton.disabled = false;
   }
 }
 
-document.getElementById("generateVoice").addEventListener("click", () => {
-  generateVoice(false);
-});
-
-document.getElementById("previewVoice").addEventListener("click", () => {
-  generateVoice(true);
-});
+generateButton.addEventListener("click", () => generateVoice(false));
+previewButton.addEventListener("click", () => generateVoice(true));
 
 document.getElementById("stopVoice").addEventListener("click", () => {
   audioPlayer.pause();
@@ -1320,6 +1448,7 @@ document.getElementById("stopVoice").addEventListener("click", () => {
   status.textContent = "Voice playback stopped.";
 });
 </script>
+
 
 	</body>
 
