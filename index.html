@@ -483,9 +483,21 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
   ■ Stop Voice
 </button>
 
-    <div class="notice">
-      Voice generation is not connected yet. We'll integrate a voice service later.
-    </div>
+    <button class="btn" id="generateVoice">
+  ✨ Generate Voice
+</button>
+
+<div id="voiceStatus" class="notice">
+  Kokoro Voice Engine is ready to be connected.
+</div>
+
+<audio id="voiceAudio" controls style="width:100%; display:none;"></audio>
+
+<a id="downloadVoice" class="btn"
+   download="veaflow-voiceover.wav"
+   style="display:none;">
+  ↓ Download Voiceover
+</a>
   </div>
 </section>
 	<section class="section" id="creations">
