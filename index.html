@@ -983,45 +983,6 @@ characterImage.addEventListener('change', () => {
 const previewVoiceBtn = document.getElementById('previewVoice');
 const stopVoiceBtn = document.getElementById('stopVoice');
 
-previewVoiceBtn.addEventListener('click', () => {
-  const script = document.getElementById('voiceScript').value.trim();
-  const gender = document.getElementById('voiceGender').value;
-  const speed = document.getElementById('voiceSpeed').value;
-  const style = document.getElementById('voiceStyle').value;
-
-  if (!script) {
-    alert('Please write your narration first.');
-    return;
-  }
-
-  if (!('speechSynthesis' in window)) {
-    alert('Voice preview is not supported by this browser.');
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
-  const speech = new SpeechSynthesisUtterance(script);
-  const voices = window.speechSynthesis.getVoices();
-
-  const matchingVoices = voices.filter(voice =>
-    gender === 'female'
-      ? /female|woman|samantha|zira|victoria/i.test(voice.name)
-      : /male|man|david|daniel|alex/i.test(voice.name)
-  );
-
-  if (matchingVoices.length > 0) {
-    speech.voice = matchingVoices[0];
-  }
-
-  speech.rate = speed === 'slow' ? 0.8 : speed === 'fast' ? 1.2 : 1;
-
-  speech.pitch =
-    style === 'Deep cinematic voice' ? 0.7 :
-    style === 'Energetic voice' ? 1.2 : 1;
-
-  window.speechSynthesis.speak(speech);
-});
 
 stopVoiceBtn.addEventListener('click', () => {
   window.speechSynthesis.cancel();
