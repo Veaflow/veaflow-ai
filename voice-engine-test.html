@@ -71,8 +71,8 @@ audio {width:100%;margin-top:15px;}
 </div>
 
 <script type="module">
-import { pipeline } from
-'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
+import { KokoroTTS } from
+'https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js';
 
 let synthesizer = null;
 let audioURL = null;
@@ -84,18 +84,22 @@ const generateButton = document.getElementById('generate');
 loadButton.addEventListener('click', async () => {
   try {
     loadButton.disabled = true;
-    status.textContent = 'Loading AI voice model. First download may take several minutes...';
+    status.textContent = 'Loading VEAFLOW voice engine...';
 
-    synthesizer = await pipeline(
-      'text-to-speech',
-      'onnx-community/Kokoro-82M-v1.0-ONNX'
+    synthesizer = await KokoroTTS.from_pretrained(
+      'onnx-community/Kokoro-82M-v1.0-ONNX',
+      {
+        dtype: 'q8',
+        device: 'wasm'
+      }
     );
 
     status.textContent = 'VEAFLOW Voice Engine is ready!';
     generateButton.disabled = false;
+
   } catch (error) {
     console.error(error);
-    status.textContent = 'Engine loading failed: ' + error.message;
+    status.textContent = 'Loading failed: ' + error.message;
     loadButton.disabled = false;
   }
 });
@@ -103,6 +107,7 @@ loadButton.addEventListener('click', async () => {
 generateButton.addEventListener('click', async () => {
   try {
     const text = document.getElementById('script').value.trim();
+
     if (!text) {
       status.textContent = 'Please enter your narration.';
       return;
@@ -111,11 +116,12 @@ generateButton.addEventListener('click', async () => {
     generateButton.disabled = true;
     status.textContent = 'Generating your voice...';
 
-    const output = await synthesizer(text, {
+    const output = await synthesizer.generate(text, {
       voice: document.getElementById('voice').value
     });
 
     const wav = await output.toBlob();
+
     if (audioURL) URL.revokeObjectURL(audioURL);
     audioURL = URL.createObjectURL(wav);
 
@@ -126,9 +132,11 @@ generateButton.addEventListener('click', async () => {
     download.hidden = false;
 
     status.textContent = 'Voice generated successfully!';
+
   } catch (error) {
     console.error(error);
     status.textContent = 'Generation failed: ' + error.message;
+
   } finally {
     generateButton.disabled = false;
   }
