@@ -606,58 +606,70 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 </section>
 	<section class="section" id="voice">
   <h2>AI Voice Studio</h2>
-  <p class="muted">Create narration, voiceovers and character dialogue for your stories.</p>
+  <p class="muted">Create professional narration, voiceovers and character dialogue.</p>
 
-  <div class="card">
-    <h3>Create a Voiceover</h3>
-    <p class="sub">Write the words you want your AI voice to speak.</p>
+  <div class="voice-workspace">
 
-    <textarea id="voiceScript" placeholder="Write your narration or dialogue here..."></textarea>
-	  <label for="voiceGender">Voice type</label>
-<select id="voiceGender">
-  <option value="female">Female voice</option>
-  <option value="male">Male voice</option>
-</select>
+    <div class="voice-panel">
+      <h3>🎙️ Your Voice Script</h3>
+      <p class="sub">Write the words you want your AI voice to speak.</p>
 
-<label for="voiceSpeed">Speech speed</label>
-<select id="voiceSpeed">
-  <option value="slow">Slow</option>
-  <option value="normal" selected>Normal</option>
-  <option value="fast">Fast</option>
-</select>
+      <textarea id="voiceScript" placeholder="Write your narration or dialogue here..."></textarea>
+    </div>
 
-    <label for="voiceStyle">Voice style</label>
-    <select id="voiceStyle">
-      <option>Natural narrator</option>
-      <option>Deep cinematic voice</option>
-      <option>Warm storyteller</option>
-      <option>Energetic voice</option>
-      <option>Character dialogue</option>
-    </select>
+    <div class="voice-panel">
+      <h3>Voice Settings</h3>
+      <p class="sub">Customize your voice before generating.</p>
 
-    <button class="btn" id="previewVoice">
-  ▶ Preview Voice
-</button>
+      <div class="voice-settings">
+        <div>
+          <label for="voiceGender">Voice type</label>
+          <select id="voiceGender">
+            <option value="female">Female voice</option>
+            <option value="male">Male voice</option>
+          </select>
+        </div>
 
-<button class="btn" id="stopVoice">
-  ■ Stop Voice
-</button>
+        <div>
+          <label for="voiceSpeed">Speech speed</label>
+          <select id="voiceSpeed">
+            <option value="slow">Slow</option>
+            <option value="normal" selected>Normal</option>
+            <option value="fast">Fast</option>
+          </select>
+        </div>
 
-    <button class="btn" id="generateVoice">
-  ✨ Generate Voice
-</button>
+        <div style="grid-column:1/-1;">
+          <label for="voiceStyle">Voice style</label>
+          <select id="voiceStyle">
+            <option>Natural narrator</option>
+            <option>Deep cinematic voice</option>
+            <option>Warm storyteller</option>
+            <option>Energetic voice</option>
+            <option>Character dialogue</option>
+          </select>
+        </div>
+      </div>
 
-<div id="voiceStatus" class="notice">
-  Kokoro Voice Engine is ready to be connected.
-</div>
+      <div class="voice-actions">
+        <button class="btn" id="previewVoice">▶ Preview Voice</button>
+        <button class="btn" id="generateVoice">✨ Generate Voice</button>
+        <button class="btn secondary" id="stopVoice">■ Stop Voice</button>
+      </div>
 
-<audio id="voiceAudio" controls style="width:100%; display:none;"></audio>
+      <div id="voiceStatus" class="notice">
+        Kokoro Voice Engine is ready to be connected.
+      </div>
 
-<a id="downloadVoice" class="btn"
-   download="veaflow-voiceover.wav"
-   style="display:none;">
-  ↓ Download Voiceover
-</a>
+      <audio id="voiceAudio" controls style="width:100%;display:none;"></audio>
+
+      <a id="downloadVoice" class="btn"
+         download="veaflow-voiceover.wav"
+         style="display:none;">
+        ↓ Download Voiceover
+      </a>
+    </div>
+
   </div>
 </section>
 	<section class="section" id="creations">
