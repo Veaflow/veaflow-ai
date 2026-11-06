@@ -149,9 +149,18 @@ input[type=range]{width:100%;accent-color:var(--purple)}
 .btn:disabled{opacity:.5}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
 textarea,select{
-  width:100%;background:#0B1229;
-  border:1px solid #344675;border-radius:11px;
-  padding:12px;color:white;margin:8px 0 15px;
+  width:100%;
+  background:#140D1C;
+  border:1px solid #59345F;
+  border-radius:11px;
+  padding:12px;
+  color:#F4F1F8;
+  margin:8px 0 15px;
+}
+textarea:focus,select:focus{
+  outline:none;
+  border-color:#963BFF;
+  box-shadow:0 0 0 3px #963BFF25;
 }
 textarea{min-height:135px;resize:vertical;line-height:1.6}
 label{font-size:13px}
