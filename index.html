@@ -312,6 +312,81 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
   .studio-card{min-height:260px}
 }
 
+	/* VEAFLOW AI — Compact Voice Studio */
+#voice .voice-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .85fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 14px;
+}
+
+#voice .voice-panel {
+  min-width: 0;
+  background: linear-gradient(145deg, #182447, #11162e);
+  border: 1px solid #3b4d7d;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+#voice #voiceScript {
+  min-height: 190px;
+  margin-top: 8px;
+}
+
+#voice .voice-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+}
+
+#voice .voice-settings label {
+  display: block;
+  margin-top: 8px;
+}
+
+#voice .voice-settings select {
+  margin-bottom: 10px;
+}
+
+#voice .voice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+#voice .voice-actions .btn {
+  flex: 1 1 140px;
+}
+
+#voice #voiceAudio {
+  margin-top: 14px;
+}
+
+#voice #downloadVoice {
+  margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+  #voice .voice-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  #voice .voice-panel {
+    padding: 15px;
+  }
+
+  #voice #voiceScript {
+    min-height: 155px;
+  }
+}
+
+@media (max-width: 380px) {
+  #voice .voice-settings {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 
 </head>
