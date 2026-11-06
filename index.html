@@ -1364,17 +1364,7 @@ const generateButton = document.getElementById("generateVoice");
 const previewButton = document.getElementById("previewVoice");
 
 function getSelectedVoice() {
-  const gender = document.getElementById("voiceGender").value;
-  const style = document.getElementById("voiceStyle").value;
-
-  if (gender === "female") {
-    return style === "Warm storyteller" ||
-           style === "Energetic voice"
-      ? "af_bella" : "af_heart";
-  }
-
-  return style === "Deep cinematic voice"
-    ? "am_adam" : "am_michael";
+  return document.getElementById("voiceGender").value;
 }
 
 function splitNarration(text, maxLength = 140) {
