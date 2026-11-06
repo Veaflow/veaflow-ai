@@ -231,6 +231,87 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 #videoEditor p {
   color: #ffffff;
 }
+
+/* VEAFLOW AI premium dashboard redesign */
+.dashboard-hero{
+  position:relative;isolation:isolate;overflow:hidden;min-height:275px;
+  display:flex;align-items:center;margin:22px 0 28px;padding:30px 34px;
+  border:1px solid #5141a0;border-radius:24px;
+  background:linear-gradient(100deg,rgba(8,10,30,.98) 0%,rgba(12,10,37,.91) 43%,rgba(12,10,37,.18) 100%),url('assets/hero-headset.jpg') right 28% center/auto 145% no-repeat,#090b1c;
+  box-shadow:0 18px 55px #08061f99,0 0 28px #7c35ff22;
+}
+.hero-copy{position:relative;z-index:2;max-width:56%}
+.eyebrow{display:inline-block;color:#a9a2ff;font-size:10px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+.dashboard-hero h1{font-size:clamp(30px,3.5vw,48px);line-height:1.06;margin:8px 0 12px}
+.dashboard-hero p{max-width:520px;color:#c2c8e3;font-size:14px;line-height:1.7;margin:0}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:20px}
+.hero-note{font-size:11px;color:#b9b3dc}
+.dashboard-heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:5px 0 15px}
+.dashboard-heading h2{margin:2px 0 4px;font-size:23px}
+.dashboard-heading .muted{margin:0}
+.studio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.studio-card{
+  position:relative;isolation:isolate;overflow:hidden;min-width:0;min-height:250px;
+  display:flex;flex-direction:column;justify-content:flex-end;text-align:left;
+  padding:0;border:1px solid #43518b;border-radius:17px;color:white;
+  background:#10152c;box-shadow:0 12px 30px #02061777;transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.studio-card:hover{transform:translateY(-5px);border-color:#a47bff;box-shadow:0 16px 34px #6b42ff33}
+.studio-photo{position:absolute;z-index:-2;inset:0 0 37% 0;background-position:center;background-size:cover;transition:transform .35s}
+.studio-card:hover .studio-photo{transform:scale(1.06)}
+.studio-card:after{content:"";position:absolute;z-index:-1;inset:22% 0 0;background:linear-gradient(180deg,transparent 0%,rgba(7,9,25,.88) 37%,#090d20 100%)}
+.image-studio .studio-photo{background-image:url('assets/ai-image.jpg')}
+.video-studio .studio-photo{background-image:url('assets/ai-video.jpg')}
+.voice-studio .studio-photo{background-image:url('assets/ai-voice.jpg')}
+.character-studio .studio-photo{background-image:url('assets/character-studio.jpg')}
+.creator-studio .studio-photo{background-image:url('assets/ai-creator.jpg')}
+.studio-icon{position:absolute;top:12px;left:12px;width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#10112dc9;border:1px solid #8a6dff;color:#fff;font-size:18px;box-shadow:0 0 18px #8c4dff66}
+.studio-content{display:flex;flex-direction:column;align-items:flex-start;padding:14px;gap:7px}
+.studio-kicker{font-size:8px;letter-spacing:1px;font-weight:800;color:#c8bdff;background:#38266cbb;border:1px solid #7961cb;padding:5px 7px;border-radius:20px}
+.studio-content strong{font-size:15px;line-height:1.2}
+.studio-content small{font-size:11px;line-height:1.45;color:#c5cbe2;min-height:32px}
+.studio-open{align-self:stretch;text-align:center;padding:9px 8px;margin-top:3px;border-radius:10px;font-size:11px;font-weight:800;background:linear-gradient(100deg,#6b38f5,#1769f5);box-shadow:0 5px 18px #4936dd55}
+.video-studio .studio-open{background:linear-gradient(100deg,#e72c75,#a523ed)}
+.voice-studio .studio-open{background:linear-gradient(100deg,#126de9,#3446f7)}
+.character-studio .studio-open{background:linear-gradient(100deg,#a326ec,#6938ef)}
+.creator-studio .studio-open{background:linear-gradient(100deg,#087d9e,#0baf9c)}
+.dashboard-lower{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.lower-card{min-width:0;display:flex;align-items:center;gap:13px;padding:16px;border:1px solid #303d70;border-radius:15px;background:linear-gradient(120deg,#151d3a,#11142b);color:#fff;text-align:left}
+.projects-card{width:100%;cursor:pointer}
+.lower-icon{flex-shrink:0;width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#432d83;color:#d4c2ff;font-size:20px}
+.lower-card strong,.lower-card small{display:block}
+.lower-card strong{font-size:13px}
+.lower-card small{font-size:11px;color:#aeb9d8;margin-top:5px;line-height:1.4}
+.lower-arrow{margin-left:auto;color:#b9a2ff}
+@media(min-width:1200px){
+  main{padding-left:clamp(22px,2.4vw,38px);padding-right:clamp(22px,2.4vw,38px)}
+  .dashboard-hero{min-height:290px}
+  .studio-card{min-height:258px}
+}
+@media(max-width:1050px){
+  .studio-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .studio-card{min-height:245px}
+  .hero-copy{max-width:65%}
+}
+@media(max-width:700px){
+  .dashboard-hero{min-height:330px;padding:22px 18px;align-items:flex-end;background-position:58% top;background-size:auto 78%;background-repeat:no-repeat}
+  .dashboard-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,8,25,.08) 0%,rgba(7,8,25,.45) 36%,#080b19 73%)}
+  .hero-copy{max-width:100%}
+  .dashboard-hero h1{font-size:34px}
+  .dashboard-hero p{font-size:12px;max-width:100%}
+  .dashboard-heading{align-items:flex-start;flex-direction:column}
+  .studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .studio-card{min-height:235px}
+  .studio-content{padding:11px}
+  .studio-content strong{font-size:14px}
+  .studio-content small{font-size:10px}
+  .dashboard-lower{grid-template-columns:1fr}
+}
+@media(max-width:380px){
+  .studio-grid{grid-template-columns:1fr}
+  .studio-card{min-height:260px}
+}
+
 </style>
 
 </head>
@@ -254,7 +335,7 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
 </aside>
 <main>
 <div class="top">
-  <span>VEAFLOW AI / <span id="crumb">Photo Studio</span></span>
+  <span>VEAFLOW AI / <span id="crumb">AI Dashboard</span></span>
 
   <div style="display:flex;align-items:center;gap:10px;position:relative">
     <span class="status">✦ MVP · Local demo</span>
@@ -269,50 +350,54 @@ footer{text-align:center;color:#858EAF;font-size:12px;margin-top:32px}
     </div>
   </div>
 </div>
-<header class="hero">
-<h1>Create Beyond <span class="gradient">Imagination.</span></h1>
-<p class="muted">Your creative workspace for photo editing, video projects and AI-powered storytelling. Start with an idea and build something extraordinary.</p>
-<div class="pills"><span class="pill">✧ Photo editing</span><span class="pill">▷ Video workspace</span><span class="pill">✦ AI creativity</span></div>
-</header>
+
 
 <section class="section active" id="dashboard">
-  <header class="hero">
-    <h1>Create Beyond <span class="gradient">Imagination.</span></h1>
-    <p class="muted">Welcome to VEAFLOW AI. Your creative world starts here.</p>
-  </header>
+  <div class="dashboard-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">✦ YOUR CREATIVE UNIVERSE</span>
+      <h1>Create Beyond <span class="gradient">Imagination.</span></h1>
+      <p>Welcome to VEAFLOW AI. Create stunning images, cinematic videos, realistic voices and unforgettable characters — all in one workspace.</p>
+      <div class="hero-actions">
+        <button class="btn" onclick="document.getElementById('studioGrid').scrollIntoView({behavior:'smooth'})">Explore our studios <span>→</span></button>
+        <span class="hero-note">The future flows through us.</span>
+      </div>
+    </div>
+    <div class="hero-art" role="img" aria-label="Futuristic woman wearing glowing neon headphones"></div>
+  </div>
 
-  <h2>Your AI Workspace</h2>
-  <p class="muted">Choose a studio and bring your ideas to life.</p>
+  <div class="dashboard-heading">
+    <div><span class="eyebrow">MAKE SOMETHING AMAZING</span><h2>Your AI Studios</h2>
+    <p class="muted">Choose a creative tool and bring your next idea to life.</p></div>
+    <span class="status">✦ 5 CREATIVE STUDIOS</span>
+  </div>
 
-  <div class="workspace">
-    <button class="card" onclick="openQuickPage('image')">
-      <h3>▧ AI Image Studio</h3>
-      <p class="sub">Create beautiful images from your ideas.</p>
+  <div class="studio-grid" id="studioGrid">
+    <button class="studio-card image-studio" onclick="openQuickPage('image')">
+      <span class="studio-photo"></span><span class="studio-icon">▧</span>
+      <span class="studio-content"><span class="studio-kicker">IN DEVELOPMENT</span><strong>AI Image Studio</strong><small>Create beautiful images from your imagination.</small><span class="studio-open">Open Studio →</span></span>
     </button>
-
-    <button class="card" onclick="openQuickPage('video-ai')">
-      <h3>▷ AI Video Studio</h3>
-      <p class="sub">Turn your imagination into videos and stories.</p>
+    <button class="studio-card video-studio" onclick="openQuickPage('video-ai')">
+      <span class="studio-photo"></span><span class="studio-icon">▷</span>
+      <span class="studio-content"><span class="studio-kicker">IN DEVELOPMENT</span><strong>AI Video Studio</strong><small>Turn ideas into cinematic videos and stories.</small><span class="studio-open">Open Studio →</span></span>
     </button>
-
-    <button class="card" onclick="openQuickPage('character')">
-      <h3>♙ Character Studio</h3>
-      <p class="sub">Build characters for consistent storytelling.</p>
+    <button class="studio-card voice-studio" onclick="openQuickPage('voice')">
+      <span class="studio-photo"></span><span class="studio-icon">♫</span>
+      <span class="studio-content"><span class="studio-kicker">VOICE ENGINE</span><strong>AI Voice Studio</strong><small>Generate narration and character dialogue.</small><span class="studio-open">Open Studio →</span></span>
     </button>
-
-    <button class="card" onclick="openQuickPage('voice')">
-      <h3>♫ AI Voice Studio</h3>
-      <p class="sub">Create narration, dialogue and voiceovers.</p>
+    <button class="studio-card character-studio" onclick="openQuickPage('character')">
+      <span class="studio-photo"></span><span class="studio-icon">♙</span>
+      <span class="studio-content"><span class="studio-kicker">IN DEVELOPMENT</span><strong>Character Studio</strong><small>Build characters for consistent storytelling.</small><span class="studio-open">Open Studio →</span></span>
     </button>
-
-    <button class="card" onclick="openQuickPage('creations')">
-      <h3>▤ My Creations</h3>
-      <p class="sub">Organize and revisit your creative projects.</p>
+    <button class="studio-card creator-studio" onclick="openQuickPage('creator')">
+      <span class="studio-photo"></span><span class="studio-icon">✦</span>
+      <span class="studio-content"><span class="studio-kicker">CREATIVE TOOLS</span><strong>AI Creator</strong><small>Shape ideas into detailed creative prompts.</small><span class="studio-open">Open Studio →</span></span>
     </button>
   </div>
 
-  <div class="notice">
-    ✦ Your ideas. Your creativity. Your VEAFLOW AI workspace.
+  <div class="dashboard-lower">
+    <button class="lower-card projects-card" onclick="openQuickPage('creations')"><span class="lower-icon">▤</span><span><strong>My Creations</strong><small>Revisit your images, videos and voiceovers.</small></span><span class="lower-arrow">→</span></button>
+    <div class="lower-card workspace-card"><span class="lower-icon">✧</span><span><strong>Your creative workspace</strong><small>Your ideas. Your tools. One VEAFLOW experience.</small></span></div>
   </div>
 </section>
 	<section class="section" id="image">
@@ -1414,4 +1499,3 @@ document.getElementById("stopVoice").addEventListener("click", () => {
 	</body>
 
 </html>
-
