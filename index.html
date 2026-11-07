@@ -457,6 +457,74 @@ footer{
     grid-template-columns: 1fr;
   }
 }
+	/* VEAFLOW VIDEO EDITOR WORKSPACE */
+.editor-workspace{
+  display:grid;
+  grid-template-columns: minmax(240px, .85fr) minmax(0, 1.8fr);
+  gap:16px;
+  margin-top:20px;
+}
+
+.editor-panel{
+  background:#11101D;
+  border:1px solid #49304F;
+  border-radius:15px;
+  padding:16px;
+  min-width:0;
+}
+
+.editor-monitor{
+  background:#05050A;
+  border:1px solid #49304F;
+  border-radius:15px;
+  min-height:330px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.editor-monitor video,
+.editor-monitor img{
+  max-width:100%;
+  max-height:380px;
+  object-fit:contain;
+}
+
+.editor-timeline{
+  grid-column:1 / -1;
+  min-height:190px;
+  overflow-x:auto;
+}
+
+.editor-track{
+  min-width:600px;
+  padding:12px;
+  margin-top:10px;
+  background:#0A0A14;
+  border:1px solid #342642;
+  border-radius:9px;
+}
+
+.editor-track-label{
+  color:#C49AFF;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+@media(max-width:700px){
+  .editor-workspace{
+    grid-template-columns:1fr;
+  }
+
+  .editor-timeline{
+    grid-column:1;
+  }
+
+  .editor-monitor{
+    min-height:220px;
+  }
+}
 </style>
 
 </head>
