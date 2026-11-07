@@ -1736,44 +1736,50 @@ editorMediaInput.addEventListener('change', function() {
 
   if (!files.length) return;
 
-  editorMediaList.innerHTML = '<strong>Imported Media (' + files.length + ')</strong>';
-  editorMediaPreview.innerHTML = '';
+  editorMediaList.innerHTML =
+    '<strong>Imported Media (' + files.length + ')</strong>';
+
+  editorMediaPreview.innerHTML =
+    '<p class="muted">Select media from your library to preview it.</p>';
 
   files.forEach(file => {
-    const item = document.createElement('p');
-    item.style.margin = '8px 0';
-    item.textContent = '✓ ' + file.name;
-    editorMediaList.appendChild(item);
-
     const url = URL.createObjectURL(file);
-    const card = document.createElement('div');
-    card.className = 'card';
 
-    const title = document.createElement('p');
-    title.textContent = file.name;
-    card.appendChild(title);
+    const item = document.createElement('button');
+    item.textContent = '▶ ' + file.name;
+    item.className = 'btn';
+    item.style.display = 'block';
+    item.style.width = '100%';
+    item.style.marginTop = '8px';
+    item.style.textAlign = 'left';
 
-    let media;
+    item.addEventListener('click', function() {
+      editorMediaPreview.innerHTML = '';
 
-    if (file.type.startsWith('video/')) {
-      media = document.createElement('video');
-      media.controls = true;
-    } else if (file.type.startsWith('image/')) {
-      media = document.createElement('img');
-      media.alt = file.name;
-    } else if (file.type.startsWith('audio/')) {
-      media = document.createElement('audio');
-      media.controls = true;
-    }
+      let media;
 
-    if (media) {
-      media.src = url;
-      media.style.width = '100%';
-      media.style.maxWidth = '100%';
-      media.style.borderRadius = '12px';
-      card.appendChild(media);
-      editorMediaPreview.appendChild(card);
-    }
+      if (file.type.startsWith('video/')) {
+        media = document.createElement('video');
+        media.controls = true;
+      } else if (file.type.startsWith('image/')) {
+        media = document.createElement('img');
+        media.alt = file.name;
+      } else if (file.type.startsWith('audio/')) {
+        media = document.createElement('audio');
+        media.controls = true;
+      }
+
+      if (media) {
+        media.src = url;
+        media.style.width = '100%';
+        media.style.maxWidth = '100%';
+        media.style.maxHeight = '380px';
+        media.style.objectFit = 'contain';
+        editorMediaPreview.appendChild(media);
+      }
+    });
+
+    editorMediaList.appendChild(item);
   });
 });
 </script>
