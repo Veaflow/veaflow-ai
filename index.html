@@ -1626,6 +1626,23 @@ document.getElementById("stopVoice").addEventListener("click", () => {
   audioPlayer.currentTime = 0;
   status.textContent = "Voice playback stopped.";
 });
+	const editorMediaInput = document.getElementById('editorMediaInput');
+const editorMediaList = document.getElementById('editorMediaList');
+
+editorMediaInput.addEventListener('change', function() {
+  const files = Array.from(this.files);
+
+  if (!files.length) return;
+
+  editorMediaList.innerHTML = '<strong>Imported Media</strong>';
+
+  files.forEach(file => {
+    const item = document.createElement('p');
+    item.style.margin = '8px 0';
+    item.textContent = '✓ ' + file.name;
+    editorMediaList.appendChild(item);
+  });
+});
 </script>
 
 
