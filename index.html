@@ -581,57 +581,6 @@ footer{
       Open AI Creator
     </button>
 
-    <div class="card" id="videoEditor">
-  <h3>Video Editor</h3>
-  <p class="sub">Upload and preview your video before editing.</p>
-
-  <label for="videoFile">Choose a video</label>
-  <input type="file" id="videoFile" accept="video/*">
-
-  <video
-  id="videoPreview"
-  controls
-  playsinline
-  style="display:none;width:240px;height:135px;max-width:100%;object-fit:contain;background:#000;margin:15px auto;border-radius:10px;">
-</video>
-
-<div style="margin-top:15px;">
-  <label for="trimStart">Trim start (seconds)</label>
-  <input type="number" id="trimStart" value="0" min="0" step="0.5">
-
-  <label for="trimEnd">Trim end (seconds)</label>
-  <input type="number" id="trimEnd" value="10" min="0" step="0.5"><div id="videoTimeline" style="margin:18px 0;">
-  <label>Video Timeline</label>
-
-  <input type="range" id="timelineStart"
-    min="0" max="100" value="0" step="0.1">
-
-  <input type="range" id="timelineEnd"
-    min="0" max="100" value="100" step="0.1">
-
-  <p id="timelineMessage">Upload a video to use the timeline.</p>
-</div>
-
-  <button id="previewTrim" type="button">
-    Preview Selected Clip
-  </button>
-	<button id="exportMP4" type="button">
-  Export MP4
-</button>
-
-<p id="exportMessage">Ready to export your video.</p>
-
-<a id="downloadMP4" style="display:none;" download="veaflow-edited.mp4">
-  Download MP4
-</a>
-
-  <button id="clearVideo" type="button">
-    Remove Video
-  </button>
-
-  <p id="trimMessage">Upload a video to begin trimming.</p>
-</div>
-
   </div>
 </div>
 
