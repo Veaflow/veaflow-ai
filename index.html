@@ -1779,6 +1779,25 @@ editorMediaInput.addEventListener('change', function() {
 
   files.forEach(file => {
     const url = URL.createObjectURL(file);
+	  let track;
+let clipClass = '';
+
+if (file.type.startsWith('video/')) {
+  track = document.getElementById('editorVideoTrack');
+} else if (file.type.startsWith('image/')) {
+  track = document.getElementById('editorPhotoTrack');
+  clipClass = 'photo';
+} else if (file.type.startsWith('audio/')) {
+  track = document.getElementById('editorAudioTrack');
+  clipClass = 'audio';
+}
+
+if (track) {
+  const clip = document.createElement('div');
+  clip.className = 'timeline-clip ' + clipClass;
+  clip.textContent = file.name;
+  track.appendChild(clip);
+}
 
     const item = document.createElement('button');
     item.textContent = '▶ ' + file.name;
