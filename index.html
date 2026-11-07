@@ -1629,21 +1629,54 @@ document.getElementById("stopVoice").addEventListener("click", () => {
   audioPlayer.currentTime = 0;
   status.textContent = "Voice playback stopped.";
 });
-	const editorMediaInput = document.getElementById('editorMediaInput');
+	// VIDEO EDITOR — MEDIA IMPORT AND PREVIEW
+const editorMediaInput = document.getElementById('editorMediaInput');
 const editorMediaList = document.getElementById('editorMediaList');
+const editorMediaPreview = document.getElementById('editorMediaPreview');
 
 editorMediaInput.addEventListener('change', function() {
   const files = Array.from(this.files);
 
   if (!files.length) return;
 
-  editorMediaList.innerHTML = '<strong>Imported Media</strong>';
+  editorMediaList.innerHTML = '<strong>Imported Media (' + files.length + ')</strong>';
+  editorMediaPreview.innerHTML = '';
 
   files.forEach(file => {
     const item = document.createElement('p');
     item.style.margin = '8px 0';
     item.textContent = '✓ ' + file.name;
     editorMediaList.appendChild(item);
+
+    const url = URL.createObjectURL(file);
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const title = document.createElement('p');
+    title.textContent = file.name;
+    card.appendChild(title);
+
+    let media;
+
+    if (file.type.startsWith('video/')) {
+      media = document.createElement('video');
+      media.controls = true;
+    } else if (file.type.startsWith('image/')) {
+      media = document.createElement('img');
+      media.alt = file.name;
+    } else if (file.type.startsWith('audio/')) {
+      media = document.createElement('audio');
+      media.controls = true;
+    }
+
+    if (media) {
+      media.src = url;
+      media.style.width = '100%';
+      media.style.maxWidth = '100%';
+      media.style.borderRadius = '12px';
+      card.appendChild(media);
+      editorMediaPreview.appendChild(card);
+    }
   });
 });
 </script>
