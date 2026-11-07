@@ -1795,6 +1795,24 @@ if (file.type.startsWith('video/')) {
 if (track) {
   const clip = document.createElement('div');
   clip.className = 'timeline-clip ' + clipClass;
+clip.draggable = true;
+
+clip.addEventListener('dragstart', function(event) {
+  event.dataTransfer.setData('text/plain', '');
+  window.draggedClip = clip;
+});
+
+clip.addEventListener('dragover', function(event) {
+  event.preventDefault();
+});
+
+clip.addEventListener('drop', function(event) {
+  event.preventDefault();
+
+  if (window.draggedClip && window.draggedClip !== clip) {
+    track.insertBefore(window.draggedClip, clip);
+  }
+});
   clip.textContent = file.name;
   track.appendChild(clip);
 }
