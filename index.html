@@ -667,24 +667,53 @@ footer{
   <h2>Video Editor</h2>
   <p class="muted">Combine videos, photos, music and narration to create complete videos.</p>
 
-  <div class="card" id="videoEditor">
-  <h3>🎬 Your Editing Workspace</h3>
-  <p class="sub">Import your media to start creating.</p>
+  <div class="editor-workspace" id="videoEditor">
 
-  <label for="editorMediaInput">Import videos, photos and audio (select multiple files)</label>
-<p class="sub">Hold Ctrl while clicking files to select more than one.</p>
-  <input
-    type="file"
-    id="editorMediaInput"
-    accept="video/*,image/*,audio/*"
-    multiple
-  >
+  <div class="editor-panel">
+    <h3>📁 Media Library</h3>
+    <p class="sub">Import videos, photos and audio.</p>
 
-  <div id="editorMediaList" class="notice">
-  Your imported media previews will appear here.
-</div>
+    <label for="editorMediaInput">Import Media</label>
+    <input
+      type="file"
+      id="editorMediaInput"
+      accept="video/*,image/*,audio/*"
+      multiple
+    >
 
-<div id="editorMediaPreview" class="workspace"></div>
+    <div id="editorMediaList" class="notice">
+      Your imported media will appear here.
+    </div>
+  </div>
+
+  <div class="editor-panel">
+    <h3>▶ Preview Monitor</h3>
+    <div class="editor-monitor" id="editorMediaPreview">
+      <p class="muted">Your selected media preview will appear here.</p>
+    </div>
+  </div>
+
+  <div class="editor-panel editor-timeline">
+    <h3>✂ Editing Timeline</h3>
+    <p class="sub">Your video, photos, narration and music tracks.</p>
+
+    <div class="editor-track">
+      <div class="editor-track-label">VIDEO TRACK</div>
+    </div>
+
+    <div class="editor-track">
+      <div class="editor-track-label">PHOTO TRACK</div>
+    </div>
+
+    <div class="editor-track">
+      <div class="editor-track-label">NARRATION / VOICE</div>
+    </div>
+
+    <div class="editor-track">
+      <div class="editor-track-label">MUSIC / SOUND EFFECTS</div>
+    </div>
+  </div>
+
 </div>
 </section>
 	<section class="section" id="character">
