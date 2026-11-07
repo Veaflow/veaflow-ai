@@ -1807,6 +1807,11 @@ clip.draggable = true;
   });
 
   clip.classList.add('selected');
+		clip.addEventListener('dblclick', function() {
+  if (confirm('Delete this clip from the timeline?')) {
+    clip.remove();
+  }
+});
 });
 
 clip.addEventListener('dragstart', function(event) {
