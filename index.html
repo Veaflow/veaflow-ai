@@ -1796,6 +1796,13 @@ if (track) {
   const clip = document.createElement('div');
   clip.className = 'timeline-clip ' + clipClass;
 clip.draggable = true;
+	clip.addEventListener('click', function() {
+  document.querySelectorAll('.timeline-clip').forEach(item => {
+    item.classList.remove('selected');
+  });
+
+  clip.classList.add('selected');
+});
 
 clip.addEventListener('dragstart', function(event) {
   event.dataTransfer.setData('text/plain', '');
