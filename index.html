@@ -599,10 +599,22 @@ footer{
   <h2>Video Editor</h2>
   <p class="muted">Combine videos, photos, music and narration to create complete videos.</p>
 
-  <div class="card">
-    <h3>Your Editing Workspace</h3>
-    <p class="muted">Your video editing tools will appear here.</p>
+  <div class="card" id="videoEditor">
+  <h3>🎬 Your Editing Workspace</h3>
+  <p class="sub">Import your media to start creating.</p>
+
+  <label for="editorMediaInput">Import videos, photos and audio</label>
+  <input
+    type="file"
+    id="editorMediaInput"
+    accept="video/*,image/*,audio/*"
+    multiple
+  >
+
+  <div id="editorMediaList" class="notice">
+    Your imported media will appear here.
   </div>
+</div>
 </section>
 	<section class="section" id="character">
   <h2>Character Studio</h2>
