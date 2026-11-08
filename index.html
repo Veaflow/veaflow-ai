@@ -1805,48 +1805,43 @@ if (file.type.startsWith('video/')) {
 if (track) {
   const clip = document.createElement('div');
   clip.className = 'timeline-clip ' + clipClass;
-clip.draggable = true;
+  clip.textContent = file.name;
+  clip.draggable = true;
 
-clip.addEventListener('click', function() {
-  document.querySelectorAll('.timeline-clip').forEach(item => {
-    item.classList.remove('selected');
+  clip.addEventListener('click', function() {
+    document.querySelectorAll('.timeline-clip').forEach(item => {
+      item.classList.remove('selected');
+    });
+
+    clip.classList.add('selected');
+    item.click();
   });
 
-  clip.classList.add('selected');
+  clip.addEventListener('dblclick', function() {
+    if (confirm('Delete this clip from the timeline?')) {
+      clip.remove();
+    }
+  });
 
-  item.click();
-});
+  clip.addEventListener('dragstart', function(event) {
+    event.dataTransfer.setData('text/plain', '');
+    window.draggedClip = clip;
+  });
 
-clip.addEventListener('dblclick', function() {
-  if (confirm('Delete this clip from the timeline?')) {
-    clip.remove();
-  }
-});
+  clip.addEventListener('dragover', function(event) {
+    event.preventDefault();
+  });
 
-clip.addEventListener('dragstart', function(event) {
-  event.dataTransfer.setData('text/plain', '');
-  window.draggedClip = clip;
-});
+  clip.addEventListener('drop', function(event) {
+    event.preventDefault();
 
-clip.addEventListener('dragover', function(event) {
-  event.preventDefault();
-});
+    if (window.draggedClip && window.draggedClip !== clip) {
+      track.insertBefore(window.draggedClip, clip);
+    }
+  });
 
-clip.addEventListener('drop', function(event) {
-  event.preventDefault();
-
-  if (window.draggedClip && window.draggedClip !== clip) {
-    track.insertBefore(window.draggedClip, clip);
-  }
-});
-
-  clip.classList.add('selected');
-		clip.addEventListener('dblclick', function() {
-  if (confirm('Delete this clip from the timeline?')) {
-    clip.remove();
-  }
-});
-});
+  track.appendChild(clip);
+}
 
 clip.addEventListener('dragstart', function(event) {
   event.dataTransfer.setData('text/plain', '');
