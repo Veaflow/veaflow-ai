@@ -1905,6 +1905,19 @@ clip.addEventListener('drop', function(event) {
     editorMediaList.appendChild(item);
   });
 });
+	// DELETE SELECTED TIMELINE CLIP
+document.getElementById('deleteSelectedClip').addEventListener('click', function() {
+  const selectedClip = document.querySelector('.timeline-clip.selected');
+
+  if (!selectedClip) {
+    alert('Please select a timeline clip first.');
+    return;
+  }
+
+  if (confirm('Delete this clip from the timeline?')) {
+    selectedClip.remove();
+  }
+});
 </script>
 
 
