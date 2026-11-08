@@ -1859,10 +1859,7 @@ clip.addEventListener('drop', function(event) {
     track.insertBefore(window.draggedClip, clip);
   }
 });
-  clip.textContent = file.name;
-  track.appendChild(clip);
-}
-
+  
     const item = document.createElement('button');
     item.textContent = '▶ ' + file.name;
     item.className = 'btn';
