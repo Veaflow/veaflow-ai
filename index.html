@@ -1919,7 +1919,7 @@ function veaflowRenderSavedCharacters() {
 
   veaflowSavedCharactersList.replaceChildren();
 
-  characters.forEach(character => {
+  characters.forEach((character, index) => {
     const card = document.createElement('div');
 
     card.style.cssText =
