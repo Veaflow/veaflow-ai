@@ -2014,6 +2014,27 @@ function veaflowLoadCreatorCharacters() {
 
 veaflowLoadCreatorCharacters();
 </script>
+	<script>
+document.getElementById('creatorCharacter').addEventListener('change', function() {
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  const selectedCharacter = characters[this.value];
+
+  if (!selectedCharacter) return;
+
+  const ideaField = document.getElementById('idea');
+
+  ideaField.value =
+    'Main character: ' + selectedCharacter.name +
+    '. Role: ' + selectedCharacter.role +
+    '. Appearance and personality: ' + selectedCharacter.description +
+    '. Keep this character visually consistent throughout the scene.';
+
+  ideaField.focus();
+});
+</script>
 	</body>
 
 </html>
