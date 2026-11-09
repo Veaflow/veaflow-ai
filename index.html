@@ -1987,6 +1987,33 @@ card.appendChild(deleteButton);
 
 veaflowRenderSavedCharacters();
 </script>
+	<script>
+function veaflowLoadCreatorCharacters() {
+  const selector = document.getElementById('creatorCharacter');
+
+  if (!selector) return;
+
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  selector.replaceChildren();
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'No character selected';
+  selector.appendChild(defaultOption);
+
+  characters.forEach((character, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = character.name || 'Unnamed character';
+    selector.appendChild(option);
+  });
+}
+
+veaflowLoadCreatorCharacters();
+</script>
 	</body>
 
 </html>
