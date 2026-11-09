@@ -1302,7 +1302,10 @@ characterImage.addEventListener('change', () => {
     });
 
     localStorage.setItem('veaflowCharacters', JSON.stringify(characters));
-    alert('Character saved successfully!');
+
+veaflowRenderSavedCharacters();
+
+alert('Character saved successfully!');
   };
 
   if (image) {
