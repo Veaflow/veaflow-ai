@@ -1949,7 +1949,32 @@ function veaflowRenderSavedCharacters() {
     description.style.fontSize = '13px';
 
     details.append(name, role, description);
-    card.appendChild(details);
+card.appendChild(details);
+
+const deleteButton = document.createElement('button');
+deleteButton.textContent = 'Delete';
+deleteButton.className = 'btn';
+
+deleteButton.addEventListener('click', () => {
+  if (!confirm('Are you sure you want to delete this character?')) {
+    return;
+  }
+
+  const updatedCharacters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  updatedCharacters.splice(index, 1);
+
+  localStorage.setItem(
+    'veaflowCharacters',
+    JSON.stringify(updatedCharacters)
+  );
+
+  veaflowRenderSavedCharacters();
+});
+
+card.appendChild(deleteButton);
 
     veaflowSavedCharactersList.appendChild(card);
   });
