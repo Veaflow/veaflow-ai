@@ -1317,7 +1317,10 @@ alert('Character saved successfully!');
       characters.push({ name, role, description, image: '' });
 
       localStorage.setItem('veaflowCharacters', JSON.stringify(characters));
-      alert('Character saved successfully!');
+
+veaflowRenderSavedCharacters();
+
+alert('Character saved successfully!');
     };
     reader.readAsText(new Blob(['']));
   }
