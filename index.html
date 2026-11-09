@@ -2028,6 +2028,15 @@ document.getElementById('creatorCharacter').addEventListener('change', function(
   const selectedCharacter = characters[this.value];
 
   if (!selectedCharacter) return;
+	const characterPhoto = document.getElementById('creatorCharacterPreview');
+
+if (selectedCharacter.image) {
+  characterPhoto.src = selectedCharacter.image;
+  characterPhoto.style.display = 'block';
+} else {
+  characterPhoto.removeAttribute('src');
+  characterPhoto.style.display = 'none';
+}
 
   const ideaField = document.getElementById('idea');
 
