@@ -1866,7 +1866,23 @@ document.getElementById('deleteSelectedClip').addEventListener('click', function
 });
 </script>
 
+<script>
+const characterImageInput = document.getElementById('characterImage');
+const characterPreview = document.getElementById('characterPreview');
 
+characterImageInput.addEventListener('change', function() {
+  const file = this.files[0];
+
+  if (!file) {
+    characterPreview.removeAttribute('src');
+    characterPreview.style.display = 'none';
+    return;
+  }
+
+  characterPreview.src = URL.createObjectURL(file);
+  characterPreview.style.display = 'block';
+});
+</script>
 	</body>
 
 </html>
