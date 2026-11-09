@@ -678,6 +678,28 @@ footer{
       Your existing image-generation connection is preserved. We'll connect this new studio to it in a later step.
     </div>
   </div>
+		  <div class="card">
+    <h3>VEAFLOW AI Image Generator</h3>
+    <p class="sub">Create cinematic images from your ideas.</p>
+
+    <label for="veaflowAccess">Private access password</label>
+    <input type="password" id="veaflowAccess"
+      placeholder="Enter your private access password">
+
+    <label for="veaflowImagePrompt">Describe your image</label>
+    <textarea id="veaflowImagePrompt"
+      placeholder="Describe the image you want to create..."></textarea>
+
+    <button class="btn" id="veaflowGenerateImage">
+      Generate Image
+    </button>
+
+    <p id="veaflowImageStatus" class="notice">
+      Your generated image will appear here.
+    </p>
+
+    <div id="veaflowImageResult"></div>
+  </div>
 	</section>
 
 <section class="section" id="video-ai">
