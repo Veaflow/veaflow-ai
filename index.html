@@ -1896,6 +1896,61 @@ characterImageInput.addEventListener('change', function() {
   characterPreview.style.display = 'block';
 });
 </script>
+	<script>
+const veaflowSavedCharactersList =
+  document.getElementById('savedCharactersList');
+
+function veaflowRenderSavedCharacters() {
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  if (!characters.length) {
+    veaflowSavedCharactersList.textContent =
+      'No saved characters yet. Create your first character above.';
+    return;
+  }
+
+  veaflowSavedCharactersList.replaceChildren();
+
+  characters.forEach(character => {
+    const card = document.createElement('div');
+
+    card.style.cssText =
+      'display:flex;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #49304F;';
+
+    if (character.image) {
+      const image = document.createElement('img');
+      image.src = character.image;
+      image.alt = character.name || 'Saved character';
+      image.style.cssText =
+        'width:76px;height:90px;object-fit:cover;border-radius:10px;background:#080A12;';
+      card.appendChild(image);
+    }
+
+    const details = document.createElement('div');
+    details.style.flex = '1';
+
+    const name = document.createElement('strong');
+    name.textContent = character.name || 'Unnamed character';
+
+    const role = document.createElement('p');
+    role.className = 'muted';
+    role.textContent = character.role || '';
+
+    const description = document.createElement('p');
+    description.textContent = character.description || '';
+    description.style.fontSize = '13px';
+
+    details.append(name, role, description);
+    card.appendChild(details);
+
+    veaflowSavedCharactersList.appendChild(card);
+  });
+}
+
+veaflowRenderSavedCharacters();
+</script>
 	</body>
 
 </html>
