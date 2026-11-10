@@ -671,6 +671,16 @@ footer{
     <label for="veaflowAccess">Private access password</label>
     <input type="password" id="veaflowAccess"
       placeholder="Enter your private access password">
+			  <label for="imageStudioCharacter">Use a Saved Character</label>
+<select id="imageStudioCharacter">
+  <option value="">No character selected</option>
+</select>
+
+<img
+  id="imageStudioCharacterPreview"
+  alt="Selected character reference"
+  style="display:none;width:150px;height:180px;object-fit:cover;border-radius:12px;border:1px solid #49304F;margin:12px 0;"
+>
 
     <label for="veaflowImagePrompt">Describe your image</label>
     <textarea id="veaflowImagePrompt"
