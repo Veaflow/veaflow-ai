@@ -2059,6 +2059,75 @@ if (selectedCharacter.image) {
   ideaField.focus();
 });
 </script>
+	<script>
+function veaflowLoadImageCharacters() {
+  const selector = document.getElementById('imageStudioCharacter');
+
+  if (!selector) return;
+
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  selector.replaceChildren();
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'No character selected';
+  selector.appendChild(defaultOption);
+
+  characters.forEach((character, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = character.name || 'Unnamed character';
+    selector.appendChild(option);
+  });
+}
+
+veaflowLoadImageCharacters();
+
+let veaflowImageCharacterBlock = '';
+
+document.getElementById('imageStudioCharacter')
+  .addEventListener('change', function() {
+    const characters = JSON.parse(
+      localStorage.getItem('veaflowCharacters') || '[]'
+    );
+
+    const selectedCharacter = characters[this.value];
+    const prompt = document.getElementById('veaflowImagePrompt');
+    const preview = document.getElementById('imageStudioCharacterPreview');
+
+    if (veaflowImageCharacterBlock &&
+        prompt.value.startsWith(veaflowImageCharacterBlock)) {
+      prompt.value = prompt.value.slice(veaflowImageCharacterBlock.length);
+    }
+
+    veaflowImageCharacterBlock = '';
+
+    if (!selectedCharacter) {
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+      return;
+    }
+
+    veaflowImageCharacterBlock =
+      'Character: ' + selectedCharacter.name +
+      '. Role: ' + selectedCharacter.role +
+      '. Appearance: ' + selectedCharacter.description +
+      '. Maintain the same character appearance.\n\n';
+
+    prompt.value = veaflowImageCharacterBlock + prompt.value;
+
+    if (selectedCharacter.image) {
+      preview.src = selectedCharacter.image;
+      preview.style.display = 'block';
+    } else {
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+    }
+  });
+</script>
 	</body>
 
 </html>
