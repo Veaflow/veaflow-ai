@@ -714,6 +714,16 @@ footer{
     <option value="scene-to-video">AI Scene Generation</option>
   </select>
 </div>
+	  <label for="videoCharacter">Use a Saved Character</label>
+<select id="videoCharacter">
+  <option value="">No character selected</option>
+</select>
+
+<img
+  id="videoCharacterPreview"
+  alt="Selected video character"
+  style="display:none;width:150px;height:180px;object-fit:cover;border-radius:12px;border:1px solid #49304F;margin:12px 0;"
+>
 
 <label for="newVideoPrompt">Describe your video scene</label>
 <textarea id="newVideoPrompt"
