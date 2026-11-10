@@ -706,7 +706,25 @@ footer{
     <h3>Create an AI Video</h3>
     <p class="sub">Describe the scene you want to bring to life.</p>
 
-    <textarea id="newVideoPrompt" placeholder="Describe your video scene..."></textarea>
+  <div class="video-mode">
+  <label for="videoCreationMode">Creation mode</label>
+  <select id="videoCreationMode">
+    <option value="text-to-video">Text to Video</option>
+    <option value="image-to-video">Image to Video</option>
+    <option value="scene-to-video">AI Scene Generation</option>
+  </select>
+</div>
+
+<label for="newVideoPrompt">Describe your video scene</label>
+<textarea id="newVideoPrompt"
+  placeholder="Describe the scene, characters, camera movement, lighting and atmosphere..."></textarea>
+
+<div id="videoImageUpload" style="display:none;">
+  <label for="videoReferenceImage">Upload reference image</label>
+  <input type="file" id="videoReferenceImage" accept="image/*">
+  <img id="videoReferencePreview" alt="Video reference preview"
+    style="display:none;width:180px;max-height:220px;object-fit:contain;border-radius:12px;margin-top:12px;">
+</div>
 
     <button class="btn" onclick="openQuickPage('creator')">
       Open AI Creator
