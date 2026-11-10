@@ -2146,6 +2146,30 @@ document.getElementById('imageStudioCharacter')
     }
   });
 </script>
+	<script>
+const videoCreationMode = document.getElementById('videoCreationMode');
+const videoImageUpload = document.getElementById('videoImageUpload');
+const videoReferenceImage = document.getElementById('videoReferenceImage');
+const videoReferencePreview = document.getElementById('videoReferencePreview');
+
+videoCreationMode.addEventListener('change', function() {
+  videoImageUpload.style.display =
+    this.value === 'image-to-video' ? 'block' : 'none';
+});
+
+videoReferenceImage.addEventListener('change', function() {
+  const file = this.files[0];
+
+  if (!file) {
+    videoReferencePreview.removeAttribute('src');
+    videoReferencePreview.style.display = 'none';
+    return;
+  }
+
+  videoReferencePreview.src = URL.createObjectURL(file);
+  videoReferencePreview.style.display = 'block';
+});
+</script>
 	</body>
 
 </html>
