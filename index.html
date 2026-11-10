@@ -777,6 +777,28 @@ footer{
     <option value="4K">4K — Ultra HD</option>
   </select>
 </div>
+	  <div class="video-generation">
+  <h3>Generate Your Video</h3>
+  <p class="sub">Your cinematic creation will appear here.</p>
+
+  <button class="btn" id="generateAIVideo" type="button">
+    ✦ Generate AI Video
+  </button>
+
+  <p id="videoGenerationStatus" class="notice">
+    Ready to create. Your video-generation engine will be connected here.
+  </p>
+
+  <div id="generatedVideoResult" style="display:none;">
+    <video id="generatedAIVideo" controls
+      style="width:100%;max-width:700px;border-radius:12px;">
+    </video>
+
+    <a id="downloadAIVideo" class="btn" download="veaflow-ai-video.mp4">
+      Download Video
+    </a>
+  </div>
+</div>
   
 </div>
 </section>
