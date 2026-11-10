@@ -2180,6 +2180,66 @@ videoReferenceImage.addEventListener('change', function() {
   videoReferencePreview.style.display = 'block';
 });
 </script>
+	<script>
+function veaflowLoadVideoCharacters() {
+  const selector = document.getElementById('videoCharacter');
+
+  if (!selector) return;
+
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  selector.replaceChildren();
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'No character selected';
+  selector.appendChild(defaultOption);
+
+  characters.forEach((character, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = character.name || 'Unnamed character';
+    selector.appendChild(option);
+  });
+}
+
+veaflowLoadVideoCharacters();
+
+document.getElementById('videoCharacter').addEventListener('change', function() {
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  const selectedCharacter = characters[this.value];
+  const preview = document.getElementById('videoCharacterPreview');
+  const prompt = document.getElementById('newVideoPrompt');
+
+  if (!selectedCharacter) {
+    preview.removeAttribute('src');
+    preview.style.display = 'none';
+    return;
+  }
+
+  if (selectedCharacter.image) {
+    preview.src = selectedCharacter.image;
+    preview.style.display = 'block';
+  } else {
+    preview.removeAttribute('src');
+    preview.style.display = 'none';
+  }
+
+  prompt.value =
+    'Main character: ' + selectedCharacter.name +
+    '. Role: ' + selectedCharacter.role +
+    '. Appearance and personality: ' + selectedCharacter.description +
+    '. Maintain consistent character appearance throughout the video.\n\n' +
+    prompt.value;
+
+  prompt.focus();
+});
+</script>
 	</body>
 
 </html>
