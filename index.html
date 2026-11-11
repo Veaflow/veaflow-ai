@@ -2297,6 +2297,288 @@ document.getElementById('videoCharacter').addEventListener('change', function() 
   prompt.focus();
 });
 </script>
+	
+<script>
+document.getElementById("generateAIVideo").addEventListener("click", async () => {
+  const button = document.getElementById("generateAIVideo");
+  const status = document.getElementById("videoGenerationStatus");
+  const result = document.getElementById("generatedVideoResult");
+  const video = document.getElementById("generatedAIVideo");
+  const download = document.getElementById("downloadAIVideo");
+
+  const API = "https://veaflow-ai-api.ovarcon.workers.dev";
+
+  const token = document.getElementById("veaflowAccess").value.trim();
+  const prompt = document.getElementById("newVideoPrompt").value.trim();
+  const mode = document.getElementById("videoCreationMode").value;
+  const duration = Number(document.getElementById("videoDuration").value);
+  const aspect = document.getElementById("videoAspectRatio").value;
+  const resolution = document.getElementById("videoResolution").value;
+
+  const imageInput = document.getElementById("videoReferenceImage");
+  const characterIndex = document.getElementById("videoCharacter").value;
+
+  if (!token) {
+    status.textContent = "Enter your private access password in Image Studio first.";
+    return;
+  }
+
+  if (!prompt) {
+    status.textContent = "Please describe the video scene first.";
+    return;
+  }
+
+  let selectedCharacter = null;
+
+  try {
+    const characters = JSON.parse(
+      localStorage.getItem("veaflowCharacters") || "[]"
+    );
+
+    if (characterIndex !== "") {
+      selectedCharacter = characters[Number(characterIndex)];
+    }
+  } catch {
+    status.textContent = "Could not read your saved characters.";
+    return;
+  }
+
+  if (mode === "image-to-video" && !imageInput.files[0]) {
+    status.textContent = "Please upload a starting reference image.";
+    return;
+  }
+
+  if (mode === "scene-to-video" &&
+      (!selectedCharacter || !selectedCharacter.image)) {
+    status.textContent = "Select a saved character with a reference image for AI Scene Generation.";
+    return;
+  }
+
+  button.disabled = true;
+  result.style.display = "none";
+  status.textContent = "Preparing your video request...";
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  };
+
+  async function readResponse(response) {
+    let data;
+
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("The VEAFLOW server returned an unreadable response.");
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || "The video request failed.");
+    }
+
+    return data;
+  }
+
+  async function uploadImage(file) {
+    const form = new FormData();
+    form.append("image", file, file.name || "reference-image.png");
+
+    const response = await fetch(API + "/phosor/upload-image", {
+      method: "POST",
+      headers,
+      body: form
+    });
+
+    const data = await readResponse(response);
+
+    const imageUrl =
+      data.s3_url ||
+      data.data?.s3_url ||
+      data.data?.url;
+
+    if (!imageUrl) {
+      throw new Error("The image uploaded, but no image URL was returned.");
+    }
+
+    return imageUrl;
+  }
+
+  function findRequestId(data) {
+    return (
+      data.request_id ||
+      data.data?.request_id ||
+      data.id ||
+      data.data?.id
+    );
+  }
+
+  function findStatus(data) {
+    return String(
+      data.status ||
+      data.data?.status ||
+      data.request_status ||
+      ""
+    ).toLowerCase();
+  }
+
+  function findVideoUrl(data) {
+    let found = "";
+
+    function scan(value) {
+      if (!value || typeof value !== "object" || found) return;
+
+      if (Array.isArray(value)) {
+        value.forEach(scan);
+        return;
+      }
+
+      for (const key of ["video_url", "output_url", "url"]) {
+        if (typeof value[key] === "string" &&
+            value[key].startsWith("https://")) {
+          found = value[key];
+          return;
+        }
+      }
+
+      for (const key of Object.keys(value)) {
+        scan(value[key]);
+      }
+    }
+
+    scan(data.data || data);
+    return found;
+  }
+
+  try {
+    let providerMode = "text";
+    let referenceImageUrls = [];
+    let imageUrl = "";
+
+    if (mode === "image-to-video") {
+      providerMode = "image";
+      status.textContent = "Uploading your reference image...";
+      imageUrl = await uploadImage(imageInput.files[0]);
+    }
+
+    if (mode === "scene-to-video") {
+      providerMode = "reference";
+      status.textContent = "Uploading your saved character reference...";
+
+      const characterBlob = await fetch(selectedCharacter.image).then(r => {
+        if (!r.ok) throw new Error("Could not read the saved character image.");
+        return r.blob();
+      });
+
+      if (!characterBlob.type.startsWith("image/")) {
+        throw new Error("The saved character does not contain a valid image.");
+      }
+
+      const characterFile = new File(
+        [characterBlob],
+        "saved-character.png",
+        { type: characterBlob.type }
+      );
+
+      referenceImageUrls.push(await uploadImage(characterFile));
+    }
+
+    const requestBody = {
+      prompt,
+      mode: providerMode,
+      duration,
+      resolution_tier: resolution,
+      aspect_ratio: aspect
+    };
+
+    if (providerMode === "image") {
+      requestBody.image_url = imageUrl;
+    }
+
+    if (providerMode === "reference") {
+      requestBody.reference_image_urls = referenceImageUrls;
+    }
+
+    status.textContent = "Submitting your video to Phosor...";
+
+    const submitResponse = await fetch(API + "/phosor/generate-video", {
+      method: "POST",
+      headers: {
+        ...headers,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const submitted = await readResponse(submitResponse);
+    const requestId = findRequestId(submitted);
+
+    if (!requestId) {
+      throw new Error("Phosor did not return a request ID. Check your Phosor history before trying again.");
+    }
+
+    status.textContent = "Your video is processing. Please wait...";
+
+    let completed = false;
+
+    for (let attempt = 0; attempt < 120; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      const statusResponse = await fetch(
+        API + "/phosor/video-status/" + encodeURIComponent(requestId),
+        { headers }
+      );
+
+      const statusData = await readResponse(statusResponse);
+      const currentStatus = findStatus(statusData);
+
+      if (currentStatus === "failed" || currentStatus === "error") {
+        throw new Error("Phosor could not complete this video. Check your generation history.");
+      }
+
+      if (
+        currentStatus === "completed" ||
+        currentStatus === "succeeded" ||
+        currentStatus === "success"
+      ) {
+        completed = true;
+        break;
+      }
+
+      status.textContent =
+        "Video processing... Check " + (attempt + 1) + "/120";
+    }
+
+    if (!completed) {
+      throw new Error("Your video is taking longer than expected. Check Phosor history before submitting another request.");
+    }
+
+    status.textContent = "Video completed. Retrieving your result...";
+
+    const resultResponse = await fetch(
+      API + "/phosor/video-result/" + encodeURIComponent(requestId),
+      { headers }
+    );
+
+    const resultData = await readResponse(resultResponse);
+    const videoUrl = findVideoUrl(resultData);
+
+    if (!videoUrl) {
+      throw new Error("Phosor completed the request, but the video URL was not found in its response.");
+    }
+
+    video.src = videoUrl;
+    download.href = videoUrl;
+    result.style.display = "block";
+
+    status.textContent = "Your VEAFLOW AI video is ready!";
+
+  } catch (error) {
+    status.textContent = error.message || "An unexpected video-generation error occurred.";
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+
 	</body>
 
 </html>
