@@ -1619,6 +1619,26 @@ const prompt = document.getElementById("veaflowImagePrompt").value.trim();
     image.style.marginTop = "12px";
 
     result.appendChild(image);
+	      try {
+      const imageResponse = await fetch(imageUrl);
+
+      if (!imageResponse.ok) {
+        throw new Error('Could not download the generated image.');
+      }
+
+      const imageBlob = await imageResponse.blob();
+
+      await veaflowSaveCreation(
+        'image',
+        prompt,
+        imageBlob,
+        { prompt: prompt }
+      );
+
+      console.log('Image saved to My Creations.');
+    } catch (saveError) {
+      console.warn('Image generated but could not be saved:', saveError);
+    }
     status.textContent = "Your image is ready!";
   } catch (error) {
     status.textContent = error.message;
