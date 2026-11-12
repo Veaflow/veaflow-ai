@@ -2774,7 +2774,60 @@ async function veaflowDeleteCreation(id) {
     console.error('My Images error:', error);
   }
 }
+async function veaflowRenderCreationsVideos() {
+  const container = document.getElementById('myCreationsVideos');
 
+  if (!container) return;
+
+  container.replaceChildren();
+
+  try {
+    const videos = await veaflowGetCreations('video');
+
+    if (!videos.length) {
+      container.textContent = 'No saved videos yet.';
+      return;
+    }
+
+    container.className = 'workspace';
+
+    videos.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const video = document.createElement('video');
+      const videoUrl = URL.createObjectURL(item.file);
+
+      video.src = videoUrl;
+      video.controls = true;
+      video.style.cssText =
+        'width:100%;max-height:240px;border-radius:10px;';
+
+      const name = document.createElement('p');
+      name.textContent = item.name || 'Saved video';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn';
+      deleteButton.textContent = 'Delete';
+
+      deleteButton.addEventListener('click', async () => {
+        await veaflowDeleteCreation(item.id);
+        video.removeAttribute('src');
+        video.load();
+        URL.revokeObjectURL(videoUrl);
+        await veaflowRenderCreationsVideos();
+      });
+
+      card.append(video, name, deleteButton);
+      container.appendChild(card);
+    });
+  } catch (error) {
+    container.textContent = 'Could not load saved videos.';
+    console.error('My Videos error:', error);
+  }
+}
+
+veaflowRenderCreationsVideos();
 veaflowRenderCreationsImages();
 </script>
 
