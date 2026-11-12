@@ -2108,6 +2108,34 @@ function veaflowLoadCreatorCharacters() {
   const characters = JSON.parse(
     localStorage.getItem('veaflowCharacters') || '[]'
   );
+	  const creationsCharacters = document.getElementById('myCreationsCharacters');
+
+  if (creationsCharacters) {
+    creationsCharacters.replaceChildren();
+
+    if (!characters.length) {
+      creationsCharacters.textContent = 'No saved characters yet.';
+    } else {
+      characters.forEach((character) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex;gap:12px;align-items:center;margin:12px 0;';
+
+        if (character.image) {
+          const image = document.createElement('img');
+          image.src = character.image;
+          image.alt = character.name || 'Saved character';
+          image.style.cssText = 'width:60px;height:70px;object-fit:cover;border-radius:8px;';
+          item.appendChild(image);
+        }
+
+        const name = document.createElement('strong');
+        name.textContent = character.name || 'Unnamed character';
+        item.appendChild(name);
+
+        creationsCharacters.appendChild(item);
+      });
+    }
+  }
 
   selector.replaceChildren();
 
