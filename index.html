@@ -2843,7 +2843,59 @@ async function veaflowRenderCreationsVideos() {
     console.error('My Videos error:', error);
   }
 }
+async function veaflowRenderCreationsVoiceovers() {
+  const container = document.getElementById('myCreationsVoiceovers');
 
+  if (!container) return;
+
+  container.replaceChildren();
+
+  try {
+    const voiceovers = await veaflowGetCreations('voice');
+
+    if (!voiceovers.length) {
+      container.textContent = 'No saved voiceovers yet.';
+      return;
+    }
+
+    container.className = 'workspace';
+
+    voiceovers.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const audio = document.createElement('audio');
+      const audioUrl = URL.createObjectURL(item.file);
+
+      audio.src = audioUrl;
+      audio.controls = true;
+      audio.style.width = '100%';
+
+      const name = document.createElement('p');
+      name.textContent = item.name || 'Saved voiceover';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn';
+      deleteButton.textContent = 'Delete';
+
+      deleteButton.addEventListener('click', async () => {
+        await veaflowDeleteCreation(item.id);
+        audio.removeAttribute('src');
+        audio.load();
+        URL.revokeObjectURL(audioUrl);
+        await veaflowRenderCreationsVoiceovers();
+      });
+
+      card.append(audio, name, deleteButton);
+      container.appendChild(card);
+    });
+  } catch (error) {
+    container.textContent = 'Could not load saved voiceovers.';
+    console.error('My Voiceovers error:', error);
+  }
+}
+
+veaflowRenderCreationsVoiceovers();
 veaflowRenderCreationsVideos();
 veaflowRenderCreationsImages();
 </script>
