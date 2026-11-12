@@ -2597,6 +2597,31 @@ throw new Error(errorMessage);
 
     result.style.display = "block";
     status.textContent = "Your VEAFLOW AI video is ready!";
+	      try {
+      const videoResponse = await fetch(finalVideoUrl);
+
+      if (!videoResponse.ok) {
+        throw new Error('Could not download the generated video.');
+      }
+
+      const videoBlob = await videoResponse.blob();
+
+      await veaflowSaveCreation(
+        'video',
+        prompt,
+        videoBlob,
+        {
+          prompt: prompt,
+          duration: duration,
+          resolution: resolution,
+          aspectRatio: aspect
+        }
+      );
+
+      console.log('Video saved to My Creations.');
+    } catch (saveError) {
+      console.warn('Video generated but could not be saved:', saveError);
+    }
 
   } catch (error) {
     status.textContent =
