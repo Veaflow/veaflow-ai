@@ -2363,9 +2363,16 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
     }
 
     if (!response.ok) {
-      throw new Error(
-        data.error || data.message || "The video request failed."
-      );
+      const errorMessage =
+  typeof data.error === "string"
+    ? data.error
+    : typeof data.error?.message === "string"
+      ? data.error.message
+      : typeof data.message === "string"
+        ? data.message
+        : "The video request failed.";
+
+throw new Error(errorMessage);
     }
 
     return data;
