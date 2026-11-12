@@ -2305,65 +2305,8 @@ document.getElementById('videoCharacter').addEventListener('change', function() 
   prompt.focus();
 });
 </script>
-	
 
 <script>
-const videoProviderSelect = document.getElementById("videoProvider");
-const videoResolutionSelect = document.getElementById("videoResolution");
-
-function updateVideoResolutionOptions() {
-  const provider = videoProviderSelect.value;
-
-  let option720 = videoResolutionSelect.querySelector(
-    'option[value="720p"]'
-  );
-
-  if (!option720) {
-    option720 = document.createElement("option");
-    option720.value = "720p";
-    option720.textContent = "720p";
-    const option480 = videoResolutionSelect.querySelector(
-      'option[value="480p"]'
-    );
-    videoResolutionSelect.insertBefore(option720, option480.nextSibling);
-  }
-
-  const option768 = videoResolutionSelect.querySelector(
-    'option[value="768p"]'
-  );
-
-  if (provider === "getimg") {
-    option720.disabled = false;
-
-    if (option768) option768.disabled = true;
-
-    if (
-      videoResolutionSelect.value === "768p"
-    ) {
-      videoResolutionSelect.value = "480p";
-    }
-  } else {
-    option720.disabled = true;
-
-    if (option768) option768.disabled = false;
-
-    if (
-      videoResolutionSelect.value === "720p"
-    ) {
-      videoResolutionSelect.value = "480p";
-    }
-  }
-}
-
-if (videoProviderSelect && videoResolutionSelect) {
-  updateVideoResolutionOptions();
-
-  videoProviderSelect.addEventListener(
-    "change",
-    updateVideoResolutionOptions
-  );
-}
-
 document.getElementById("generateAIVideo").addEventListener("click", async () => {
   const button = document.getElementById("generateAIVideo");
   const status = document.getElementById("videoGenerationStatus");
@@ -2379,10 +2322,6 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   const duration = Number(document.getElementById("videoDuration").value);
   const aspect = document.getElementById("videoAspectRatio").value;
   const resolution = document.getElementById("videoResolution").value;
-  const provider = videoProviderSelect.value;
-
-  const imageInput = document.getElementById("videoReferenceImage");
-  const characterIndex = document.getElementById("videoCharacter").value;
 
   if (!token) {
     status.textContent = "Enter your private access password in Image Studio first.";
@@ -2394,40 +2333,24 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
     return;
   }
 
-  let selectedCharacter = null;
-
-  try {
-    const characters = JSON.parse(
-      localStorage.getItem("veaflowCharacters") || "[]"
-    );
-
-    if (characterIndex !== "") {
-      selectedCharacter = characters[Number(characterIndex)];
-    }
-  } catch {
-    status.textContent = "Could not read your saved characters.";
+  if (mode !== "text-to-video") {
+    status.textContent =
+      "This creation mode is temporarily unavailable while Getimg image uploading is being connected. Please select Text-to-Video.";
     return;
   }
 
-  if (mode === "image-to-video" && !imageInput.files[0]) {
-    status.textContent = "Please upload a starting reference image.";
-    return;
-  }
-
-  if (
-    mode === "scene-to-video" &&
-    (!selectedCharacter || !selectedCharacter.image)
-  ) {
-    status.textContent = "Select a saved character with a reference image for AI Scene Generation.";
+  if (!["480p", "720p"].includes(resolution)) {
+    status.textContent = "Please select a supported Getimg resolution.";
     return;
   }
 
   button.disabled = true;
   result.style.display = "none";
-  status.textContent = "Preparing your video request...";
+  status.textContent = "Preparing your Wan 3.0 request...";
 
   const headers = {
-    "Authorization": "Bearer " + token
+    "Authorization": "Bearer " + token,
+    "Content-Type": "application/json"
   };
 
   async function readResponse(response) {
@@ -2448,30 +2371,6 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
     return data;
   }
 
-  async function uploadImage(file) {
-    const form = new FormData();
-    form.append("image", file, file.name || "reference-image.png");
-
-    const response = await fetch(API + "/phosor/upload-image", {
-      method: "POST",
-      headers,
-      body: form
-    });
-
-    const data = await readResponse(response);
-
-    const imageUrl =
-      data.s3_url ||
-      data.data?.s3_url ||
-      data.data?.url;
-
-    if (!imageUrl) {
-      throw new Error("The image uploaded, but no image URL was returned.");
-    }
-
-    return imageUrl;
-  }
-
   function findRequestId(data) {
     if (!data || typeof data !== "object") return "";
 
@@ -2483,16 +2382,13 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
       return "";
     }
 
-    const directId =
-      data.request_id ||
-      data.id;
-
-    if (directId) return directId;
+    const id = data.request_id || data.id;
+    if (id) return id;
 
     for (const value of Object.values(data)) {
       if (value && typeof value === "object") {
-        const id = findRequestId(value);
-        if (id) return id;
+        const found = findRequestId(value);
+        if (found) return found;
       }
     }
 
@@ -2510,12 +2406,10 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
         return;
       }
 
-      const possibleStatus =
-        value.status ||
-        value.request_status;
+      const state = value.status || value.request_status;
 
-      if (typeof possibleStatus === "string") {
-        found = possibleStatus.toLowerCase();
+      if (typeof state === "string") {
+        found = state.toLowerCase();
         return;
       }
 
@@ -2559,249 +2453,86 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   }
 
   try {
-    let imageUrl = "";
-    let referenceImageUrls = [];
+    const requestBody = {
+      model: "wan-3-0",
+      prompt: prompt,
+      aspect_ratio: aspect,
+      resolution: resolution,
+      duration: duration
+    };
 
-    if (mode === "image-to-video") {
-      status.textContent = "Uploading your reference image...";
-      imageUrl = await uploadImage(imageInput.files[0]);
+    status.textContent = "Submitting your video to Getimg Wan 3.0...";
+
+    const submitResponse = await fetch(API + "/generate-video", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(requestBody)
+    });
+
+    const submitted = await readResponse(submitResponse);
+    const requestId = findRequestId(submitted);
+
+    if (!requestId) {
+      throw new Error(
+        "Getimg did not return a request ID. Check your Getimg history before trying again."
+      );
     }
 
-    if (mode === "scene-to-video") {
-      status.textContent = "Uploading your saved character reference...";
+    status.textContent = "Wan 3.0 is processing your video...";
 
-      const characterBlob = await fetch(selectedCharacter.image).then(r => {
-        if (!r.ok) {
-          throw new Error("Could not read the saved character image.");
+    let completed = false;
+    let finalVideoUrl = "";
+
+    for (let attempt = 0; attempt < 120; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      const statusResponse = await fetch(
+        API + "/video-status/" + encodeURIComponent(requestId),
+        {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
         }
-        return r.blob();
-      });
-
-      if (!characterBlob.type.startsWith("image/")) {
-        throw new Error("The saved character does not contain a valid image.");
-      }
-
-      const characterFile = new File(
-        [characterBlob],
-        "saved-character.png",
-        { type: characterBlob.type }
       );
 
-      referenceImageUrls.push(await uploadImage(characterFile));
+      const statusData = await readResponse(statusResponse);
+      const currentStatus = findStatus(statusData);
+
+      if (
+        ["failed", "error", "cancelled"].includes(currentStatus)
+      ) {
+        throw new Error(
+          "Getimg could not complete this video. Check your generation history."
+        );
+      }
+
+      if (
+        ["completed", "succeeded", "success"].includes(currentStatus)
+      ) {
+        finalVideoUrl = findVideoUrl(statusData);
+        completed = true;
+        break;
+      }
+
+      status.textContent =
+        "Wan 3.0 processing... Check " + (attempt + 1) + "/120";
     }
 
-    let requestId = "";
-
-    if (provider === "getimg") {
-      const getimgResolution =
-        resolution === "768p" ? "720p" : resolution;
-
-      const requestBody = {
-        model: "wan-3-0",
-        prompt,
-        aspect_ratio: aspect,
-        resolution: getimgResolution,
-        duration
-      };
-
-      if (mode === "image-to-video") {
-        requestBody.images = [
-          {
-            url: imageUrl,
-            role: "first_frame"
-          }
-        ];
-      }
-
-      if (mode === "scene-to-video") {
-        requestBody.images = [
-          {
-            url: referenceImageUrls[0],
-            role: "reference_image"
-          }
-        ];
-      }
-
-      status.textContent = "Submitting your video to Getimg Wan 3.0...";
-
-      const submitResponse = await fetch(API + "/generate-video", {
-        method: "POST",
-        headers: {
-          ...headers,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      const submitted = await readResponse(submitResponse);
-      requestId = findRequestId(submitted);
-
-      if (!requestId) {
-        throw new Error(
-          "Getimg did not return a request ID. Check your generation history before trying again."
-        );
-      }
-
-      status.textContent = "Wan 3.0 is processing your video...";
-
-      let completed = false;
-      let finalVideoUrl = "";
-
-      for (let attempt = 0; attempt < 120; attempt++) {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
-        const statusResponse = await fetch(
-          API + "/video-status/" + encodeURIComponent(requestId),
-          { headers }
-        );
-
-        const statusData = await readResponse(statusResponse);
-        const currentStatus = findStatus(statusData);
-
-        if (
-          currentStatus === "failed" ||
-          currentStatus === "error"
-        ) {
-          throw new Error("Getimg could not complete this video. Check your generation history.");
-        }
-
-        if (
-          currentStatus === "completed" ||
-          currentStatus === "succeeded" ||
-          currentStatus === "success"
-        ) {
-          finalVideoUrl = findVideoUrl(statusData);
-          completed = true;
-          break;
-        }
-
-        status.textContent =
-          "Wan 3.0 processing... Check " + (attempt + 1) + "/120";
-      }
-
-      if (!completed) {
-        throw new Error(
-          "Your video is taking longer than expected. Check Getimg history before submitting another request."
-        );
-      }
-
-      if (!finalVideoUrl) {
-        throw new Error("Getimg completed the request, but the video URL was not found.");
-      }
-
-      video.src = finalVideoUrl;
-      download.href = finalVideoUrl;
-    }
-
-    else if (provider === "phosor") {
-      let providerMode = "text";
-
-      if (mode === "image-to-video") {
-        providerMode = "image";
-      }
-
-      if (mode === "scene-to-video") {
-        providerMode = "reference";
-      }
-
-      const requestBody = {
-        prompt,
-        mode: providerMode,
-        duration,
-        resolution_tier: resolution,
-        aspect_ratio: aspect
-      };
-
-      if (providerMode === "image") {
-        requestBody.image_url = imageUrl;
-      }
-
-      if (providerMode === "reference") {
-        requestBody.reference_image_urls = referenceImageUrls;
-      }
-
-      status.textContent = "Submitting your video to Phosor MiniMax H3...";
-
-      const submitResponse = await fetch(API + "/phosor/generate-video", {
-        method: "POST",
-        headers: {
-          ...headers,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      const submitted = await readResponse(submitResponse);
-      requestId = findRequestId(submitted);
-
-      if (!requestId) {
-        throw new Error(
-          "Phosor did not return a request ID. Check your Phosor history before trying again."
-        );
-      }
-
-      status.textContent = "Phosor is processing your video...";
-
-      let completed = false;
-
-      for (let attempt = 0; attempt < 120; attempt++) {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
-        const statusResponse = await fetch(
-          API + "/phosor/video-status/" + encodeURIComponent(requestId),
-          { headers }
-        );
-
-        const statusData = await readResponse(statusResponse);
-        const currentStatus = findStatus(statusData);
-
-        if (
-          currentStatus === "failed" ||
-          currentStatus === "error"
-        ) {
-          throw new Error("Phosor could not complete this video. Check your generation history.");
-        }
-
-        if (
-          currentStatus === "completed" ||
-          currentStatus === "succeeded" ||
-          currentStatus === "success"
-        ) {
-          completed = true;
-          break;
-        }
-
-        status.textContent =
-          "Phosor processing... Check " + (attempt + 1) + "/120";
-      }
-
-      if (!completed) {
-        throw new Error(
-          "Your video is taking longer than expected. Check Phosor history before submitting another request."
-        );
-      }
-
-      status.textContent = "Video completed. Retrieving your result...";
-
-      const resultResponse = await fetch(
-        API + "/phosor/video-result/" + encodeURIComponent(requestId),
-        { headers }
+    if (!completed) {
+      throw new Error(
+        "Your video is taking longer than expected. Check Getimg history before submitting another request."
       );
-
-      const resultData = await readResponse(resultResponse);
-      const finalVideoUrl = findVideoUrl(resultData);
-
-      if (!finalVideoUrl) {
-        throw new Error("Phosor completed the request, but the video URL was not found.");
-      }
-
-      video.src = finalVideoUrl;
-      download.href = finalVideoUrl;
     }
 
-    else {
-      throw new Error("Please select a valid video generation provider.");
+    if (!finalVideoUrl) {
+      throw new Error(
+        "Getimg completed the request, but the video URL was not found."
+      );
     }
+
+    video.src = finalVideoUrl;
+    download.href = finalVideoUrl;
+    download.download = "veaflow-ai-video.mp4";
 
     result.style.display = "block";
     status.textContent = "Your VEAFLOW AI video is ready!";
@@ -2814,6 +2545,8 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   }
 });
 </script>
+	
+
 
 	</body>
 
