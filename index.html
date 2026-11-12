@@ -2585,8 +2585,100 @@ throw new Error(errorMessage);
 });
 </script>
 	
+<script>
+function veaflowOpenCreationsDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('VEAFLOWCreations', 1);
 
+    request.onupgradeneeded = () => {
+      const db = request.result;
 
+      if (!db.objectStoreNames.contains('creations')) {
+        db.createObjectStore('creations', {
+          keyPath: 'id'
+        });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function veaflowSaveCreation(type, name, file, metadata = {}) {
+  const db = await veaflowOpenCreationsDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('creations', 'readwrite');
+
+    transaction.objectStore('creations').put({
+      id: Date.now() + '-' + Math.random().toString(16).slice(2),
+      type,
+      name,
+      file,
+      metadata,
+      createdAt: new Date().toISOString()
+    });
+
+    transaction.oncomplete = () => {
+      db.close();
+      resolve(true);
+    };
+
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error);
+    };
+  });
+}
+
+async function veaflowGetCreations(type) {
+  const db = await veaflowOpenCreationsDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('creations', 'readonly');
+    const request = transaction.objectStore('creations').getAll();
+
+    request.onsuccess = () => {
+      const items = request.result.filter(item => item.type === type);
+      resolve(items);
+      db.close();
+    };
+
+    request.onerror = () => {
+      db.close();
+      reject(request.error);
+    };
+  });
+}
+
+async function veaflowDeleteCreation(id) {
+  const db = await veaflowOpenCreationsDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('creations', 'readwrite');
+
+    transaction.objectStore('creations').delete(id);
+
+    transaction.oncomplete = () => {
+      db.close();
+      resolve(true);
+    };
+
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+  });
+}
+</script>
+
+	
 	</body>
 
 </html>
