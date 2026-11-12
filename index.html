@@ -1849,6 +1849,21 @@ async function generateVoice(playAfterGeneration) {
     }
 
     voiceAudioUrl = URL.createObjectURL(finalBlob);
+	      try {
+      await veaflowSaveCreation(
+        'voice',
+        script,
+        finalBlob,
+        {
+          voice: getSelectedVoice(),
+          speed: document.getElementById("voiceSpeed").value
+        }
+      );
+
+      console.log('Voiceover saved to My Creations.');
+    } catch (saveError) {
+      console.warn('Voiceover generated but could not be saved:', saveError);
+    }
 
     audioPlayer.src = voiceAudioUrl;
     audioPlayer.playbackRate = 1;
