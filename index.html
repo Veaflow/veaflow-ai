@@ -1377,13 +1377,133 @@ document.getElementById('clearVideo').addEventListener('click',()=>{
  if(videoUrl)URL.revokeObjectURL(videoUrl);videoUrl='';
 });
 
-document.getElementById('buildPrompt').addEventListener('click',()=>{
- const idea=document.getElementById('idea').value.trim();
- if(!idea){alert('Please describe your idea first.');return;}
- const type=document.getElementById('creationType').value;
- const style=document.getElementById('style').value;
- document.getElementById('outputPrompt').value=
- `${type}. Visual style: ${style}. Scene description: ${idea}. Use clear composition, expressive characters, consistent visual details, professional lighting, high-quality production, and purposeful camera movement.`;
+document.getElementById('buildPrompt').addEventListener('click', () => {
+  const idea = document.getElementById('idea').value.trim();
+
+  if (!idea) {
+    alert('Please describe your idea first.');
+    return;
+  }
+
+  const type = document.getElementById('creationType').value;
+  const style = document.getElementById('style').value;
+  const language = document.getElementById('promptLanguage').value;
+  const model = document.getElementById('videoModel').value;
+  const duration = document.getElementById('videoDuration').value;
+  const format = document.getElementById('videoFormat').value;
+
+  const characters = JSON.parse(
+    localStorage.getItem('veaflowCharacters') || '[]'
+  );
+
+  const characterIndex =
+    document.getElementById('creatorCharacter').value;
+
+  const character = characterIndex !== ''
+    ? characters[Number(characterIndex)]
+    : null;
+
+  const characterDetails = character
+    ? `Main character: ${character.name}.
+Role: ${character.role}.
+Appearance and personality: ${character.description}.
+Maintain the same face, age, hairstyle, clothing and physical appearance throughout the scene.`
+    : 'Create visually consistent characters with realistic proportions and natural expressions.';
+
+  let prompt = '';
+
+  if (type === 'AI video') {
+    prompt = `Create a professional ${style} AI video.
+
+SCENE:
+${idea}
+
+CHARACTER DETAILS:
+${characterDetails}
+
+VIDEO SETTINGS:
+Preferred AI model: ${model === 'auto' ? 'Auto — VEAFLOW chooses the most suitable model' : model}.
+Duration: ${duration} seconds.
+Aspect ratio: ${format}.
+
+CINEMATOGRAPHY:
+Use professional filmmaking techniques, purposeful camera movement, cinematic framing, wide shots, medium shots and expressive close-ups where appropriate. Apply smooth tracking shots, controlled camera movement, atmospheric lighting, realistic shadows, depth of field and carefully composed scenes.
+
+VISUAL QUALITY:
+High-quality production, detailed environments, realistic textures, natural body movement, expressive faces and coherent visual continuity.
+
+STORY DIRECTION:
+Make every movement meaningful. Maintain character consistency and ensure the scene communicates the intended mood.
+
+AVOID:
+Distorted faces, extra fingers, unnatural movement, inconsistent clothing, flickering and unwanted visual artifacts.`;
+  }
+
+  else if (type === 'AI image') {
+    prompt = `Create a professional ${style} AI image.
+
+IMAGE DESCRIPTION:
+${idea}
+
+CHARACTER DETAILS:
+${characterDetails}
+
+VISUAL COMPOSITION:
+Use professional composition, carefully selected camera angle, subject positioning, balanced framing, realistic proportions and appropriate depth of field.
+
+LIGHTING:
+Use cinematic lighting, realistic shadows, detailed highlights and atmospheric visual depth.
+
+IMAGE QUALITY:
+Highly detailed, professional visual quality, realistic textures, expressive faces and polished color grading.
+
+AVOID:
+Distorted anatomy, blurry details, unnatural faces, unwanted text and visual artifacts.`;
+  }
+
+  else if (type === 'Short drama scene') {
+    prompt = `Create a compelling short drama scene in the ${style} style.
+
+SCENE DESCRIPTION:
+${idea}
+
+CHARACTER DETAILS:
+${characterDetails}
+
+STORYTELLING:
+Establish the location and situation clearly. Give characters believable emotions, meaningful actions, natural reactions and expressive interactions. Build emotional tension and make the scene engaging.
+
+CINEMATOGRAPHY:
+Use establishing wide shots, medium dialogue shots, emotional close-ups, reaction shots and smooth tracking movements. Apply atmospheric lighting and cinematic composition.
+
+CONTINUITY:
+Keep character faces, clothing, locations and scene details consistent. Ensure natural movement and believable interactions.`;
+  }
+
+  else if (type === 'Consistent character reference') {
+    prompt = `Create a professional character reference in the ${style} style.
+
+CHARACTER DESCRIPTION:
+${idea}
+
+REFERENCE CHARACTER:
+${characterDetails}
+
+CONSISTENCY REQUIREMENTS:
+Preserve the character's exact facial features, hairstyle, skin details, age, body proportions and clothing. Create a recognizable and repeatable character design.
+
+PRESENTATION:
+Use clear facial views, a full-body view, consistent lighting, neutral background and professional visual composition.
+
+QUALITY:
+Highly detailed, realistic proportions, clean presentation and consistent visual identity.`;
+  }
+
+  const languageInstruction =
+    `\n\nLANGUAGE REQUIREMENT:\nWrite the complete final prompt in ${language}. Translate all descriptive instructions into ${language}, while preserving proper names and AI model names.`;
+
+  document.getElementById('outputPrompt').value =
+    prompt + languageInstruction;
 });
 document.getElementById('clearPrompt').addEventListener('click',()=>{
  document.getElementById('idea').value='';
