@@ -2698,6 +2698,57 @@ async function veaflowDeleteCreation(id) {
     };
   });
 }
+	async function veaflowRenderCreationsImages() {
+  const container = document.getElementById('myCreationsImages');
+
+  if (!container) return;
+
+  container.replaceChildren();
+
+  try {
+    const images = await veaflowGetCreations('image');
+
+    if (!images.length) {
+      container.textContent = 'No saved images yet.';
+      return;
+    }
+
+    container.className = 'workspace';
+
+    images.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const image = document.createElement('img');
+      image.src = URL.createObjectURL(item.file);
+      image.alt = item.name || 'Saved image';
+      image.style.cssText =
+        'width:100%;max-height:220px;object-fit:contain;border-radius:10px;';
+
+      const name = document.createElement('p');
+      name.textContent = item.name || 'Saved image';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn';
+      deleteButton.textContent = 'Delete';
+
+      deleteButton.addEventListener('click', async () => {
+        await veaflowDeleteCreation(item.id);
+        image.removeAttribute('src');
+        URL.revokeObjectURL(image.src);
+        await veaflowRenderCreationsImages();
+      });
+
+      card.append(image, name, deleteButton);
+      container.appendChild(card);
+    });
+  } catch (error) {
+    container.textContent = 'Could not load saved images.';
+    console.error('My Images error:', error);
+  }
+}
+
+veaflowRenderCreationsImages();
 </script>
 
 	
