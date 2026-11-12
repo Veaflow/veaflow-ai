@@ -1407,12 +1407,20 @@ document.getElementById('buildPrompt').addEventListener('click', () => {
     ? characters[Number(characterIndex)]
     : null;
 
-  const characterDetails = character
-    ? `Main character: ${character.name}.
+const lockCharacter = document.getElementById(
+  'characterConsistencyLock'
+).checked;
+
+const characterDetails = character
+  ? `Main character: ${character.name}.
 Role: ${character.role}.
 Appearance and personality: ${character.description}.
-Maintain the same face, age, hairstyle, clothing and physical appearance throughout the scene.`
-    : 'Create visually consistent characters with realistic proportions and natural expressions.';
+${
+  lockCharacter
+    ? 'STRICT CHARACTER CONSISTENCY: Use the selected character as the primary visual reference. Preserve the exact facial identity, skin tone, hairstyle, age, body proportions and clothing across every shot. Do not replace the character with another person.'
+    : 'CHARACTER FLEXIBILITY: Use the selected character as a starting reference while allowing creative changes to styling, clothing and presentation.'
+}`
+  : 'Create visually consistent characters with realistic proportions and natural expressions.';
 
   let prompt = '';
 
