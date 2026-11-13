@@ -1238,10 +1238,17 @@ footer{
   <h2>Settings</h2>
   <p class="muted">Manage your VEAFLOW AI workspace.</p>
   <div class="card">
-    <h3>Workspace preferences</h3>
-    <p class="sub">Your workspace settings will appear here.</p>
-    <p>Account settings · Appearance · Preferences</p>
-  </div>
+  <h3>Workspace preferences</h3>
+  <p class="sub">Customize how your VEAFLOW AI workspace looks.</p>
+
+  <label for="themeSelect">Appearance</label>
+  <select id="themeSelect">
+    <option value="dark">Dark Theme</option>
+    <option value="light">Light Theme</option>
+  </select>
+
+  <p id="themeStatus" class="sub"></p>
+</div>
 </section>
 
 <section class="section" id="plans">
