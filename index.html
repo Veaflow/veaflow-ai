@@ -1149,7 +1149,17 @@ footer{
 <div class="actions"><button class="btn" id="buildPrompt">Build my prompt</button><button class="btn secondary" id="clearPrompt">Clear</button></div>
 </div>
 <div class="card"><h3>Your prompt</h3><p class="sub">Review and copy your prompt into your chosen AI tool.</p><textarea id="outputPrompt" placeholder="Your refined prompt will appear here..."></textarea><div class="actions"><button class="btn" id="copyPrompt">Copy prompt</button></div><div class="notice">Actual AI image and video generation is not connected yet. That requires an AI service and secure backend.</div></div>
-	
+<div class="actions">
+  <button class="btn" id="creatorGenerateImage">
+    Generate AI Image
+  </button>
+</div>
+
+<p id="creatorImageStatus" class="notice">
+  Build an image prompt before generating.
+</p>
+
+<div id="creatorImageResult"></div>	
 
 
 </div>
