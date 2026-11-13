@@ -3062,6 +3062,93 @@ async function veaflowRenderCreationsVoiceovers() {
   }
 }
 
+document.getElementById('creatorGenerateImage').addEventListener('click', async () => {
+  const button = document.getElementById('creatorGenerateImage');
+  const token = document.getElementById('veaflowAccess').value.trim();
+  const prompt = document.getElementById('outputPrompt').value.trim();
+  const status = document.getElementById('creatorImageStatus');
+  const result = document.getElementById('creatorImageResult');
+
+  if (!token || !prompt) {
+    status.textContent = 'Build your prompt and enter your access password first.';
+    return;
+  }
+
+  if (document.getElementById('creationType').value !== 'AI image') {
+    status.textContent = 'Select AI image under What do you want to create?';
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = 'Connecting to VEAFLOW AI...';
+  result.replaceChildren();
+
+  try {
+    const response = await fetch(
+      'https://veaflow-ai-api.ovarcon.workers.dev/generate-image',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ prompt })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        typeof data.error === 'string'
+          ? data.error
+          : 'Image generation failed.'
+      );
+    }
+
+    const imageUrl = data.data?.[0]?.url;
+
+    if (!imageUrl) {
+      throw new Error('No image URL was returned.');
+    }
+
+    const image = document.createElement('img');
+    image.src = imageUrl;
+    image.alt = 'VEAFLOW AI Creator image';
+    image.style.cssText =
+      'width:100%;max-width:600px;border-radius:12px;margin-top:12px;';
+
+    result.appendChild(image);
+    status.textContent = 'Your AI Creator image is ready!';
+
+    try {
+      const imageResponse = await fetch(imageUrl);
+
+      if (!imageResponse.ok) {
+        throw new Error('Could not download the generated image.');
+      }
+
+      const imageBlob = await imageResponse.blob();
+
+      await veaflowSaveCreation(
+        'image',
+        prompt,
+        imageBlob,
+        { prompt, source: 'AI Creator' }
+      );
+
+      console.log('AI Creator image saved to My Creations.');
+    } catch (saveError) {
+      console.warn('Image generated but could not be saved:', saveError);
+    }
+
+  } catch (error) {
+    status.textContent = error.message || 'Image generation failed.';
+  } finally {
+    button.disabled = false;
+  }
+});
+
 veaflowRenderCreationsVoiceovers();
 veaflowRenderCreationsVideos();
 veaflowRenderCreationsImages();
