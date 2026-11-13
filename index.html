@@ -3237,7 +3237,31 @@ document.getElementById('saveAccount').addEventListener('click', () => {
 
   accountStatus.textContent = 'Profile saved successfully!';
 });
-</script>	
+</script>
+	<script>
+const themeSelect = document.getElementById('themeSelect');
+const themeStatus = document.getElementById('themeStatus');
+
+const savedTheme = localStorage.getItem('veaflowTheme') || 'dark';
+
+document.body.classList.toggle('light-theme', savedTheme === 'light');
+
+if (themeSelect) {
+  themeSelect.value = savedTheme;
+
+  themeSelect.addEventListener('change', () => {
+    const selectedTheme = themeSelect.value;
+
+    document.body.classList.toggle(
+      'light-theme',
+      selectedTheme === 'light'
+    );
+
+    localStorage.setItem('veaflowTheme', selectedTheme);
+    themeStatus.textContent = 'Appearance preference saved!';
+  });
+}
+</script>
 	</body>
 
 </html>
