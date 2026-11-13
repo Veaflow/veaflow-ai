@@ -1405,6 +1405,17 @@ document.getElementById('buildPrompt').addEventListener('click', () => {
   const model = document.getElementById('videoModel').value;
   const duration = document.getElementById('videoDuration').value;
   const format = document.getElementById('videoFormat').value;
+	const cameraMovement = document.getElementById('cameraMovement').value;
+
+const cameraMovementInstruction = {
+  auto: 'Choose the most suitable cinematic camera movement for the scene.',
+  tracking: 'Use smooth cinematic tracking shots that follow the subject naturally.',
+  'push-in': 'Use slow, dramatic camera push-ins to emphasize important emotions and moments.',
+  aerial: 'Use cinematic drone and aerial movements to establish locations and reveal the environment.',
+  handheld: 'Use controlled handheld camera movement to create energy, urgency and realism.',
+  static: 'Use carefully composed static dramatic shots with deliberate framing.',
+  orbit: 'Use smooth cinematic orbit movements around the main subject.'
+}[cameraMovement];
 
   const characters = JSON.parse(
     localStorage.getItem('veaflowCharacters') || '[]'
