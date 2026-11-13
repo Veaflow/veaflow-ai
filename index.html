@@ -1564,7 +1564,7 @@ const characterPreview = document.getElementById('characterPreview');
 
 let characterImageUrl = '';
 
-characterImage.addEventListener('change', () => {
+if (characterImage) characterImage.addEventListener('change', () => {
   const file = characterImage.files[0];
 
   if (!file) return;
