@@ -3167,7 +3167,29 @@ veaflowRenderCreationsVideos();
 veaflowRenderCreationsImages();
 </script>
 
-	
+<script>
+const accountName = document.getElementById('accountName');
+const accountEmail = document.getElementById('accountEmail');
+const accountStatus = document.getElementById('accountStatus');
+
+const savedAccount = JSON.parse(
+  localStorage.getItem('veaflowAccount') || '{}'
+);
+
+accountName.value = savedAccount.name || '';
+accountEmail.value = savedAccount.email || '';
+
+document.getElementById('saveAccount').addEventListener('click', () => {
+  const account = {
+    name: accountName.value.trim(),
+    email: accountEmail.value.trim()
+  };
+
+  localStorage.setItem('veaflowAccount', JSON.stringify(account));
+
+  accountStatus.textContent = 'Profile saved successfully!';
+});
+</script>	
 	</body>
 
 </html>
