@@ -3311,7 +3311,22 @@ if (themeSelect) {
     );
 
     localStorage.setItem('veaflowTheme', selectedTheme);
-    themeStatus.textContent = 'Appearance preference saved!';
+        themeStatus.textContent = 'Appearance preference saved!';
+  });
+}
+
+// LANGUAGE PREFERENCE
+const languageSelect = document.getElementById('languageSelect');
+const languageStatus = document.getElementById('languageStatus');
+
+const savedLanguage = localStorage.getItem('veaflowLanguage') || 'en';
+
+if (languageSelect) {
+  languageSelect.value = savedLanguage;
+
+  languageSelect.addEventListener('change', () => {
+    localStorage.setItem('veaflowLanguage', languageSelect.value);
+    languageStatus.textContent = 'Language preference saved!';
   });
 }
 </script>
