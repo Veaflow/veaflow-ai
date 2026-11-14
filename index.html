@@ -3498,6 +3498,32 @@ document.getElementById('supportSubmit').addEventListener('click', () => {
 window.open(gmailURL, '_blank');
 });
 </script>
+	<script>
+function veaflowUpdateCustomerProfile() {
+  const profileName = document.getElementById('dashboardCustomerName');
+
+  if (!profileName) return;
+
+  const savedAccount = JSON.parse(
+    localStorage.getItem('veaflowAccount') || '{}'
+  );
+
+  profileName.textContent = savedAccount.name
+    ? 'Welcome, ' + savedAccount.name
+    : 'Welcome to VEAFLOW AI';
+}
+
+veaflowUpdateCustomerProfile();
+
+const accountSaveButton = document.getElementById('saveAccount');
+
+if (accountSaveButton) {
+  accountSaveButton.addEventListener(
+    'click',
+    veaflowUpdateCustomerProfile
+  );
+}
+</script>
 	</body>
 
 </html>
