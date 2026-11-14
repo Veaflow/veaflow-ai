@@ -3425,6 +3425,23 @@ if (languageSelect) {
   });
 }
 </script>
+	<script>
+document.getElementById('supportSubmit').addEventListener('click', () => {
+  const message = document.getElementById('supportMessage').value.trim();
+
+  if (!message) {
+    document.getElementById('supportStatus').textContent =
+      'Please describe your problem first.';
+    return;
+  }
+
+  const subject = encodeURIComponent('VEAFLOW AI Support Request');
+  const body = encodeURIComponent(message);
+
+  window.location.href =
+    `mailto:ovacon@gmail.com?subject=${subject}&body=${body}`;
+});
+</script>
 	</body>
 
 </html>
