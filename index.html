@@ -674,6 +674,29 @@ footer{
   color: var(--muted);
   font-size: 11px;
 }
+
+/* VEAFLOW VIDEO CREATION HUB + FILM STUDIO */
+.video-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0 26px}
+.video-hub-card{position:relative;min-height:150px;padding:18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,rgba(150,59,255,.13),rgba(243,38,80,.08)),var(--panel);text-align:left;color:var(--text)}
+.video-hub-card.active{border-color:var(--purple);box-shadow:0 0 22px rgba(150,59,255,.16)}
+.video-hub-card:disabled{opacity:.62;cursor:not-allowed}
+.video-hub-card .hub-icon{font-size:25px;display:block;margin-bottom:12px}
+.video-hub-card strong{display:block;font-size:15px;margin-bottom:7px}
+.video-hub-card small{color:var(--muted);line-height:1.4}
+.hub-status{display:inline-block;margin-top:12px;padding:4px 8px;border-radius:20px;font-size:10px;letter-spacing:.08em;background:rgba(150,59,255,.18);color:#d9baff}
+.film-studio{margin-top:18px}
+.film-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.film-field{min-width:0}
+.film-field textarea{min-height:105px}
+.film-scenes{display:grid;gap:10px;margin-top:14px}
+.film-scene{padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.film-scene-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.film-scene input,.film-scene textarea{width:100%;margin:5px 0}
+.film-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.film-note{font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:900px){.video-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.video-hub-grid,.film-grid{grid-template-columns:1fr}}
+
 </style>
 
 </head>
@@ -825,6 +848,48 @@ footer{
 <section class="section" id="video-ai">
   <h2>AI Video Studio</h2>
   <p class="muted">Transform your ideas into cinematic videos and stories.</p>
+
+  <h3>Video Creation Hub</h3>
+  <p class="sub">Choose the creative workspace you want to use. Film Studio is available now; more studios will be introduced gradually.</p>
+  <div class="video-hub-grid" aria-label="Video creation studios">
+    <button class="video-hub-card active" type="button" id="openFilmStudio"><span class="hub-icon">🎬</span><strong>Film Studio</strong><small>Plan a complete film, organize scenes and build cinematic shot prompts.</small><span class="hub-status">AVAILABLE NOW</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎨</span><strong>Animation Creator</strong><small>Create animated stories and visual worlds.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">📱</span><strong>Short Videos Creator</strong><small>Plan vertical videos for Shorts and social platforms.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">📢</span><strong>Ad Creator</strong><small>Build product advertisements and promotional scenes.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎭</span><strong>Drama Creator</strong><small>Develop episodic drama and character-driven stories.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎵</span><strong>Music Video Creator</strong><small>Plan music-led visuals and performance sequences.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">🧑‍💼</span><strong>AI Presenter</strong><small>Prepare presenter-led videos and explainers.</small><span class="hub-status">COMING SOON</span></button>
+    <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎥</span><strong>Documentary Creator</strong><small>Structure factual films, interviews and narration.</small><span class="hub-status">COMING SOON</span></button>
+  </div>
+
+  <div class="card film-studio" id="filmStudioWorkspace">
+    <h3>🎬 VEAFLOW Film Studio</h3>
+    <p class="sub">Build your film plan before generating any footage. Your project and scenes are saved in this browser.</p>
+    <div class="film-grid">
+      <div class="film-field"><label for="filmProjectTitle">Film / project title</label><input id="filmProjectTitle" type="text" placeholder="e.g. The Millionaire’s Secret"></div>
+      <div class="film-field"><label for="filmGenre">Genre</label><select id="filmGenre"><option>Drama</option><option>Romance</option><option>Action thriller</option><option>Comedy</option><option>Crime / Mystery</option><option>Documentary</option><option>Fantasy</option></select></div>
+      <div class="film-field"><label for="filmStyle">Visual style</label><select id="filmStyle"><option>Cinematic realism</option><option>Romantic drama</option><option>Action thriller</option><option>Luxury lifestyle</option><option>Documentary realism</option><option>Animation</option></select></div>
+      <div class="film-field"><label for="filmFormat">Film format</label><select id="filmFormat"><option value="16:9">16:9 — YouTube / Landscape</option><option value="9:16">9:16 — Vertical</option><option value="1:1">1:1 — Square</option></select></div>
+      <div class="film-field"><label for="filmDuration">Target film length</label><select id="filmDuration"><option>1 minute</option><option>3 minutes</option><option selected>5 minutes</option><option>10 minutes</option><option>20 minutes</option><option>30 minutes</option></select></div>
+      <div class="film-field"><label for="filmCharacter">Main character reference</label><select id="filmCharacter"><option value="">No saved character selected</option></select><p class="film-note">Uses characters already saved in Character Studio. You can still write character details below.</p></div>
+    </div>
+    <label for="filmPremise">Story premise</label>
+    <textarea id="filmPremise" placeholder="What is this film about? Describe the central idea, conflict and what makes the story interesting..."></textarea>
+    <label for="filmCharacterNotes">Character and continuity notes</label>
+    <textarea id="filmCharacterNotes" placeholder="Describe the main characters, appearance, clothing, personality and details that must stay consistent..."></textarea>
+    <div class="row" style="align-items:center;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap">
+      <div><h3 style="margin:0">Scene Breakdown</h3><p class="film-note">Create scenes and shot descriptions for your film.</p></div>
+      <button class="btn secondary" type="button" id="addFilmScene">+ Add Scene</button>
+    </div>
+    <div id="filmScenes" class="film-scenes"></div>
+    <div class="film-actions">
+      <button class="btn" type="button" id="saveFilmProject">Save Film Project</button>
+      <button class="btn secondary" type="button" id="exportFilmPlan">Export Film Plan</button>
+      <button class="btn secondary" type="button" id="loadFilmProject">Load Saved Project</button>
+    </div>
+    <p class="notice" id="filmStudioStatus" aria-live="polite">Ready. Plan your film here; no AI generation or provider charges happen when saving a project.</p>
+    <p class="film-note">Important: Film Studio currently creates and saves your production plan only. AI video generation is a separate action in the existing generator below and may use paid provider credits.</p>
+  </div>
 
   <div class="card">
     <h3>Create an AI Video</h3>
@@ -1194,6 +1259,11 @@ footer{
   <p class="muted" id="trimMessage">
     Upload a video to begin trimming.
   </p>
+  <div class="actions" style="margin-top:12px;flex-wrap:wrap">
+    <button class="btn" id="exportMP4" type="button">Export Selected Clip as MP4</button>
+    <a class="btn secondary" id="downloadMP4" style="display:none" download="veaflow-edited.mp4">Download MP4</a>
+  </div>
+  <p class="muted" id="exportMessage" aria-live="polite">MP4 export uses your browser’s local video engine.</p>
 </div>
 
 <div class="actions"><button class="btn secondary" id="clearVideo">Remove video</button></div>
@@ -1217,8 +1287,8 @@ footer{
   <option value="veo">Veo</option>
   <option value="wan">Wan</option>
 </select>
-	<label for="videoDuration">Video duration</label>
-<select id="videoDuration">
+	<label for="creatorVideoDuration">Video duration</label>
+<select id="creatorVideoDuration">
   <option value="5">5 seconds</option>
   <option value="10">10 seconds</option>
   <option value="15">15 seconds</option>
@@ -1693,7 +1763,7 @@ document.getElementById('buildPrompt').addEventListener('click', () => {
   const style = document.getElementById('style').value;
   const language = document.getElementById('promptLanguage').value;
   const model = document.getElementById('videoModel').value;
-  const duration = document.getElementById('videoDuration').value;
+  const duration = document.getElementById('creatorVideoDuration').value;
   const format = document.getElementById('videoFormat').value;
 	const cameraMovement = document.getElementById('cameraMovement').value;
 
@@ -1909,7 +1979,7 @@ const previewVoiceBtn = document.getElementById('previewVoice');
 const stopVoiceBtn = document.getElementById('stopVoice');
 
 
-stopVoiceBtn.addEventListener('click', () => {
+if (stopVoiceBtn) stopVoiceBtn.addEventListener('click', () => {
   window.speechSynthesis.cancel();
 });
 </script>
@@ -1967,11 +2037,13 @@ status.textContent = '❌ Loading failed: ' + String(error);
 }
 
 window.addEventListener('load', testFFmpeg);
-	document.getElementById('exportMP4').addEventListener('click', async () => {
+	const exportButton = document.getElementById('exportMP4');
+if (exportButton) exportButton.addEventListener('click', async () => {
   const button = document.getElementById('exportMP4');
   const message = document.getElementById('exportMessage');
   const download = document.getElementById('downloadMP4');
 
+  if (!button || !message || !download) return;
   if (!ffmpeg || !ffmpeg.loaded) {
     message.textContent = 'Video engine is not ready yet.';
     return;
@@ -3498,6 +3570,147 @@ document.getElementById('supportSubmit').addEventListener('click', () => {
 window.open(gmailURL, '_blank');
 });
 </script>
+
+<script>
+// VEAFLOW Film Studio: local project planning only; never submits paid generation jobs.
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const scenesEl = $('filmScenes');
+  if (!scenesEl) return;
+  let sceneCounter = 0;
+  const status = (message) => { $('filmStudioStatus').textContent = message; };
+
+  function refreshFilmCharacters() {
+    const select = $('filmCharacter');
+    if (!select) return;
+    const previous = select.value;
+    let characters = [];
+    try { characters = JSON.parse(localStorage.getItem('veaflowCharacters') || '[]'); } catch (_) {}
+    select.innerHTML = '<option value="">No saved character selected</option>';
+    characters.forEach((character, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = character.name || ('Saved character ' + (index + 1));
+      select.appendChild(option);
+    });
+    if ([...select.options].some(option => option.value === previous)) select.value = previous;
+  }
+
+  function addScene(data = {}) {
+    sceneCounter += 1;
+    const card = document.createElement('div');
+    card.className = 'film-scene';
+    card.dataset.scene = String(sceneCounter);
+    const head = document.createElement('div');
+    head.className = 'film-scene-head';
+    const heading = document.createElement('strong');
+    heading.textContent = 'Scene ' + sceneCounter;
+    const remove = document.createElement('button');
+    remove.type = 'button'; remove.className = 'btn secondary'; remove.textContent = 'Remove';
+    remove.addEventListener('click', () => { card.remove(); renumberScenes(); });
+    head.append(heading, remove);
+    const title = document.createElement('input'); title.type = 'text'; title.className = 'film-scene-title';
+    title.placeholder = 'Scene title / location'; title.value = data.title || '';
+    const description = document.createElement('textarea'); description.className = 'film-scene-description';
+    description.placeholder = 'What happens in this scene? Describe the action, emotion and story beat...';
+    description.value = data.description || '';
+    const shot = document.createElement('textarea'); shot.className = 'film-scene-shot';
+    shot.placeholder = 'Cinematic shot prompt: framing, camera movement, lighting, atmosphere...';
+    shot.value = data.shot || '';
+    const voice = document.createElement('input'); voice.type = 'text'; voice.className = 'film-scene-voice';
+    voice.placeholder = 'Dialogue / voiceover notes (optional)'; voice.value = data.voice || '';
+    card.append(head, title, description, shot, voice);
+    scenesEl.appendChild(card);
+  }
+
+  function renumberScenes() {
+    [...scenesEl.querySelectorAll('.film-scene')].forEach((card, index) => {
+      const heading = card.querySelector('strong');
+      if (heading) heading.textContent = 'Scene ' + (index + 1);
+    });
+    sceneCounter = scenesEl.children.length;
+  }
+
+  function collectProject() {
+    const characterSelect = $('filmCharacter');
+    let character = '';
+    if (characterSelect && characterSelect.value !== '') {
+      try {
+        const list = JSON.parse(localStorage.getItem('veaflowCharacters') || '[]');
+        character = list[Number(characterSelect.value)]?.name || '';
+      } catch (_) {}
+    }
+    return {
+      title: $('filmProjectTitle').value.trim(), genre: $('filmGenre').value,
+      style: $('filmStyle').value, format: $('filmFormat').value,
+      duration: $('filmDuration').value, character,
+      premise: $('filmPremise').value.trim(), characterNotes: $('filmCharacterNotes').value.trim(),
+      scenes: [...scenesEl.querySelectorAll('.film-scene')].map(card => ({
+        title: card.querySelector('.film-scene-title').value.trim(),
+        description: card.querySelector('.film-scene-description').value.trim(),
+        shot: card.querySelector('.film-scene-shot').value.trim(),
+        voice: card.querySelector('.film-scene-voice').value.trim()
+      }))
+    };
+  }
+
+  function applyProject(project) {
+    $('filmProjectTitle').value = project.title || '';
+    $('filmGenre').value = project.genre || 'Drama';
+    $('filmStyle').value = project.style || 'Cinematic realism';
+    $('filmFormat').value = project.format || '16:9';
+    $('filmDuration').value = project.duration || '5 minutes';
+    $('filmPremise').value = project.premise || '';
+    $('filmCharacterNotes').value = project.characterNotes || '';
+    refreshFilmCharacters();
+    const characterSelect = $('filmCharacter');
+    if (project.character && characterSelect) {
+      const option = [...characterSelect.options].find(item => item.textContent === project.character);
+      if (option) characterSelect.value = option.value;
+    }
+    scenesEl.innerHTML = ''; sceneCounter = 0;
+    (project.scenes || []).forEach(scene => addScene(scene));
+    if (!scenesEl.children.length) addScene();
+  }
+
+  $('addFilmScene').addEventListener('click', () => addScene());
+  $('saveFilmProject').addEventListener('click', () => {
+    const project = collectProject();
+    if (!project.title) { status('Please enter a film or project title before saving.'); $('filmProjectTitle').focus(); return; }
+    try {
+      localStorage.setItem('veaflowFilmStudioProject', JSON.stringify(project));
+      status('Film project saved in this browser. No AI generation was started and no provider credits were used.');
+    } catch (error) { status('Could not save this project in browser storage: ' + error.message); }
+  });
+  $('loadFilmProject').addEventListener('click', () => {
+    try {
+      const saved = localStorage.getItem('veaflowFilmStudioProject');
+      if (!saved) { status('No saved Film Studio project was found in this browser yet.'); return; }
+      applyProject(JSON.parse(saved)); status('Your saved Film Studio project has been loaded.');
+    } catch (error) { status('Could not load the saved project: ' + error.message); }
+  });
+  $('exportFilmPlan').addEventListener('click', () => {
+    const project = collectProject();
+    const lines = [project.title || 'Untitled VEAFLOW Film Project', '', 'Genre: ' + project.genre,
+      'Visual style: ' + project.style, 'Format: ' + project.format, 'Target length: ' + project.duration,
+      'Main character: ' + (project.character || 'Not selected'), '', 'STORY PREMISE', project.premise || 'Not written',
+      '', 'CHARACTER / CONTINUITY NOTES', project.characterNotes || 'Not written', '', 'SCENE BREAKDOWN'];
+    project.scenes.forEach((scene, index) => lines.push('', 'SCENE ' + (index + 1) + ': ' + (scene.title || 'Untitled'),
+      'Action: ' + (scene.description || 'Not written'), 'Shot prompt: ' + (scene.shot || 'Not written'),
+      'Dialogue / voiceover: ' + (scene.voice || 'Not written')));
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob); const link = document.createElement('a');
+    link.href = url; link.download = (project.title || 'veaflow-film-plan').replace(/[^a-z0-9-_]+/gi, '-').toLowerCase() + '.txt';
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    status('Film plan exported as a text file.');
+  });
+  const openButton = $('openFilmStudio');
+  if (openButton) openButton.addEventListener('click', () => $('filmStudioWorkspace').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  refreshFilmCharacters(); addScene();
+  window.addEventListener('storage', refreshFilmCharacters);
+})();
+</script>
+
 	<script>
 function veaflowUpdateCustomerProfile() {
   const profileName = document.getElementById('dashboardCustomerName');
