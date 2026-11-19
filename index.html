@@ -697,6 +697,34 @@ footer{
 @media(max-width:900px){.video-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.video-hub-grid,.film-grid{grid-template-columns:1fr}}
 
+
+/* VEAFLOW Film Studio production workspace */
+.film-studio-pro{padding:clamp(18px,3vw,32px);border:1px solid rgba(150,59,255,.35);background:linear-gradient(145deg,rgba(32,20,48,.98),rgba(13,12,25,.98));}
+.film-studio-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.film-eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:#bd8cff}
+.film-studio-heading h3{font-size:clamp(24px,3vw,34px);margin:7px 0}
+.film-status-pill{font-size:10px;letter-spacing:1px;border:1px solid rgba(189,140,255,.45);color:#d9c1ff;border-radius:30px;padding:8px 12px}
+.film-workflow-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:20px 0 28px}
+.film-step{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#e9e1f2}
+.film-step b,.film-step-number{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#963bff,#f32650);font-size:11px;color:white}
+.film-section-block{padding:22px 0;border-top:1px solid rgba(255,255,255,.1)}
+.film-section-title{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.film-section-title>div{flex:1}
+.film-section-title h4{font-size:18px;margin:0 0 4px;color:#fff}
+.film-section-title p{font-size:12px;color:#bdb3c8;margin:0}
+.film-grid-compact{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0}
+.film-generation-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(240px,.7fr);gap:18px;align-items:stretch}
+.film-generation-controls,.film-output-panel{padding:18px;border-radius:14px;background:rgba(5,5,14,.45);border:1px solid rgba(255,255,255,.09);min-width:0}
+.film-output-panel{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:260px}
+.film-output-panel h4{margin:12px 0 6px;color:#fff}
+.film-output-panel p{font-size:12px;color:#bdb3c8;max-width:260px}
+.film-output-icon{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(150,59,255,.3),rgba(243,38,80,.2));border:1px solid rgba(189,140,255,.35);font-size:25px}
+.film-next-step{padding-bottom:4px}
+.film-note{font-size:11px;color:#bdb3c8;line-height:1.55}
+.film-studio-pro textarea{min-height:92px}
+.film-studio-pro .film-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+@media(max-width:760px){.film-workflow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.film-generation-layout{grid-template-columns:1fr}.film-section-title{align-items:flex-start}.film-grid-compact{grid-template-columns:1fr}}
+
 </style>
 
 </head>
@@ -862,136 +890,87 @@ footer{
     <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎥</span><strong>Documentary Creator</strong><small>Structure factual films, interviews and narration.</small><span class="hub-status">COMING SOON</span></button>
   </div>
 
-  <div class="card film-studio" id="filmStudioWorkspace">
-    <h3>🎬 VEAFLOW Film Studio</h3>
-    <p class="sub">Build your film plan before generating any footage. Your project and scenes are saved in this browser.</p>
-    <div class="film-grid">
-      <div class="film-field"><label for="filmProjectTitle">Film / project title</label><input id="filmProjectTitle" type="text" placeholder="e.g. The Millionaire’s Secret"></div>
-      <div class="film-field"><label for="filmGenre">Genre</label><select id="filmGenre"><option>Drama</option><option>Romance</option><option>Action thriller</option><option>Comedy</option><option>Crime / Mystery</option><option>Documentary</option><option>Fantasy</option></select></div>
-      <div class="film-field"><label for="filmStyle">Visual style</label><select id="filmStyle"><option>Cinematic realism</option><option>Romantic drama</option><option>Action thriller</option><option>Luxury lifestyle</option><option>Documentary realism</option><option>Animation</option></select></div>
-      <div class="film-field"><label for="filmFormat">Film format</label><select id="filmFormat"><option value="16:9">16:9 — YouTube / Landscape</option><option value="9:16">9:16 — Vertical</option><option value="1:1">1:1 — Square</option></select></div>
-      <div class="film-field"><label for="filmDuration">Target film length</label><select id="filmDuration"><option>1 minute</option><option>3 minutes</option><option selected>5 minutes</option><option>10 minutes</option><option>20 minutes</option><option>30 minutes</option></select></div>
-      <div class="film-field"><label for="filmCharacter">Main character reference</label><select id="filmCharacter"><option value="">No saved character selected</option></select><p class="film-note">Uses characters already saved in Character Studio. You can still write character details below.</p></div>
+  <div class="card film-studio film-studio-pro" id="filmStudioWorkspace">
+    <div class="film-studio-heading">
+      <div>
+        <span class="film-eyebrow">VEAFLOW AI • PRODUCTION WORKSPACE</span>
+        <h3>🎬 Film Studio</h3>
+        <p class="sub">Develop your story, plan every scene, create footage and prepare your film for editing.</p>
+      </div>
+      <span class="film-status-pill">PROJECT WORKSPACE</span>
     </div>
-    <label for="filmPremise">Story premise</label>
-    <textarea id="filmPremise" placeholder="What is this film about? Describe the central idea, conflict and what makes the story interesting..."></textarea>
-    <label for="filmCharacterNotes">Character and continuity notes</label>
-    <textarea id="filmCharacterNotes" placeholder="Describe the main characters, appearance, clothing, personality and details that must stay consistent..."></textarea>
-    <div class="row" style="align-items:center;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap">
-      <div><h3 style="margin:0">Scene Breakdown</h3><p class="film-note">Create scenes and shot descriptions for your film.</p></div>
-      <button class="btn secondary" type="button" id="addFilmScene">+ Add Scene</button>
+
+    <div class="film-workflow-steps" aria-label="Film production workflow">
+      <div class="film-step"><b>01</b><span>Develop story</span></div>
+      <div class="film-step"><b>02</b><span>Plan scenes</span></div>
+      <div class="film-step"><b>03</b><span>Generate footage</span></div>
+      <div class="film-step"><b>04</b><span>Edit & export</span></div>
     </div>
-    <div id="filmScenes" class="film-scenes"></div>
-    <div class="film-actions">
-      <button class="btn" type="button" id="saveFilmProject">Save Film Project</button>
-      <button class="btn secondary" type="button" id="exportFilmPlan">Export Film Plan</button>
-      <button class="btn secondary" type="button" id="loadFilmProject">Load Saved Project</button>
+
+    <div class="film-section-block">
+      <div class="film-section-title"><span class="film-step-number">01</span><div><h4>Project foundation</h4><p>Set the creative direction for your film.</p></div></div>
+      <div class="film-grid">
+        <div class="film-field"><label for="filmProjectTitle">Film / project title</label><input id="filmProjectTitle" type="text" placeholder="e.g. The Millionaire’s Secret"></div>
+        <div class="film-field"><label for="filmGenre">Genre</label><select id="filmGenre"><option>Drama</option><option>Romance</option><option>Action thriller</option><option>Comedy</option><option>Crime / Mystery</option><option>Documentary</option><option>Fantasy</option></select></div>
+        <div class="film-field"><label for="filmStyle">Visual style</label><select id="filmStyle"><option>Cinematic realism</option><option>Romantic drama</option><option>Action thriller</option><option>Luxury lifestyle</option><option>Documentary realism</option><option>Animation</option></select></div>
+        <div class="film-field"><label for="filmFormat">Film format</label><select id="filmFormat"><option value="16:9">16:9 — YouTube / Landscape</option><option value="9:16">9:16 — Vertical</option><option value="1:1">1:1 — Square</option></select></div>
+        <div class="film-field"><label for="filmDuration">Target film length</label><select id="filmDuration"><option>1 minute</option><option>3 minutes</option><option selected>5 minutes</option><option>10 minutes</option><option>20 minutes</option><option>30 minutes</option></select></div>
+        <div class="film-field"><label for="filmCharacter">Main character reference</label><select id="filmCharacter"><option value="">No saved character selected</option></select><p class="film-note">Choose a character saved in Character Studio.</p></div>
+      </div>
+      <label for="filmPremise">Story premise</label>
+      <textarea id="filmPremise" placeholder="Describe the central idea, conflict, characters and what makes this story compelling..."></textarea>
+      <label for="filmCharacterNotes">Character and continuity notes</label>
+      <textarea id="filmCharacterNotes" placeholder="Describe appearance, clothing, personality and details that must remain consistent from scene to scene..."></textarea>
+      <div class="film-actions">
+        <button class="btn" type="button" id="saveFilmProject">Save Film Project</button>
+        <button class="btn secondary" type="button" id="loadFilmProject">Load Saved Project</button>
+        <button class="btn secondary" type="button" id="exportFilmPlan">Export Film Plan</button>
+      </div>
+      <p class="notice" id="filmStudioStatus" aria-live="polite">Ready. Saving or planning a project does not start AI generation or use provider credits.</p>
     </div>
-    <p class="notice" id="filmStudioStatus" aria-live="polite">Ready. Plan your film here; no AI generation or provider charges happen when saving a project.</p>
-    <p class="film-note">Important: Film Studio currently creates and saves your production plan only. AI video generation is a separate action in the existing generator below and may use paid provider credits.</p>
+
+    <div class="film-section-block">
+      <div class="film-section-title"><span class="film-step-number">02</span><div><h4>Scene and shot planning</h4><p>Break the film into individual scenes before creating footage.</p></div><button class="btn secondary" type="button" id="addFilmScene">+ Add Scene</button></div>
+      <div id="filmScenes" class="film-scenes"></div>
+    </div>
+
+    <div class="film-section-block film-generation-block">
+      <div class="film-section-title"><span class="film-step-number">03</span><div><h4>AI scene production</h4><p>Generate footage for a scene using the connected VEAFLOW video engine.</p></div></div>
+      <div class="film-generation-layout">
+        <div class="film-generation-controls">
+          <div class="film-field"><label for="videoProvider">Video engine</label><select id="videoProvider"><option value="getimg" selected>VEAFLOW Auto — Wan 3.0</option></select></div>
+          <div class="film-field"><label for="videoCreationMode">Generation mode</label><select id="videoCreationMode"><option value="text-to-video">Text to Video</option></select><p class="film-note">Image-to-video and full scene automation will appear when their upload and production connections are ready.</p></div>
+          <div class="film-field"><label for="videoCharacter">Character reference</label><select id="videoCharacter"><option value="">No character selected</option></select></div>
+          <img id="videoCharacterPreview" alt="Selected video character" style="display:none;width:132px;height:150px;object-fit:cover;border-radius:12px;border:1px solid #49304F;margin:8px 0;">
+          <label for="newVideoPrompt">Scene prompt</label>
+          <textarea id="newVideoPrompt" placeholder="Describe the action, character, location, camera movement, lighting and atmosphere for this shot..."></textarea>
+          <div class="film-grid film-grid-compact">
+            <div class="film-field"><label for="videoStyle">Visual style</label><select id="videoStyle"><option value="Cinematic realism">Cinematic realism</option><option value="Romantic drama">Romantic drama</option><option value="Action thriller">Action thriller</option><option value="Luxury lifestyle">Luxury lifestyle</option><option value="Documentary">Documentary</option><option value="Animation">Animation</option><option value="Fantasy">Fantasy</option></select></div>
+            <div class="film-field"><label for="videoDuration">Clip duration</label><select id="videoDuration"><option value="5">5 seconds</option><option value="7">7 seconds</option><option value="10">10 seconds</option><option value="15" selected>15 seconds</option></select></div>
+            <div class="film-field"><label for="videoAspectRatio">Aspect ratio</label><select id="videoAspectRatio"><option value="16:9">16:9 — Landscape</option><option value="9:16">9:16 — Vertical</option><option value="1:1">1:1 — Square</option></select></div>
+            <div class="film-field"><label for="videoResolution">Resolution</label><select id="videoResolution"><option value="480p" selected>480p — Standard</option><option value="720p">720p — HD</option></select></div>
+          </div>
+          <button class="btn" id="generateAIVideo" type="button">✦ Generate Scene Footage</button>
+          <p id="videoGenerationStatus" class="notice" aria-live="polite">Ready. Review your prompt before starting a generation. Provider charges may apply.</p>
+        </div>
+        <div class="film-output-panel">
+          <div class="film-output-icon">▶</div>
+          <h4>Scene output monitor</h4>
+          <p>Your generated clip will appear here when the video engine completes the request.</p>
+          <div id="generatedVideoResult" style="display:none;">
+            <video id="generatedAIVideo" controls style="width:100%;max-width:700px;border-radius:12px;"></video>
+            <a id="downloadAIVideo" class="btn" download="veaflow-ai-video.mp4">Download Scene</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="film-section-block film-next-step">
+      <div class="film-section-title"><span class="film-step-number">04</span><div><h4>Finish your film</h4><p>Bring generated clips, images, narration and music into the Video Editor to assemble the final production.</p></div></div>
+      <button class="btn secondary" type="button" data-page="editor">Open Video Editor →</button>
+      <p class="film-note">Your existing Video Editor and Voice Studio remain separate tools. Film Studio project saving is local to this browser. AI footage generation uses your connected video service and may consume credits.</p>
+    </div>
   </div>
-
-  <div class="card">
-    <h3>Create an AI Video</h3>
-    <p class="sub">Describe the scene you want to bring to life.</p>
-	  
-<div class="video-mode">
-  <label>Video generation model</label>
-  <select id="videoProvider">
-    <option value="getimg" selected>VEAFLOW Auto — Best available model</option>
-  </select>
-</div>
-
-  <div class="video-mode">
-  <label for="videoCreationMode">Creation mode</label>
-  <select id="videoCreationMode">
-    <option value="text-to-video">Text to Video</option>
-    <option value="image-to-video">Image to Video</option>
-    <option value="scene-to-video">AI Scene Generation</option>
-  </select>
-</div>
-	  <label for="videoCharacter">Use a Saved Character</label>
-<select id="videoCharacter">
-  <option value="">No character selected</option>
-</select>
-
-<img
-  id="videoCharacterPreview"
-  alt="Selected video character"
-  style="display:none;width:150px;height:180px;object-fit:cover;border-radius:12px;border:1px solid #49304F;margin:12px 0;"
->
-
-<label for="newVideoPrompt">Describe your video scene</label>
-<textarea id="newVideoPrompt"
-  placeholder="Describe the scene, characters, camera movement, lighting and atmosphere..."></textarea>
-
-<div id="videoImageUpload" style="display:none;">
-  <label for="videoReferenceImage">Upload reference image</label>
-  <input type="file" id="videoReferenceImage" accept="image/*">
-  <img id="videoReferencePreview" alt="Video reference preview"
-    style="display:none;width:180px;max-height:220px;object-fit:contain;border-radius:12px;margin-top:12px;">
-</div>
-
-	  <div class="video-settings">
-  <h3>Cinematic Settings</h3>
-
-  <label for="videoStyle">Visual style</label>
-  <select id="videoStyle">
-    <option value="Cinematic realism">Cinematic realism</option>
-    <option value="Romantic drama">Romantic drama</option>
-    <option value="Action thriller">Action thriller</option>
-    <option value="Luxury lifestyle">Luxury lifestyle</option>
-    <option value="Documentary">Documentary</option>
-    <option value="Animation">Animation</option>
-    <option value="Fantasy">Fantasy</option>
-  </select>
-
-  <label for="videoDuration">Video duration</label>
-  <select id="videoDuration">
-  <option value="5">5 seconds</option>
-  <option value="7">7 seconds</option>
-  <option value="10">10 seconds</option>
-  <option value="15" selected>15 seconds</option>
-</select>
-
-  <label for="videoAspectRatio">Aspect ratio</label>
-  <select id="videoAspectRatio">
-    <option value="16:9">16:9 — Landscape / YouTube</option>
-    <option value="9:16">9:16 — Vertical / Shorts</option>
-    <option value="1:1">1:1 — Square</option>
-  </select>
-
-<label for="videoResolution">Video resolution</label>
-<select id="videoResolution">
-  <option value="480p" selected>480p — Standard</option>
-  <option value="720p">720p — HD (Getimg)</option>
-</select>
-
-</div>
-	  <div class="video-generation">
-  <h3>Generate Your Video</h3>
-  <p class="sub">Your cinematic creation will appear here.</p>
-
-  <button class="btn" id="generateAIVideo" type="button">
-    ✦ Generate AI Video
-  </button>
-
-  <p id="videoGenerationStatus" class="notice">
-    Ready to create. Your video-generation engine will be connected here.
-  </p>
-
-  <div id="generatedVideoResult" style="display:none;">
-    <video id="generatedAIVideo" controls
-      style="width:100%;max-width:700px;border-radius:12px;">
-    </video>
-
-    <a id="downloadAIVideo" class="btn" download="veaflow-ai-video.mp4">
-      Download Video
-    </a>
-  </div>
-</div>
-  
-</div>
 </section>
 	<section class="section" id="editor">
   <h2>Video Editor</h2>
@@ -2796,30 +2775,7 @@ document.getElementById('imageStudioCharacter')
     }
   });
 </script>
-	<script>
-const videoCreationMode = document.getElementById('videoCreationMode');
-const videoImageUpload = document.getElementById('videoImageUpload');
-const videoReferenceImage = document.getElementById('videoReferenceImage');
-const videoReferencePreview = document.getElementById('videoReferencePreview');
 
-videoCreationMode.addEventListener('change', function() {
-  videoImageUpload.style.display =
-    this.value === 'image-to-video' ? 'block' : 'none';
-});
-
-videoReferenceImage.addEventListener('change', function() {
-  const file = this.files[0];
-
-  if (!file) {
-    videoReferencePreview.removeAttribute('src');
-    videoReferencePreview.style.display = 'none';
-    return;
-  }
-
-  videoReferencePreview.src = URL.createObjectURL(file);
-  videoReferencePreview.style.display = 'block';
-});
-</script>
 	<script>
 function veaflowLoadVideoCharacters() {
   const selector = document.getElementById('videoCharacter');
