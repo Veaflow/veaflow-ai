@@ -698,6 +698,9 @@ footer{
 @media(max-width:600px){.video-hub-grid,.film-grid{grid-template-columns:1fr}}
 
 
+/* Video Studio landing view and dedicated Film Studio view */
+.video-subview-hidden{display:none!important}
+
 /* VEAFLOW Film Studio production workspace */
 .film-studio-pro{padding:clamp(18px,3vw,32px);border:1px solid rgba(150,59,255,.35);background:linear-gradient(145deg,rgba(32,20,48,.98),rgba(13,12,25,.98));}
 .film-studio-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
@@ -874,6 +877,7 @@ footer{
 	</section>
 
 <section class="section" id="video-ai">
+  <div id="videoHubView">
   <h2>AI Video Studio</h2>
   <p class="muted">Transform your ideas into cinematic videos and stories.</p>
 
@@ -889,10 +893,12 @@ footer{
     <button class="video-hub-card" type="button" disabled><span class="hub-icon">🧑‍💼</span><strong>AI Presenter</strong><small>Prepare presenter-led videos and explainers.</small><span class="hub-status">COMING SOON</span></button>
     <button class="video-hub-card" type="button" disabled><span class="hub-icon">🎥</span><strong>Documentary Creator</strong><small>Structure factual films, interviews and narration.</small><span class="hub-status">COMING SOON</span></button>
   </div>
+  </div><!-- /videoHubView -->
 
-  <div class="card film-studio film-studio-pro" id="filmStudioWorkspace">
+  <div class="card film-studio film-studio-pro video-subview-hidden" id="filmStudioWorkspace">
     <div class="film-studio-heading">
       <div>
+        <button class="btn secondary" type="button" id="backToVideoHub" style="margin-bottom:14px">← Back to Video Studio</button>
         <span class="film-eyebrow">VEAFLOW AI • PRODUCTION WORKSPACE</span>
         <h3>🎬 Film Studio</h3>
         <p class="sub">Develop your story, plan every scene, create footage and prepare your film for editing.</p>
@@ -1556,11 +1562,31 @@ buttons.forEach(button=>button.addEventListener('click',()=>{
  pages.forEach(page=>page.classList.toggle('active',page.id===button.dataset.page));
  buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===button.dataset.page));
  document.getElementById('crumb').textContent=pageNames[button.dataset.page];
+ if (button.dataset.page === 'video-ai') showVideoHub();
  window.scrollTo({top:0,behavior:'smooth'});
 }));
 function toggleQuickMenu(){
   const menu=document.getElementById('quickMenu');
   menu.style.display=menu.style.display==='block'?'none':'block';
+}
+
+function showVideoHub(){
+  const hub = document.getElementById('videoHubView');
+  const film = document.getElementById('filmStudioWorkspace');
+  if (hub) hub.classList.remove('video-subview-hidden');
+  if (film) film.classList.add('video-subview-hidden');
+  const crumb = document.getElementById('crumb');
+  if (crumb) crumb.textContent = 'AI Video Studio';
+}
+
+function showFilmStudio(){
+  const hub = document.getElementById('videoHubView');
+  const film = document.getElementById('filmStudioWorkspace');
+  if (hub) hub.classList.add('video-subview-hidden');
+  if (film) film.classList.remove('video-subview-hidden');
+  const crumb = document.getElementById('crumb');
+  if (crumb) crumb.textContent = 'Film Studio';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function openQuickPage(id){
@@ -1573,6 +1599,7 @@ function openQuickPage(id){
   });
 
   document.getElementById('crumb').textContent=pageNames[id];
+  if (id === 'video-ai') showVideoHub();
   document.getElementById('quickMenu').style.display='none';
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -3661,7 +3688,12 @@ window.open(gmailURL, '_blank');
     status('Film plan exported as a text file.');
   });
   const openButton = $('openFilmStudio');
-  if (openButton) openButton.addEventListener('click', () => $('filmStudioWorkspace').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  if (openButton) openButton.addEventListener('click', showFilmStudio);
+  const backButton = $('backToVideoHub');
+  if (backButton) backButton.addEventListener('click', () => {
+    showVideoHub();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
   refreshFilmCharacters(); addScene();
   window.addEventListener('storage', refreshFilmCharacters);
 })();
