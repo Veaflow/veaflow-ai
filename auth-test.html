@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VEAFLOW AI - Authentication Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 25px;
+      background: #080b19;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 420px;
+      margin: 50px auto;
+      padding: 25px;
+      background: #11172b;
+      border: 1px solid #26365c;
+      border-radius: 14px;
+    }
+    h2 { color: #4785ff; }
+    input, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+    input {
+      background: #080b19;
+      color: white;
+      border: 1px solid #34466e;
+    }
+    button {
+      border: 0;
+      background: #3478ff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.logout { background: #b52c49; }
+    #status {
+      margin-top: 18px;
+      padding: 12px;
+      background: #080b19;
+      border-radius: 7px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>VEAFLOW AI</h2>
+    <p>Authentication connection test</p>
+
+    <form id="loginForm">
+      <input id="email" type="email"
+        placeholder="Registered email" required>
+
+      <input id="password" type="password"
+        placeholder="Password" required>
+
+      <button type="submit">Test Login</button>
+    </form>
+
+    <button id="checkSession">Check Session</button>
+    <button id="logout" class="logout">Logout</button>
+
+    <div id="status">Ready to test authentication.</div>
+  </div>
+
+  <script>
+    const AUTH = "https://auth.veaflow.com";
+    const statusBox = document.getElementById("status");
+
+    function showStatus(message) {
+      statusBox.textContent = message;
+    }
+
+    document.getElementById("loginForm")
+      .addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        showStatus("Testing login...");
+
+        try {
+          const response = await fetch(
+            AUTH + "/auth/login",
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                email: document.getElementById("email").value.trim(),
+                password: document.getElementById("password").value
+              })
+            }
+          );
+
+          const data = await response.json();
+
+          showStatus(
+            "Login HTTP status: " + response.status +
+            "\n" + JSON.stringify(data, null, 2)
+          );
+        } catch (error) {
+          showStatus("Login connection error: " + error.message);
+        }
+      });
+
+    document.getElementById("checkSession")
+      .addEventListener("click", async function() {
+        showStatus("Checking session...");
+
+        try {
+          const response = await fetch(
+            AUTH + "/auth/me",
+            {
+              method: "GET",
+              credentials: "include"
+            }
+          );
+
+          const data = await response.json();
+
+          showStatus(
+            "Session HTTP status: " + response.status +
+            "\n" + JSON.stringify(data, null, 2)
+          );
+        } catch (error) {
+          showStatus("Session connection error: " + error.message);
+        }
+      });
+
+    document.getElementById("logout")
+      .addEventListener("click", async function() {
+        showStatus("Logging out...");
+
+        try {
+          const response = await fetch(
+            AUTH + "/auth/logout",
+            {
+              method: "POST",
+              credentials: "include"
+            }
+          );
+
+          const data = await response.json();
+
+          showStatus(
+            "Logout HTTP status: " + response.status +
+            "\n" + JSON.stringify(data, null, 2)
+          );
+        } catch (error) {
+          showStatus("Logout connection error: " + error.message);
+        }
+      });
+  </script>
+</body>
+</html>
