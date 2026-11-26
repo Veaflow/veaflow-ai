@@ -1340,6 +1340,32 @@ footer{
 </div>
 </section>
 	<section class="section" id="account">
+		
+<div class="card" id="veaflowAuthCard">
+  <h3>VEAFLOW AI Account</h3>
+  <p class="sub">Create an account or sign in to access your creative workspace.</p>
+
+  <div id="authRegisterFields">
+    <label for="authName">Display name</label>
+    <input id="authName" type="text" placeholder="Enter your name">
+  </div>
+
+  <label for="authEmail">Email address</label>
+  <input id="authEmail" type="email" placeholder="Enter your email">
+
+  <label for="authPassword">Password</label>
+  <input id="authPassword" type="password" placeholder="Enter your password">
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+    <button class="btn" id="authRegister" type="button">Create Account</button>
+    <button class="btn" id="authLogin" type="button">Sign In</button>
+    <button class="btn secondary" id="authLogout" type="button" style="display:none;">Sign Out</button>
+  </div>
+
+  <p id="authStatus" class="sub" aria-live="polite"></p>
+  <p id="authUserInfo" class="sub"></p>
+</div>
+
   <h2>My Account</h2>
   <p class="muted">Manage your VEAFLOW AI identity and account information.</p>
 
@@ -3628,6 +3654,157 @@ if (accountSaveButton) {
   );
 }
 </script>
+	
+<script>
+// VEAFLOW AI ACCOUNT AUTHENTICATION
+(function () {
+  const AUTH = "https://auth.veaflow.com";
+
+  const nameInput = document.getElementById("authName");
+  const emailInput = document.getElementById("authEmail");
+  const passwordInput = document.getElementById("authPassword");
+
+  const registerButton = document.getElementById("authRegister");
+  const loginButton = document.getElementById("authLogin");
+  const logoutButton = document.getElementById("authLogout");
+
+  const status = document.getElementById("authStatus");
+  const userInfo = document.getElementById("authUserInfo");
+  const registerFields = document.getElementById("authRegisterFields");
+
+  if (!emailInput || !passwordInput || !status) return;
+
+  function showStatus(message) {
+    status.textContent = message;
+  }
+
+  async function authRequest(path, options = {}) {
+    const response = await fetch(AUTH + path, {
+      ...options,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      }
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(data.error || data.message || "Authentication request failed.");
+    }
+
+    return data;
+  }
+
+  function showSignedIn(user) {
+    registerButton.style.display = "none";
+    loginButton.style.display = "none";
+    logoutButton.style.display = "inline-block";
+    registerFields.style.display = "none";
+
+    userInfo.textContent = "Signed in as " + (user.email || "");
+    showStatus("Your VEAFLOW AI account is active.");
+  }
+
+  function showSignedOut() {
+    registerButton.style.display = "inline-block";
+    loginButton.style.display = "inline-block";
+    logoutButton.style.display = "none";
+    registerFields.style.display = "block";
+
+    userInfo.textContent = "";
+  }
+
+  registerButton.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!name || !email || !password) {
+      showStatus("Please enter your name, email and password.");
+      return;
+    }
+
+    try {
+      registerButton.disabled = true;
+      showStatus("Creating your VEAFLOW AI account...");
+
+      await authRequest("/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ name, email, password })
+      });
+
+      showStatus("Account created. You can now sign in.");
+    } catch (error) {
+      showStatus(error.message);
+    } finally {
+      registerButton.disabled = false;
+    }
+  });
+
+  loginButton.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+      showStatus("Please enter your email and password.");
+      return;
+    }
+
+    try {
+      loginButton.disabled = true;
+      showStatus("Signing in...");
+
+      const data = await authRequest("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+      });
+
+      showSignedIn(data.user || { email });
+      passwordInput.value = "";
+    } catch (error) {
+      showStatus(error.message);
+    } finally {
+      loginButton.disabled = false;
+    }
+  });
+
+  logoutButton.addEventListener("click", async () => {
+    try {
+      logoutButton.disabled = true;
+
+      await authRequest("/auth/logout", {
+        method: "POST"
+      });
+
+      showSignedOut();
+      showStatus("You have signed out.");
+    } catch (error) {
+      showStatus(error.message);
+    } finally {
+      logoutButton.disabled = false;
+    }
+  });
+
+  async function checkSession() {
+    try {
+      const data = await authRequest("/auth/me");
+      if (data.user) {
+        showSignedIn(data.user);
+      } else {
+        showSignedOut();
+      }
+    } catch (_) {
+      showSignedOut();
+      showStatus("Please sign in to your VEAFLOW AI account.");
+    }
+  }
+
+  checkSession();
+})();
+</script>
+
 	</body>
 
 </html>
