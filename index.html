@@ -2984,17 +2984,13 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   const video = document.getElementById("generatedAIVideo");
   const download = document.getElementById("downloadAIVideo");
   const API = "https://veaflow-ai-api.ovarcon.workers.dev";
-  const token = document.getElementById("veaflowAccess").value.trim();
+  const token = await window.veaflowGetApiToken();
   const prompt = document.getElementById("newVideoPrompt").value.trim();
   const mode = document.getElementById("videoCreationMode").value;
   const duration = Number(document.getElementById("videoDuration").value);
   const aspectRatio = document.getElementById("videoAspectRatio").value;
   const resolution = document.getElementById("videoResolution").value;
 
-  if (!token) {
-    status.textContent = "Enter your VEAFLOW access password first.";
-    return;
-  }
   if (!prompt) {
     status.textContent = "Please describe the video scene first.";
     return;
