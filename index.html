@@ -2279,7 +2279,7 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
 
 document.getElementById("veaflowGenerateImage").addEventListener("click", async () => {
   const button = document.getElementById("veaflowGenerateImage");
-  const token = document.getElementById("veaflowAccess").value.trim();
+  const token = await window.veaflowGetApiToken();
   const prompt = document.getElementById("veaflowImagePrompt").value.trim();
   const status = document.getElementById("veaflowImageStatus");
   const result = document.getElementById("veaflowImageResult");
