@@ -3677,6 +3677,25 @@ if (accountSaveButton) {
   function showStatus(message) {
     status.textContent = message;
   }
+	
+// Obtain a short-lived API token from the authenticated session.
+window.veaflowGetApiToken = async function () {
+  const response = await fetch(AUTH + "/auth/api-token", {
+    method: "POST",
+    credentials: "include"
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || !data.token) {
+    throw new Error(
+      data.error || "Please sign in to your VEAFLOW AI account."
+    );
+  }
+
+  return data.token;
+};
+
 
   async function authRequest(path, options = {}) {
     const response = await fetch(AUTH + path, {
