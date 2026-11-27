@@ -2217,16 +2217,16 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
   }
 
   const approved = window.confirm(
-    "VEAFLOW AI image generation\n\nModel: " + model +
+    "VEAFLOW AI image generation\n\nEngine: VEAFLOW Auto" +
     "\nEstimated cost: " + estimate +
     "\n\nContinue and spend these Runway credits?"
   );
   if (!approved) {
-    status.textContent = "Generation cancelled. No Runway credits were spent.";
+    status.textContent = "Generation cancelled. No credits were spent.";
     return;
   }
 
-  status.textContent = "Submitting your image to Runway...";
+  status.textContent = "VEAFLOW Auto is creating your image...";
   const submitResponse = await fetch(API + "/runway/generate-image", {
     method: "POST",
     headers,
