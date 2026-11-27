@@ -3411,28 +3411,63 @@ veaflowRenderCreationsImages();
 </script>
 
 <script>
-const accountName = document.getElementById('accountName');
-const accountEmail = document.getElementById('accountEmail');
-const accountStatus = document.getElementById('accountStatus');
+// VEAFLOW AI PROFILE MANAGEMENT
+(function () {
+  const accountName = document.getElementById("accountName");
+  const accountEmail = document.getElementById("accountEmail");
+  const accountStatus = document.getElementById("accountStatus");
+  const saveButton = document.getElementById("saveAccount");
 
-const savedAccount = JSON.parse(
-  localStorage.getItem('veaflowAccount') || '{}'
-);
+  if (!accountName || !accountEmail || !accountStatus || !saveButton) {
+    return;
+  }
 
-accountName.value = savedAccount.name || '';
-accountEmail.value = savedAccount.email || '';
+  function loadSavedProfile() {
+    const savedAccount = JSON.parse(
+      localStorage.getItem("veaflowAccount") || "{}"
+    );
 
-document.getElementById('saveAccount').addEventListener('click', () => {
-  const account = {
-    name: accountName.value.trim(),
-    email: accountEmail.value.trim()
+    accountName.value = savedAccount.name || "";
+    accountEmail.value = savedAccount.email || "";
+    
+    window.veaflowUpdateCustomerProfile();
+  }
+
+  // Update the account profile and dashboard identity.
+  window.veaflowUpdateCustomerProfile = function () {
+    const savedAccount = JSON.parse(
+      localStorage.getItem("veaflowAccount") || "{}"
+    );
+
+    accountName.value = savedAccount.name || "";
+    accountEmail.value = savedAccount.email || "";
+
+    const dashboardName = document.getElementById("dashboardCustomerName");
+
+    if (dashboardName) {
+      dashboardName.textContent = savedAccount.name
+        ? "Welcome, " + savedAccount.name
+        : "Welcome to VEAFLOW AI";
+    }
   };
 
-  localStorage.setItem('veaflowAccount', JSON.stringify(account));
+  saveButton.addEventListener("click", () => {
+    const account = {
+      name: accountName.value.trim(),
+      email: accountEmail.value.trim()
+    };
 
-  accountStatus.textContent = 'Profile saved successfully!';
-});
+    localStorage.setItem("veaflowAccount", JSON.stringify(account));
+
+    window.veaflowUpdateCustomerProfile();
+
+    accountStatus.textContent = "Profile saved successfully!";
+  });
+
+  loadSavedProfile();
+})();
 </script>
+
 	<script>
 const themeSelect = document.getElementById('themeSelect');
 const themeStatus = document.getElementById('themeStatus');
@@ -3752,7 +3787,13 @@ window.veaflowGetApiToken = async function () {
     registerFields.style.display = "block";
 
     userInfo.textContent = "";
-  }
+
+    const dashboardName = document.getElementById("dashboardCustomerName");
+
+    if (dashboardName) {
+        dashboardName.textContent = "Welcome to VEAFLOW AI";
+    }
+}
 
   registerButton.addEventListener("click", async () => {
     const name = nameInput.value.trim();
@@ -3782,7 +3823,18 @@ if (typeof veaflowUpdateCustomerProfile === "function") {
   veaflowUpdateCustomerProfile();
 }
 
-showSignedIn(data.user || { email });
+const user = data.user || { email };
+
+localStorage.setItem("veaflowAccount", JSON.stringify({
+  name: user.name || "",
+  email: user.email || email
+}));
+
+if (typeof window.veaflowUpdateCustomerProfile === "function") {
+  window.veaflowUpdateCustomerProfile();
+}
+
+showSignedIn(user);
 passwordInput.value = "";
     } catch (error) {
       showStatus(error.message);
