@@ -3825,8 +3825,12 @@ if (typeof veaflowUpdateCustomerProfile === "function") {
 
 const user = data.user || { email };
 
+const previousAccount = JSON.parse(
+  localStorage.getItem("veaflowAccount") || "{}"
+);
+
 localStorage.setItem("veaflowAccount", JSON.stringify({
-  name: user.name || "",
+  name: user.name || previousAccount.name || "",
   email: user.email || email
 }));
 
