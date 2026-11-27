@@ -2202,7 +2202,7 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
     outputCount: 1
   };
 
-  status.textContent = "Checking the Runway image estimate...";
+  status.textContent = "VEAFLOW Auto is preparing your image...";
   const estimateResponse = await fetch(API + "/runway/generate-image", {
     method: "POST",
     headers,
@@ -2218,8 +2218,8 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
 
   const approved = window.confirm(
     "VEAFLOW AI image generation\n\nEngine: VEAFLOW Auto" +
-    "\nEstimated cost: " + estimate +
-    "\n\nContinue and spend these Runway credits?"
+    "\nEstimated engine cost: " + estimate +
+"\n\nContinue with this generation?"
   );
   if (!approved) {
     status.textContent = "Generation cancelled. No credits were spent.";
@@ -2234,7 +2234,7 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
   });
   const submitted = await readJson(submitResponse);
   const taskId = findTaskId(submitted);
-  if (!taskId) throw new Error("Runway did not return a task ID. Check Runway request history before retrying.");
+  if (!taskId) throw new Error("VEAFLOW could not confirm the generation task. Check your generation history before retrying.");
 
   let imageUrl = "";
   for (let attempt = 0; attempt < 120; attempt++) {
@@ -2246,16 +2246,16 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
     const taskStatus = String(task.status || task.taskStatus || "").toUpperCase();
 
     if (["FAILED", "CANCELLED"].includes(taskStatus)) {
-      throw new Error("Runway could not complete this image. Check your Runway request history.");
+      throw new Error("VEAFLOW Auto could not complete this image. Please check your generation history.");
     }
     if (taskStatus === "SUCCEEDED") {
       imageUrl = findOutputUrl(task);
       break;
     }
-    status.textContent = "Runway is creating your image... Check " + (attempt + 1) + "/120";
+    status.textContent = "VEAFLOW Auto is creating your image... Check " + (attempt + 1) + "/120";
   }
 
-  if (!imageUrl) throw new Error("The image is not ready yet or Runway did not return an image URL. Check Runway task history before retrying.");
+  if (!imageUrl) throw new Error("Your image is not ready yet. Please check your VEAFLOW generation history before retrying.");
 
   const image = document.createElement("img");
   image.src = imageUrl;
