@@ -2185,15 +2185,24 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
   }
 
   function estimateText(data) {
-    const cost = data?.routing?.estimatedCost ?? data?.estimatedCost ?? data?.estimated_cost;
-    if (typeof cost === "number" || typeof cost === "string") return String(cost) + (typeof cost === "number" ? " Runway credits" : "");
-    if (cost && typeof cost === "object") {
-      const credits = cost.credits ?? cost.totalCredits ?? cost.total_credits;
-      if (typeof credits === "number" || typeof credits === "string") return String(credits) + " Runway credits";
-      return JSON.stringify(cost);
-    }
-    return "";
+  const cost = data?.routing?.estimatedCost ?? data?.estimatedCost ?? data?.estimated_cost;
+
+  if (typeof cost === "number" || typeof cost === "string") {
+    return String(cost) + (typeof cost === "number" ? " VEAFLOW credits" : "");
   }
+
+  if (cost && typeof cost === "object") {
+    const credits = cost.credits ?? cost.totalCredits ?? cost.total_credits;
+
+    if (typeof credits === "number" || typeof credits === "string") {
+      return String(credits) + " VEAFLOW credits";
+    }
+
+    return JSON.stringify(cost);
+  }
+
+  return "";
+}
 
   const generationInput = {
     promptText: prompt,
@@ -2210,11 +2219,11 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
   });
   const estimateData = await readJson(estimateResponse);
   const estimate = estimateText(estimateData);
-  const model = estimateData?.routing?.model || estimateData?.model || "Runway-selected model";
+  const model = estimateData?.routing?.model || estimateData?.model || "VEAFLOW Auto";
 
   if (!estimate) {
-    throw new Error("Runway did not return an estimated cost. No image was generated or charged.");
-  }
+  throw new Error("VEAFLOW could not calculate the estimated image cost. No image was generated or charged.");
+}
 
   const approved = window.confirm(
     "VEAFLOW AI image generation\n\nEngine: VEAFLOW Auto" +
