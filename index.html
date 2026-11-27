@@ -2353,7 +2353,7 @@ function splitNarration(text, maxLength = 140) {
 async function loadVoiceEngine() {
   if (synthesizer) return;
 
-  status.textContent = "Loading Kokoro voice engine...";
+  status.textContent = "Loading VEAFLOW Voice Engine...";
 
   synthesizer = await KokoroTTS.from_pretrained(
     "onnx-community/Kokoro-82M-v1.0-ONNX",
