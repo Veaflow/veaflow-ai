@@ -2992,7 +2992,7 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   const video = document.getElementById("generatedAIVideo");
   const download = document.getElementById("downloadAIVideo");
   const API = "https://veaflow-ai-api.ovarcon.workers.dev";
-  const token = await window.veaflowGetApiToken();
+	
   const prompt = document.getElementById("newVideoPrompt").value.trim();
   const mode = document.getElementById("videoCreationMode").value;
   const duration = Number(document.getElementById("videoDuration").value);
@@ -3078,6 +3078,11 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
   }
 
   try {
+	  const token = await window.veaflowGetApiToken();
+const headers = {
+  "Authorization": "Bearer " + token,
+  "Content-Type": "application/json"
+};
     const generationInput = { promptText: prompt, duration, aspectRatio, resolution };
     const estimateResponse = await fetch(API + "/runway/generate-video", {
       method: "POST", headers,
