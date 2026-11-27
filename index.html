@@ -3681,9 +3681,19 @@ if (accountSaveButton) {
   const userInfo = document.getElementById("authUserInfo");
   const registerFields = document.getElementById("authRegisterFields");
 
-  if (!emailInput || !passwordInput || !status) return;
+if (
+  !nameInput ||
+  !emailInput ||
+  !passwordInput ||
+  !registerButton ||
+  !loginButton ||
+  !logoutButton ||
+  !status ||
+  !userInfo ||
+  !registerFields
+) return;
 
-  function showStatus(message) {
+function showStatus(message) {
     status.textContent = message;
   }
 	
