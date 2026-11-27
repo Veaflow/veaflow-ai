@@ -3887,19 +3887,36 @@ passwordInput.value = "";
     }
   });
 
-  async function checkSession() {
-    try {
-      const data = await authRequest("/auth/me");
-      if (data.user) {
-        showSignedIn(data.user);
-      } else {
-        showSignedOut();
+  
+async function checkSession() {
+  try {
+    const data = await authRequest("/auth/me");
+
+    if (data.user) {
+      const user = data.user;
+
+      const savedAccount = JSON.parse(
+        localStorage.getItem("veaflowAccount") || "{}"
+      );
+
+      localStorage.setItem("veaflowAccount", JSON.stringify({
+        name: user.name || savedAccount.name || "",
+        email: user.email || savedAccount.email || ""
+      }));
+
+      if (typeof window.veaflowUpdateCustomerProfile === "function") {
+        window.veaflowUpdateCustomerProfile();
       }
-    } catch (_) {
+
+      showSignedIn(user);
+    } else {
       showSignedOut();
-      showStatus("Please sign in to your VEAFLOW AI account.");
     }
+  } catch (_) {
+    showSignedOut();
+    showStatus("Please sign in to your VEAFLOW AI account.");
   }
+}
 
   checkSession();
 })();
