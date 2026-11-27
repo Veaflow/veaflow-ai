@@ -2537,8 +2537,8 @@ async function generateVoice(playAfterGeneration) {
     }
 
   } catch (error) {
-    console.error("Kokoro error:", error);
-    status.textContent = "Generation failed: " + error.message;
+    console.error("VEAFLOW Voice Engine error:", error);
+    status.textContent = "VEAFLOW Voice Engine failed: " + error.message;
 
   } finally {
     if (context) await context.close();
