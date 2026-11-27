@@ -941,7 +941,12 @@ footer{
       <div class="film-section-title"><span class="film-step-number">03</span><div><h4>AI scene production</h4><p>Generate footage for a scene using the connected VEAFLOW video engine.</p></div></div>
       <div class="film-generation-layout">
         <div class="film-generation-controls">
-          <div class="film-field"><label for="videoProvider">Video engine</label><select id="videoProvider"><option value="runway" selected>Runway Model Router — Automatic</option></select></div>
+     <div class="film-field">
+  <label for="videoProvider">Video engine</label>
+  <select id="videoProvider">
+    <option value="runway" selected>VEAFLOW Auto — Automatic</option>
+  </select>
+</div>
           <div class="film-field"><label for="videoCreationMode">Generation mode</label><select id="videoCreationMode"><option value="text-to-video">Text to Video</option></select><p class="film-note">Image-to-video and full scene automation will appear when their upload and production connections are ready.</p></div>
           <div class="film-field"><label for="videoCharacter">Character reference</label><select id="videoCharacter"><option value="">No character selected</option></select></div>
           <img id="videoCharacterPreview" alt="Selected video character" style="display:none;width:132px;height:150px;object-fit:cover;border-radius:12px;border:1px solid #49304F;margin:8px 0;">
