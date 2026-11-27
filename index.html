@@ -3090,31 +3090,31 @@ const headers = {
     });
     const estimateData = await readResponse(estimateResponse);
     const estimate = estimateText(estimateData);
-    const model = estimateData?.routing?.model || estimateData?.model || "Runway-selected model";
-    if (!estimate) {
-      throw new Error("Runway did not return an estimated cost. No video was generated or charged.");
-    }
+    const model = estimateData?.routing?.model || estimateData?.model || "VEAFLOW Auto";
+if (!estimate) {
+  throw new Error("VEAFLOW could not calculate the estimated video cost. No video was generated or charged.");
+}
 
     const approved = window.confirm(
-      "VEAFLOW AI video generation\n\nModel: " + model +
-      "\nDuration: " + duration + " seconds" +
-      "\nResolution: " + resolution +
-      "\nEstimated cost: " + estimate +
-      "\n\nContinue and spend these Runway credits?"
-    );
-    if (!approved) {
-      status.textContent = "Generation cancelled. No Runway credits were spent.";
-      return;
-    }
+  "VEAFLOW AI video generation\n\nEngine: VEAFLOW Auto" +
+  "\nDuration: " + duration + " seconds" +
+  "\nResolution: " + resolution +
+  "\nEstimated cost: " + estimate +
+  "\n\nContinue with this generation?"
+);
+if (!approved) {
+  status.textContent = "Generation cancelled. No credits were spent.";
+  return;
+}
 
-    status.textContent = "Submitting your video to Runway...";
+    status.textContent = "VEAFLOW Auto is creating your video...";
     const submitResponse = await fetch(API + "/runway/generate-video", {
       method: "POST", headers,
       body: JSON.stringify({ ...generationInput, confirmCharge: true })
     });
     const submitted = await readResponse(submitResponse);
     const taskId = findTaskId(submitted);
-    if (!taskId) throw new Error("Runway did not return a task ID. Check Runway request history before retrying.");
+    if (!taskId) throw new Error("VEAFLOW could not confirm the video-generation task. Check your generation history before retrying.");
 
     let finalVideoUrl = "";
     for (let attempt = 0; attempt < 120; attempt++) {
@@ -3125,16 +3125,16 @@ const headers = {
       const task = await readResponse(pollResponse);
       const taskStatus = String(task.status || task.taskStatus || "").toUpperCase();
       if (["FAILED", "CANCELLED"].includes(taskStatus)) {
-        throw new Error("Runway could not complete this video. Check your Runway request history.");
+        throw new Error("VEAFLOW Auto could not complete this video. Please check your generation history.");
       }
       if (taskStatus === "SUCCEEDED") {
         finalVideoUrl = findOutputUrl(task);
         break;
       }
-      status.textContent = "Runway is creating your video... Check " + (attempt + 1) + "/120";
+      status.textContent = "VEAFLOW Auto is creating your video... Check " + (attempt + 1) + "/120";
     }
 
-    if (!finalVideoUrl) throw new Error("Your video is not ready or Runway did not return a video URL. Check Runway task history before retrying.");
+    if (!finalVideoUrl) throw new Error("Your video is not ready yet. Please check your VEAFLOW generation history before retrying.");
 
     video.src = finalVideoUrl;
     video.load();
@@ -3152,7 +3152,7 @@ const headers = {
       console.warn("Video generated but could not be saved to My Creations:", saveError);
     }
   } catch (error) {
-    status.textContent = error.message || "An unexpected Runway video-generation error occurred.";
+    status.textContent = error.message || "An unexpected VEAFLOW video-generation error occurred.";
   } finally {
     button.disabled = false;
   }
