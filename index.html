@@ -3077,10 +3077,10 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
 
   function estimateText(data) {
     const cost = data?.routing?.estimatedCost ?? data?.estimatedCost ?? data?.estimated_cost;
-    if (typeof cost === "number" || typeof cost === "string") return String(cost) + (typeof cost === "number" ? " Runway credits" : "");
-    if (cost && typeof cost === "object") {
-      const credits = cost.credits ?? cost.totalCredits ?? cost.total_credits;
-      if (typeof credits === "number" || typeof credits === "string") return String(credits) + " Runway credits";
+    if (typeof cost === "number" || typeof cost === "string") return String(cost) + (typeof cost === "number" ? " VEAFLOW credits" : "");
+if (cost && typeof cost === "object") {
+  const credits = cost.credits ?? cost.totalCredits ?? cost.total_credits;
+  if (typeof credits === "number" || typeof credits === "string") return String(credits) + " VEAFLOW credits";
       return JSON.stringify(cost);
     }
     return "";
