@@ -2147,7 +2147,7 @@ async function veaflowRunwayImage({ token, prompt, status, result, source }) {
     try { data = await response.json(); }
     catch { throw new Error("VEAFLOW received an unreadable server response."); }
     if (!response.ok) {
-      throw new Error(typeof data.error === "string" ? data.error : "Runway image request failed.");
+      throw new Error(typeof data.error === "string" ? data.error : "VEAFLOW image request failed.");
     }
     return data;
   }
