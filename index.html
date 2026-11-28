@@ -3024,7 +3024,7 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
 
   button.disabled = true;
   result.style.display = "none";
-  status.textContent = "Checking the Runway video estimate...";
+  status.textContent = "VEAFLOW Auto is preparing your video...";
   const headers = {
     "Authorization": "Bearer " + token,
     "Content-Type": "application/json"
@@ -3037,7 +3037,7 @@ document.getElementById("generateAIVideo").addEventListener("click", async () =>
     if (!response.ok) {
       const message = typeof data.error === "string" ? data.error :
         typeof data.error?.message === "string" ? data.error.message :
-        typeof data.message === "string" ? data.message : "The Runway video request failed.";
+        typeof data.message === "string" ? data.message : "The VEAFLOW video request failed.";
       throw new Error(message);
     }
     return data;
