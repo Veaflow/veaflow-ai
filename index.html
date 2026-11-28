@@ -2315,7 +2315,7 @@ document.getElementById("veaflowGenerateImage").addEventListener("click", async 
     });
 
   } catch (error) {
-    status.textContent = error.message || "Runway image generation failed.";
+     status.textContent = error.message || "VEAFLOW Auto could not generate your image.";
   } finally {
     button.disabled = false;
   }
